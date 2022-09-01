@@ -5,6 +5,7 @@ import com.ulearn.controller.response.JsonResponse;
 import com.ulearn.dao.domain.User;
 import com.ulearn.dao.error.CommonOperationError;
 import com.ulearn.dao.error.CommonRuntimeException;
+import com.ulearn.dao.error.CommonSystemError;
 import com.ulearn.dao.form.UserSignUpForm;
 import com.ulearn.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,10 +39,5 @@ public class UserController {
     public JsonResponse addUser(@Valid @RequestBody UserSignUpForm form) {
         userService.addUser(form);
         return JsonResponse.ok();
-    }
-
-    @GetMapping("/test")
-    public void test() {
-        throw new CommonRuntimeException(CommonOperationError.USER_DOESNT_EXIST);
     }
 }

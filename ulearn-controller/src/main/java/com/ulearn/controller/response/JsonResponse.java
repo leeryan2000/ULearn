@@ -22,6 +22,12 @@ public class JsonResponse {
 
     private HashMap data;
 
+    public JsonResponse(String code, String msg, HashMap data) {
+        this.code = code;
+        this.msg = msg;
+        this.data = data;
+    }
+
     public JsonResponse(String code, String msg) {
         this.code = code;
         this.msg = msg;
@@ -52,5 +58,9 @@ public class JsonResponse {
 
     public static JsonResponse error(CommonError error) {
         return new JsonResponse(error.getErrCode(), error.getErrMsg());
+    }
+
+    public static JsonResponse error(HashMap data) {
+        return new JsonResponse("501", "Invalid field", data);
     }
 }
