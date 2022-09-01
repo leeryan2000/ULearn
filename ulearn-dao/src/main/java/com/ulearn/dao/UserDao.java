@@ -1,5 +1,6 @@
 package com.ulearn.dao;
 
+import com.ulearn.dao.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -11,5 +12,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserDao {
 
-    void addUser();
+    void addUser(User user);
 }

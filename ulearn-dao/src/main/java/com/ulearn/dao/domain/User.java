@@ -1,5 +1,6 @@
 package com.ulearn.dao.domain;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
  */
 
 @Data
+@Schema(description = "用户注册")
 public class User {
 
     private Long id;
@@ -21,5 +23,7 @@ public class User {
 
     private String email;
 
-    private Date create_time;
+    private Date createTime;
+
+    private String key;
 }
