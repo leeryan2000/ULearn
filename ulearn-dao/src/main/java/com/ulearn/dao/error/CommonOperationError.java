@@ -6,6 +6,7 @@ package com.ulearn.dao.error;
  * @Date: 2022/9/1 17:23
  */
 public enum CommonOperationError implements CommonError{
+    USER_DOESNT_EXIST("10001", "USER_DOESNT_EXIST")
     ;
 
     private final String errCode;

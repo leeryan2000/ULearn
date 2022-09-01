@@ -14,20 +14,20 @@ import java.util.Map;
  */
 
 @Data
-public class JsonResponse<T> {
+public class JsonResponse {
 
     private String code;
 
     private String msg;
 
-    private T data;
+    private HashMap data;
 
     public JsonResponse(String code, String msg) {
         this.code = code;
         this.msg = msg;
     }
 
-    public JsonResponse(T data) {
+    public JsonResponse(HashMap data) {
         this.code = "0";
         this.msg = "success";
         this.data = data;
@@ -38,19 +38,19 @@ public class JsonResponse<T> {
         this.msg = "success";
     }
 
-    public static JsonResponse<String> ok() {
-        return new JsonResponse<>();
+    public static JsonResponse ok() {
+        return new JsonResponse();
     }
 
-    public static JsonResponse<HashMap> ok(HashMap data) {
-        return new JsonResponse<>(data);
+    public static JsonResponse ok(HashMap data) {
+        return new JsonResponse(data);
     }
 
-    public static JsonResponse<String> error() {
-        return new JsonResponse<>("500", "Unknown error");
+    public static JsonResponse error() {
+        return new JsonResponse("500", "Unknown error");
     }
 
-    public static JsonResponse<String> error(CommonError error) {
-        return new JsonResponse<>(error.getErrCode(), error.getErrMsg());
+    public static JsonResponse error(CommonError error) {
+        return new JsonResponse(error.getErrCode(), error.getErrMsg());
     }
 }

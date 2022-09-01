@@ -1,16 +1,19 @@
 package com.ulearn.controller;
 
+import cn.hutool.json.JSONUtil;
+import com.ulearn.controller.response.JsonResponse;
 import com.ulearn.dao.domain.User;
+import com.ulearn.dao.error.CommonOperationError;
+import com.ulearn.dao.error.CommonRuntimeException;
 import com.ulearn.dao.form.UserSignUpForm;
 import com.ulearn.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 
 /**
  * @Author: Ryan
@@ -31,7 +34,14 @@ public class UserController {
     }
 
     @PostMapping("/add-user")
-    public void addUser(@Valid @RequestBody UserSignUpForm form) {
+    @Operation(description = "添加用户")
+    public JsonResponse addUser(@Valid @RequestBody UserSignUpForm form) {
         userService.addUser(form);
+        return JsonResponse.ok();
+    }
+
+    @GetMapping("/test")
+    public void test() {
+        throw new CommonRuntimeException(CommonOperationError.USER_DOESNT_EXIST);
     }
 }
