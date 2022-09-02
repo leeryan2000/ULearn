@@ -17,4 +17,13 @@
                #{key}
                )
     </insert>
+
+    <select id="getUserByUsername" parameterType="java.lang.String" resultType="com.ulearn.dao.domain.User">
+        SELECT
+               `username`
+        from
+             u_user
+        where
+              `username` = #{username}
+    </select>
 </mapper>

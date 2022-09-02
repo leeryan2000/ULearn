@@ -22,7 +22,7 @@ import java.util.Map;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-    
+
     @ExceptionHandler(value = {CommonRuntimeException.class})
     public JsonResponse commonRuntimeException(CommonRuntimeException ex) {
         return JsonResponse.error(ex.getCommonError());

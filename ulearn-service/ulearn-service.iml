@@ -119,6 +119,7 @@
     <orderEntry type="library" name="Maven: cn.hutool:hutool-all:5.8.5" level="project" />
     <orderEntry type="library" name="Maven: cn.dev33:sa-token-spring-boot-starter:1.30.0" level="project" />
     <orderEntry type="library" name="Maven: cn.dev33:sa-token-servlet:1.30.0" level="project" />
+    <orderEntry type="library" name="Maven: cn.dev33:sa-token-dao-redis:1.30.0" level="project" />
     <orderEntry type="library" name="Maven: cn.dev33:sa-token-core:1.30.0" level="project" />
     <orderEntry type="library" name="Maven: org.springdoc:springdoc-openapi-ui:1.6.10" level="project" />
     <orderEntry type="library" name="Maven: org.springdoc:springdoc-openapi-webmvc-core:1.6.10" level="project" />
