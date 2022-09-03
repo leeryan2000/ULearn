@@ -1,6 +1,8 @@
 package com.ulearn.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
 import com.ulearn.dao.UserDao;
+import com.ulearn.dao.constant.UserConstant;
 import com.ulearn.dao.domain.User;
 import com.ulearn.dao.error.CommonOperationError;
 import com.ulearn.dao.error.CommonRuntimeException;
@@ -11,6 +13,7 @@ import com.ulearn.service.util.CryptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -34,11 +37,11 @@ public class UserServiceImpl implements UserService {
 
         user = new User();
         user.setUsername(form.getUsername());
-        user.setEmail(form.getUsername());
+        user.setEmail(form.getUsername() + UserConstant.EMAIL_SUFFIX);
         user.setCreateTime(new Date());
 
-        // 获取用户key
-        String key = String.valueOf(new Date().getTime() % 100000000);
+        // 获取用户key(16 digits)
+        String key = RandomUtil.randomString(16);
         user.setKey(key);
 
         // 加密密码

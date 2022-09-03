@@ -50,4 +50,13 @@ public class UserController {
         StpUtil.login(userId);
         return JsonResponse.ok();
     }
+
+    @GetMapping("/logout")
+    @Operation(description = "用户登出")
+    @SaCheckLogin
+    public JsonResponse logout() {
+        StpUtil.logout();
+        return JsonResponse.ok();
+    }
+
 }
