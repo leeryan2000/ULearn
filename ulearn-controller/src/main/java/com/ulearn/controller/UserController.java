@@ -2,12 +2,7 @@ package com.ulearn.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.json.JSONUtil;
 import com.ulearn.controller.response.JsonResponse;
-import com.ulearn.dao.domain.User;
-import com.ulearn.dao.error.CommonOperationError;
-import com.ulearn.dao.error.CommonRuntimeException;
-import com.ulearn.dao.error.CommonSystemError;
 import com.ulearn.dao.form.UserLoginForm;
 import com.ulearn.dao.form.UserSignUpForm;
 import com.ulearn.service.UserService;
@@ -20,7 +15,7 @@ import javax.validation.Valid;
 
 /**
  * @Author: Ryan
- * @Description: U
+ * @Description: 用户controller层
  * @Date: 2022/8/30 22:24
  */
 
@@ -58,5 +53,4 @@ public class UserController {
         StpUtil.logout();
         return JsonResponse.ok();
     }
-
 }

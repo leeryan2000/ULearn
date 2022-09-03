@@ -9,8 +9,48 @@ CREATE TABLE `u_user` (
 	`password` VARCHAR(255) NOT NULL COMMENT '用户密码',
 	`email` VARCHAR(100) NOT NULL COMMENT '用户邮箱',
 	`create_time` DATETIME NOT NULL COMMENT '用户创建时间',
+	`key` VARCHAR(100) NOT NULL COMMENT '加密秘钥',
 	PRIMARY KEY (`id`)
 ) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户表';
+
+DROP TABLE IF EXISTS `u_question`;
+CREATE TABLE `u_question` (
+	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '问题ID',
+	`userId` BIGINT NOT NULL COMMENT '创建者ID',
+	`title` VARCHAR(100) NOT NULL COMMENT '标题',
+	`content` VARCHAR(100) NOT NULL COMMENT '内容',
+	`create_time` DATE NOT NULL COMMENT '创建时间',
+	`view` INT DEFAULT 0 COMMENT '浏览次数',
+	PRIMARY KEY (`id`)
+) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='问题表';
+
+DROP TABLE IF EXISTS `u_answer`; 
+CREATE TABLE `u_answer` (
+	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '回答ID',
+	`content` BIGINT NOT NULL COMMENT '内容'
+	PRIMARY KEY (`id`)
+) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='问题表';
+
+
+DROP TABLE IF EXISTS `u_tag`;
+CREATE TABLE `u_tag` (
+	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '标签ID',
+	`name` VARCHAR(50) NOT NULL COMMENT '标签名'
+	PRIMARY KEY (`id`)
+) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='标签表';
+
+DROP TABLE IF EXISTS `u_question_tag`
+CREATE TABLE `u_question_tag` (
+	`q_id` BIGINT NOT NULL COMMENT '问题ID',
+	`t_id` BIGINT NOT NULL COMMENT '标签ID',
+	CONSTRAINT unique_q_t UNIQUE(`q_id`, `t_ud`) COMMENT '确保同一个问题没有重复使用同一个标签'
+) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='问题及标签联表';
+
+DROP TABLE IF EXISTS `u_vote_question`;
+
+DROP TABLE IF EXISTS `u_vote_answer`;
+
+
 
 
 SHOW CHARACTER SET LIKE 'utf%';
