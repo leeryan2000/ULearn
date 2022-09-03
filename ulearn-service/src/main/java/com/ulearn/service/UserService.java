@@ -1,8 +1,10 @@
 package com.ulearn.service;
 
 import com.ulearn.dao.domain.User;
+import com.ulearn.dao.form.UserLoginForm;
 import com.ulearn.dao.form.UserSignUpForm;
 import org.springframework.stereotype.Service;
+import sun.awt.image.IntegerComponentRaster;
 
 /**
  * @Author: Ryan
@@ -13,4 +15,6 @@ import org.springframework.stereotype.Service;
 public interface UserService {
 
     void addUser(UserSignUpForm form);
+
+    Long login(UserLoginForm form);
 }

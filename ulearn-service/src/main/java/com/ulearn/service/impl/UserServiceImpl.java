@@ -4,6 +4,7 @@ import com.ulearn.dao.UserDao;
 import com.ulearn.dao.domain.User;
 import com.ulearn.dao.error.CommonOperationError;
 import com.ulearn.dao.error.CommonRuntimeException;
+import com.ulearn.dao.form.UserLoginForm;
 import com.ulearn.dao.form.UserSignUpForm;
 import com.ulearn.service.UserService;
 import com.ulearn.service.util.CryptUtil;
@@ -48,6 +49,27 @@ public class UserServiceImpl implements UserService {
         if (rows != 1) {
             throw new CommonRuntimeException(CommonOperationError.USER_SIGNUP_FAILED);
         }
+    }
+
+    /**
+     * 用户登入, 成功登入返回用户ID
+     * @param form 用户登入模板
+     * @return 用户ID
+     */
+    @Override
+    public Long login(UserLoginForm form) {
+        User user = userDao.getUserByUsername(form.getUsername());
+        // Check if the user exists
+        if (user == null) {
+            throw new CommonRuntimeException(CommonOperationError.USER_DOESNT_EXIST);
+        }
+
+        String password = CryptUtil.decrypt(user.getKey(), user.getPassword());
+        if (!form.getPassword().equals(password)) {
+            throw new CommonRuntimeException(CommonOperationError.USER_WRONG_PASSWORD);
+        }
+
+        return user.getId();
     }
 
     @Autowired

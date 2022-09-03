@@ -1,11 +1,14 @@
 package com.ulearn.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.json.JSONUtil;
 import com.ulearn.controller.response.JsonResponse;
 import com.ulearn.dao.domain.User;
 import com.ulearn.dao.error.CommonOperationError;
 import com.ulearn.dao.error.CommonRuntimeException;
 import com.ulearn.dao.error.CommonSystemError;
+import com.ulearn.dao.form.UserLoginForm;
 import com.ulearn.dao.form.UserSignUpForm;
 import com.ulearn.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,6 +40,14 @@ public class UserController {
     @Operation(description = "添加用户")
     public JsonResponse addUser(@Valid @RequestBody UserSignUpForm form) {
         userService.addUser(form);
+        return JsonResponse.ok();
+    }
+
+    @PostMapping("/login")
+    @Operation(description = "用户登入")
+    public JsonResponse addUser(@Valid @RequestBody UserLoginForm form) {
+        Long userId = userService.login(form);
+        StpUtil.login(userId);
         return JsonResponse.ok();
     }
 }

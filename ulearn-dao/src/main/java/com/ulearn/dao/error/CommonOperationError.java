@@ -8,7 +8,8 @@ package com.ulearn.dao.error;
 public enum CommonOperationError implements CommonError{
     USER_DOESNT_EXIST("10001", "USER_DOESNT_EXIST"),
     USER_SIGNUP_FAILED("10002", "USER_SIGNUP_FAILED"),
-    USER_EXIST("10003", "USER_ALREADY_EXIST")
+    USER_EXIST("10003", "USER_ALREADY_EXIST"),
+    USER_WRONG_PASSWORD("10004", "USER_WRONG_PASSWORD")
     ;
 
     private final String errCode;
