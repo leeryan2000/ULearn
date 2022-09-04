@@ -10,9 +10,7 @@ import com.ulearn.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -23,12 +21,13 @@ import javax.validation.Valid;
  */
 
 @RestController
+@RequestMapping("/post")
 @Tag(name = "PostController", description = "发表控制器")
 public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("add-question")
+    @PostMapping("/add-question")
     @Operation(description = "添加问题")
     @SaCheckLogin
     public JsonResponse addQuestion(@Valid @RequestBody QuestionForm form) {
@@ -37,7 +36,7 @@ public class PostController {
         return JsonResponse.ok();
     }
 
-    @PostMapping("add-answer")
+    @PostMapping("/add-answer")
     @Operation(description = "添加回答")
     @SaCheckLogin
     public JsonResponse addAnswer(@Valid @RequestBody AnswerForm form) {
@@ -45,6 +44,11 @@ public class PostController {
         postService.addAnswer(form, userId);
         return JsonResponse.ok();
     }
+
+    @GetMapping("/voteQuestion")
+    @Operation(description = "问题投票")
+    
+
 
     @Autowired
     public PostController(PostService postService) {

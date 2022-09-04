@@ -1,11 +1,9 @@
 package com.ulearn.controller.response;
 
-import cn.hutool.core.lang.hash.Hash;
 import com.ulearn.dao.error.CommonError;
 import lombok.Data;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @Author: Ryan

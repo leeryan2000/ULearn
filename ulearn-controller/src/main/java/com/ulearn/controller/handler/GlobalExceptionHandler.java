@@ -23,6 +23,11 @@ import java.util.Map;
 @Slf4j
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(value = {Exception.class})
+    public JsonResponse exception() {
+        return JsonResponse.error();
+    }
+
     @ExceptionHandler(value = {CommonRuntimeException.class})
     public JsonResponse commonRuntimeException(CommonRuntimeException ex) {
         return JsonResponse.error(ex.getCommonError());

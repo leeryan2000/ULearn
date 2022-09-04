@@ -38,8 +38,11 @@ DROP TABLE IF EXISTS `u_answer`;
 CREATE TABLE `u_answer` (
 	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '回答ID',
 	`u_id` BIGINT NOT NULL COMMENT '用户ID',
-	`content` BIGINT NOT NULL COMMENT '内容',
+	`q_id` BIGINT NOT NULL COMMENT '问题ID',
+	`content` VARCHAR(100) NOT NULL COMMENT '内容',
 	`create_time` DATE NOT NULL COMMENT '创建时间',
+	`accepted` BOOL NOT NULL DEFAULT FALSE COMMENT '答案是否被问答这采纳',
+	`accepted_time` DATE DEFAULT NULL COMMENT '答案被采纳的时间',
 	PRIMARY KEY (`id`)
 ) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='问题表';
 
@@ -60,7 +63,6 @@ INSERT INTO u_tag(`name`) VALUES('IBM');
 INSERT INTO u_tag(`name`) VALUES('IC');
 INSERT INTO u_tag(`name`) VALUES('AEE');
 
-
 -- ----------------------------
 -- Table structure for u_question_tag
 -- ----------------------------
@@ -78,6 +80,7 @@ DROP TABLE IF EXISTS `u_vote_question`;
 CREATE TABLE `u_vote_question` (
 	`u_id` BIGINT NOT NULL COMMENT '用户ID',
 	`q_id` BIGINT NOT NULL COMMENT '问题ID',
+	`status` BOOL NOT NULL COMMENT '是否为有用, true代表有用, false反之',
 	`create_time` DATE NOT NULL COMMENT '创建时间',
 	CONSTRAINT unique_u_q UNIQUE (`u_id`, `q_id`)
 ) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户投票及问题联表';
@@ -90,6 +93,7 @@ DROP TABLE IF EXISTS `u_vote_answer`;
 CREATE TABLE `u_vote_answer` (
 	`u_id` BIGINT NOT NULL COMMENT '用户ID',
 	`a_id` BIGINT NOT NULL COMMENT '回答ID',
+	`status` BOOL NOT NULL COMMENT '是否为有用, true代表有用, false反之',
 	`create_time` DATE NOT NULL COMMENT '创建时间',
 	CONSTRAINT unique_u_a UNIQUE (`u_id`, `a_id`)
 ) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户投票及回答联表';
