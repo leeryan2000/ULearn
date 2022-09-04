@@ -2,7 +2,6 @@ CREATE DATABASE IF NOT EXISTS ulearn;
 
 USE ulearn;
 
-
 -- ----------------------------
 -- Table structure for u_user
 -- ----------------------------
@@ -38,7 +37,8 @@ CREATE TABLE `u_question` (
 DROP TABLE IF EXISTS `u_answer`; 
 CREATE TABLE `u_answer` (
 	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '回答ID',
-	`content` BIGINT NOT NULL COMMENT '内容'
+	`content` BIGINT NOT NULL COMMENT '内容',
+	`create_time` DATE NOT NULL COMMENT '创建时间',
 	PRIMARY KEY (`id`)
 ) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='问题表';
 
@@ -49,14 +49,21 @@ CREATE TABLE `u_answer` (
 DROP TABLE IF EXISTS `u_tag`;
 CREATE TABLE `u_tag` (
 	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '标签ID',
-	`name` VARCHAR(50) NOT NULL COMMENT '标签名'
+	`name` VARCHAR(50) NOT NULL COMMENT '标签名',
 	PRIMARY KEY (`id`)
 ) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='标签表';
+
+INSERT INTO u_tag(`name`) VALUES('CS');
+INSERT INTO u_tag(`name`) VALUES('FAM');
+INSERT INTO u_tag(`name`) VALUES('IBM');
+INSERT INTO u_tag(`name`) VALUES('IC');
+INSERT INTO u_tag(`name`) VALUES('AEE');
+
 
 -- ----------------------------
 -- Table structure for u_question_tag
 -- ----------------------------
-DROP TABLE IF EXISTS `u_question_tag`
+DROP TABLE IF EXISTS `u_question_tag`;
 CREATE TABLE `u_question_tag` (
 	`q_id` BIGINT NOT NULL COMMENT '问题ID',
 	`t_id` BIGINT NOT NULL COMMENT '标签ID',
@@ -69,16 +76,21 @@ CREATE TABLE `u_question_tag` (
 DROP TABLE IF EXISTS `u_vote_question`;
 CREATE TABLE `u_vote_question` (
 	`u_id` BIGINT NOT NULL COMMENT '用户ID',
-	`q_id` BIGINT NOT NULL COMMENT '问题ID'
+	`q_id` BIGINT NOT NULL COMMENT '问题ID',
+	`create_time` DATE NOT NULL COMMENT '创建时间',
 	CONSTRAINT unique_u_q UNIQUE (`u_id`, `q_id`)
-)
+) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户投票及问题联表';
+
 
 -- ----------------------------
 -- Table structure for u_vote_answer
 -- ----------------------------
 DROP TABLE IF EXISTS `u_vote_answer`;
+CREATE TABLE `u_vote_answer` (
+	`u_id` BIGINT NOT NULL COMMENT '用户ID',
+	`a_id` BIGINT NOT NULL COMMENT '回答ID',
+	`create_time` DATE NOT NULL COMMENT '创建时间',
+	CONSTRAINT unique_u_a UNIQUE (`u_id`, `a_id`)
+) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户投票及回答联表';
 
 
-
-
-SHOW CHARACTER SET LIKE 'utf%';

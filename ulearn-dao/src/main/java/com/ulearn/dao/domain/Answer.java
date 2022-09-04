@@ -8,22 +8,18 @@ import java.util.Date;
 /**
  * @Author: Ryan
  * @Description:
- * @Date: 2022/9/3 21:41
+ * @Date: 2022/9/4 16:19
  */
 
 @Data
-@Schema(description = "问题")
-public class Question {
+@Schema(description = "回答")
+public class Answer {
 
     private Long id;
 
     private Long userId;
 
-    private String title;
-
     private String content;
 
     private Date createTime;
-
-    private Integer view;
 }
