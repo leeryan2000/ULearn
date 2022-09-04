@@ -37,6 +37,7 @@ CREATE TABLE `u_question` (
 DROP TABLE IF EXISTS `u_answer`; 
 CREATE TABLE `u_answer` (
 	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '回答ID',
+	`u_id` BIGINT NOT NULL COMMENT '用户ID',
 	`content` BIGINT NOT NULL COMMENT '内容',
 	`create_time` DATE NOT NULL COMMENT '创建时间',
 	PRIMARY KEY (`id`)

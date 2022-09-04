@@ -6,10 +6,14 @@ package com.ulearn.dao.error;
  * @Date: 2022/9/1 17:23
  */
 public enum CommonOperationError implements CommonError{
+    // User account operation error
     USER_DOESNT_EXIST("10001", "USER_DOESNT_EXIST"),
     USER_SIGNUP_FAILED("10002", "USER_SIGNUP_FAILED"),
     USER_EXIST("10003", "USER_ALREADY_EXIST"),
-    USER_WRONG_PASSWORD("10004", "USER_WRONG_PASSWORD")
+    USER_WRONG_PASSWORD("10004", "USER_WRONG_PASSWORD"),
+
+    // User post operation error
+    POST_FAILED("20001", "POST_FAILED"),
     ;
 
     private final String errCode;

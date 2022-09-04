@@ -19,6 +19,8 @@ public class Answer {
 
     private Long userId;
 
+    private Long questionId;
+
     private String content;
 
     private Date createTime;

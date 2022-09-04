@@ -1,5 +1,8 @@
 package com.ulearn.service;
 
+import com.ulearn.dao.form.AnswerForm;
+import com.ulearn.dao.form.QuestionForm;
+
 /**
  * @Author: Ryan
  * @Description:
@@ -8,5 +11,7 @@ package com.ulearn.service;
 
 public interface PostService {
 
-    void addQuestion();
+    void addQuestion(QuestionForm form, Long userId);
+
+    void addAnswer(AnswerForm form, Long userId);
 }
