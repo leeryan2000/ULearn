@@ -6,6 +6,8 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.ulearn.controller.response.JsonResponse;
 import com.ulearn.dao.form.AnswerForm;
 import com.ulearn.dao.form.QuestionForm;
+import com.ulearn.dao.form.VoteAnswerForm;
+import com.ulearn.dao.form.VoteQuestionForm;
 import com.ulearn.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,7 +34,7 @@ public class PostController {
     @SaCheckLogin
     public JsonResponse addQuestion(@Valid @RequestBody QuestionForm form) {
         Long userId = StpUtil.getLoginIdAsLong();
-        postService.addQuestion(form, userId);
+        postService.addQuestion(userId, form);
         return JsonResponse.ok();
     }
 
@@ -41,13 +43,25 @@ public class PostController {
     @SaCheckLogin
     public JsonResponse addAnswer(@Valid @RequestBody AnswerForm form) {
         Long userId = StpUtil.getLoginIdAsLong();
-        postService.addAnswer(form, userId);
+        postService.addAnswer(userId, form);
         return JsonResponse.ok();
     }
 
-    @GetMapping("/voteQuestion")
+    @PostMapping("/vote-question")
     @Operation(description = "问题投票")
-    
+    @SaCheckLogin
+    public JsonResponse voteQuestion(@Valid @RequestBody VoteQuestionForm form) {
+        Long userId = StpUtil.getLoginIdAsLong();
+        postService.voteQuestion(userId, form);
+        return JsonResponse.ok();
+    }
+
+    @PostMapping("/vote-answer")
+    @Operation(description = "回答投票")
+    @SaCheckLogin
+    public JsonResponse voteAnswer(@Valid @RequestBody VoteAnswerForm form) {
+        return JsonResponse.ok();
+    }
 
 
     @Autowired

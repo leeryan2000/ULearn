@@ -1,33 +1,72 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ulearn.dao.PostDao">
+    <select id="getQuestionById" resultType="com.ulearn.dao.domain.Question">
+        SELECT * FROM u_question WHERE `id` = #{questionId}
+    </select>
+
+    <select id="getAnswerById" resultType="com.ulearn.dao.domain.Answer">
+        SELECT * FROM u_answer WHERE `id` = #{answerId}
+    </select>
+
     <insert id="addQuestion" parameterType="com.ulearn.dao.domain.Question">
-        INSERT INTO u_question(
-                               `u_id`,
+        INSERT INTO u_question(`u_id`,
                                `title`,
                                `content`,
-                               `create_time`
-                           )
-        VALUES(
-               #{userId},
-               #{title},
-               #{content},
-               #{createTime}
-               )
+                               `create_time`)
+        VALUES (#{userId},
+                #{title},
+                #{content},
+                #{createTime})
     </insert>
 
     <insert id="addAnswer" parameterType="com.ulearn.dao.domain.Answer">
-        INSERT INTO u_answer(
-            `u_id`,
-            `q_id`,
-            `content`,
-            `create_time`
-        )
-        VALUES(
-                  #{userId},
-                  #{questionId},
-                  #{content},
-                  #{createTime}
-              )
+        INSERT INTO u_answer(`u_id`,
+                             `q_id`,
+                             `content`,
+                             `create_time`)
+        VALUES (#{userId},
+                #{questionId},
+                #{content},
+                #{createTime})
     </insert>
+
+    <insert id="voteQuestion" parameterType="com.ulearn.dao.domain.VoteQuestion">
+        INSERT INTO u_vote_question(`u_id`,
+                                    `q_id`,
+                                    `status`,
+                                    `create_time`)
+        VALUES (#{userId},
+                #{questionId},
+                #{status},
+                #{createTime})
+    </insert>
+
+    <insert id="voteAnswer" parameterType="com.ulearn.dao.domain.VoteAnswer">
+        INSERT INTO u_vote_answer(`u_id`,
+                                    `a_id`,
+                                    `status`,
+                                    `create_time`)
+        VALUES (#{userId},
+                #{answerId},
+                #{status},
+                #{createTime})
+    </insert>
+
+    <select id="getVoteQuestionByUserIdAndQuestionId" resultType="com.ulearn.dao.domain.VoteQuestion">
+        SELECT * FROM u_vote_question WHERE u_id = #{userId} AND u_id = #{questionId}
+    </select>
+
+    <select id="getVoteAnswerByUserIdAndAnswerId" resultType="com.ulearn.dao.domain.VoteAnswer">
+        SELECT * FROM u_vote_answer WHERE u_id = #{userId} AND u_id = #{answerId}
+    </select>
+
+    <delete id="deleteVoteQuestionByUserIdAndQuestionId">
+        DELETE FROM u_vote_question WHERE u_id = #{userId} AND q_id = #{questionId}
+    </delete>
+
+    <delete id="deleteVoteAnswerByUserIdAndAnswerId">
+        DELETE FROM u_vote_answer WHERE u_id = #{userId} AND a_id = #{answerId}
+    </delete>
+
 </mapper>

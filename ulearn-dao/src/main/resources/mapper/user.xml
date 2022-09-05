@@ -18,7 +18,7 @@
                )
     </insert>
 
-    <select id="getUserByUsername" parameterType="java.lang.String" resultType="com.ulearn.dao.domain.User">
+    <select id="getUserByUsername" resultType="com.ulearn.dao.domain.User">
         SELECT
                *
         from
@@ -27,7 +27,7 @@
               `username` = #{username}
     </select>
 
-    <select id="getUserByUserId" parameterType="java.lang.Long" resultType="com.ulearn.dao.domain.User">
+    <select id="getUserByUserId" resultType="com.ulearn.dao.domain.User">
         SELECT
             *
         from

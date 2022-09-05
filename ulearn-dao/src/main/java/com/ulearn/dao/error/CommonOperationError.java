@@ -14,6 +14,9 @@ public enum CommonOperationError implements CommonError{
 
     // User post operation error
     POST_FAILED("20001", "POST_FAILED"),
+    QUESTION_DOESNT_EXIST("20002", "QUESTION_DOESNT_EXIST"),
+    VOTE_FAILED("20003", "VOTE_FAILED"),
+    VOTE_DELETE_FAILED("20004", "VOTE_DELETE_FAILED"),
     ;
 
     private final String errCode;

@@ -2,6 +2,7 @@ package com.ulearn.dao;
 
 import com.ulearn.dao.domain.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @Author: Ryan
@@ -14,7 +15,7 @@ public interface UserDao {
 
     Integer addUser(User user);
 
-    User getUserByUsername(String username);
+    User getUserByUsername(@Param("username") String username);
 
-    User getUserByUserId(Long userId);
+    User getUserById(@Param("userId") Long userId);
 }

@@ -2,6 +2,8 @@ package com.ulearn.service;
 
 import com.ulearn.dao.form.AnswerForm;
 import com.ulearn.dao.form.QuestionForm;
+import com.ulearn.dao.form.VoteAnswerForm;
+import com.ulearn.dao.form.VoteQuestionForm;
 
 /**
  * @Author: Ryan
@@ -11,7 +13,11 @@ import com.ulearn.dao.form.QuestionForm;
 
 public interface PostService {
 
-    void addQuestion(QuestionForm form, Long userId);
+    void addQuestion(Long userId, QuestionForm form);
 
-    void addAnswer(AnswerForm form, Long userId);
+    void addAnswer(Long userId, AnswerForm form);
+
+    void voteQuestion(Long userId, VoteQuestionForm form);
+
+    void voteAnswer(Long userId, VoteAnswerForm form);
 }
