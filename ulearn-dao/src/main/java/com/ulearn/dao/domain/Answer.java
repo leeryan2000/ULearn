@@ -24,4 +24,8 @@ public class Answer {
     private String content;
 
     private Date createTime;
+
+    private Boolean accepted;
+
+    private Date acceptedTime;
 }

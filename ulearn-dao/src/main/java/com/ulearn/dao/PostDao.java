@@ -30,7 +30,7 @@ public interface PostDao {
 
     VoteQuestion getVoteQuestionByUserIdAndQuestionId(@Param("userId") Long userId, @Param("questionId") Long questionId);
 
-    VoteAnswer getVoteAnswerByUserIdAndAnswerId(@Param("userId") Long userId, @Param("questionId") Long questionId);
+    VoteAnswer getVoteAnswerByUserIdAndAnswerId(@Param("userId") Long userId, @Param("answerId") Long answerId);
 
     Integer deleteVoteQuestionByUserIdAndQuestionId(@Param("userId") Long userId, @Param("questionId") Long questionId);
 

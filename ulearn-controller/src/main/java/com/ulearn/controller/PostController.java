@@ -60,6 +60,8 @@ public class PostController {
     @Operation(description = "回答投票")
     @SaCheckLogin
     public JsonResponse voteAnswer(@Valid @RequestBody VoteAnswerForm form) {
+        Long userId = StpUtil.getLoginIdAsLong();
+        postService.voteAnswer(userId, form);
         return JsonResponse.ok();
     }
 

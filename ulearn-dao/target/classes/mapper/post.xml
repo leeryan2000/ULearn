@@ -10,7 +10,7 @@
     </select>
 
     <insert id="addQuestion" parameterType="com.ulearn.dao.domain.Question">
-        INSERT INTO u_question(`u_id`,
+        INSERT INTO u_question(`userId`,
                                `title`,
                                `content`,
                                `create_time`)
@@ -21,10 +21,10 @@
     </insert>
 
     <insert id="addAnswer" parameterType="com.ulearn.dao.domain.Answer">
-        INSERT INTO u_answer(`u_id`,
-                             `q_id`,
+        INSERT INTO u_answer(`userId`,
+                             `questionId`,
                              `content`,
-                             `create_time`)
+                             `createTime`)
         VALUES (#{userId},
                 #{questionId},
                 #{content},
@@ -32,10 +32,10 @@
     </insert>
 
     <insert id="voteQuestion" parameterType="com.ulearn.dao.domain.VoteQuestion">
-        INSERT INTO u_vote_question(`u_id`,
-                                    `q_id`,
+        INSERT INTO u_vote_question(`userId`,
+                                    `questionId`,
                                     `status`,
-                                    `create_time`)
+                                    `createTime`)
         VALUES (#{userId},
                 #{questionId},
                 #{status},
@@ -43,10 +43,10 @@
     </insert>
 
     <insert id="voteAnswer" parameterType="com.ulearn.dao.domain.VoteAnswer">
-        INSERT INTO u_vote_answer(`u_id`,
-                                    `a_id`,
+        INSERT INTO u_vote_answer(`userId`,
+                                    `answerId`,
                                     `status`,
-                                    `create_time`)
+                                    `createTime`)
         VALUES (#{userId},
                 #{answerId},
                 #{status},
@@ -54,19 +54,19 @@
     </insert>
 
     <select id="getVoteQuestionByUserIdAndQuestionId" resultType="com.ulearn.dao.domain.VoteQuestion">
-        SELECT * FROM u_vote_question WHERE u_id = #{userId} AND u_id = #{questionId}
+        SELECT * FROM u_vote_question WHERE userId = #{userId} AND questionId = #{questionId}
     </select>
 
     <select id="getVoteAnswerByUserIdAndAnswerId" resultType="com.ulearn.dao.domain.VoteAnswer">
-        SELECT * FROM u_vote_answer WHERE u_id = #{userId} AND u_id = #{answerId}
+        SELECT * FROM u_vote_answer WHERE userId = #{userId} AND answerId = #{answerId}
     </select>
 
     <delete id="deleteVoteQuestionByUserIdAndQuestionId">
-        DELETE FROM u_vote_question WHERE u_id = #{userId} AND q_id = #{questionId}
+        DELETE FROM u_vote_question WHERE userId = #{userId} AND questionId = #{questionId}
     </delete>
 
     <delete id="deleteVoteAnswerByUserIdAndAnswerId">
-        DELETE FROM u_vote_answer WHERE u_id = #{userId} AND a_id = #{answerId}
+        DELETE FROM u_vote_answer WHERE userId = #{userId} AND answerId = #{answerId}
     </delete>
 
 </mapper>
