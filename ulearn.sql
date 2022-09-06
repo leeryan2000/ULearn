@@ -16,6 +16,7 @@ CREATE TABLE `u_user` (
 	PRIMARY KEY (`id`)
 ) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户表';
 
+
 -- ----------------------------
 -- Table structure for u_question
 -- ----------------------------
@@ -25,7 +26,7 @@ CREATE TABLE `u_question` (
 	`userId` BIGINT NOT NULL COMMENT '创建者ID',
 	`title` VARCHAR(100) NOT NULL COMMENT '标题',
 	`content` VARCHAR(100) NOT NULL COMMENT '内容',
-	`create_time` DATE NOT NULL COMMENT '创建时间',
+	`create_time` DATETIME NOT NULL COMMENT '创建时间',
 	`view` INT DEFAULT 0 COMMENT '浏览次数',
 	PRIMARY KEY (`id`)
 ) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='问题表';
@@ -40,15 +41,14 @@ CREATE TABLE `u_answer` (
 	`userId` BIGINT NOT NULL COMMENT '用户ID',
 	`questionId` BIGINT NOT NULL COMMENT '问题ID',
 	`content` VARCHAR(100) NOT NULL COMMENT '内容',
-	`createTime` DATE NOT NULL COMMENT '创建时间',
+	`createTime` DATETIME NOT NULL COMMENT '创建时间',
 	`accepted` BOOL NOT NULL DEFAULT FALSE COMMENT '答案是否被问答这采纳',
-	`acceptedTime` DATE DEFAULT NULL COMMENT '答案被采纳的时间',
+	`acceptedTime` DATETIME DEFAULT NULL COMMENT '答案被采纳的时间',
 	PRIMARY KEY (`id`),
 	FOREIGN KEY (`questionId`)
 	REFERENCES u_question(`id`)
 	ON DELETE CASCADE
 ) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='问题表';
-
 
 
 -- ----------------------------
@@ -67,6 +67,7 @@ INSERT INTO u_tag(`name`) VALUES('IBM');
 INSERT INTO u_tag(`name`) VALUES('IC');
 INSERT INTO u_tag(`name`) VALUES('AEE');
 
+
 -- ----------------------------
 -- Table structure for u_question_tag
 -- ----------------------------
@@ -80,6 +81,7 @@ CREATE TABLE `u_question_tag` (
 	ON DELETE CASCADE
 ) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='问题及标签联表';
 
+
 -- ----------------------------
 -- Table structure for u_vote_question
 -- ----------------------------
@@ -88,7 +90,7 @@ CREATE TABLE `u_vote_question` (
 	`userId` BIGINT NOT NULL COMMENT '用户ID',
 	`questionId` BIGINT NOT NULL COMMENT '问题ID',
 	`status` BOOL NOT NULL COMMENT '是否为有用, true代表有用, false反之',
-	`createTime` DATE NOT NULL COMMENT '创建时间',
+	`createTime` DATETIME NOT NULL COMMENT '创建时间',
 	CONSTRAINT unique_u_q UNIQUE (`userId`, `questionId`),
 	FOREIGN KEY(`questionId`)
 	REFERENCES u_question(`id`)
@@ -104,20 +106,56 @@ CREATE TABLE `u_vote_answer` (
 	`userId` BIGINT NOT NULL COMMENT '用户ID',
 	`answerId` BIGINT NOT NULL COMMENT '回答ID',
 	`status` BOOL NOT NULL COMMENT '是否为有用, true代表有用, false反之',
-	`createTime` DATE NOT NULL COMMENT '创建时间',
+	`createTime` DATETIME NOT NULL COMMENT '创建时间',
 	CONSTRAINT unique_u_a UNIQUE (`userId`, `answerId`),
 	FOREIGN KEY(`answerId`)
 	REFERENCES u_answer(`id`)
 	ON DELETE CASCADE
 ) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户投票及回答联表';
 
+
 -- ----------------------------
 -- Table structure for u_follow_question
 -- ----------------------------
+DROP TABLE IF EXISTS `u_follow_question`;
+CREATE TABLE `u_follow_question` (
+	`userId` BIGINT NOT NULL COMMENT '用户ID',
+	`questionId` BIGINT NOT NULL COMMENT '问题ID',
+	`createTime` DATETIME NOT NULL COMMENT '关注时间',
+	CONSTRAINT unique_u_q UNIQUE (`userId`, `questionId`),
+	FOREIGN KEY (`questionId`)
+	REFERENCES u_question(`id`)
+	ON DELETE CASCADE
+) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户关注问题联表';
 
 -- ----------------------------
 -- Table structure for u_follow_answer
 -- ----------------------------
+DROP TABLE IF EXISTS `u_follow_answer`;
+CREATE TABLE `u_follow_answer` (
+	`userId` BIGINT NOT NULL COMMENT '用户ID',
+	`answerId` BIGINT NOT NULL COMMENT '回答ID',
+	`createTime` DATETIME NOT NULL COMMENT '关注时间',
+	CONSTRAINT unique_u_a UNIQUE (`userId`, `answerId`),
+	FOREIGN KEY (`answerId`)
+	REFERENCES u_answer(`id`)
+	ON DELETE CASCADE
+) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户关注问题联表';
 
 
-DELETE FROM u_vote_answer WHERE u_id = 1 AND a_id = 2;
+-- ----------------------------
+-- Table structure for u_bookmark
+-- ----------------------------
+DROP TABLE IF EXISTS `u_bookmark`;
+CREATE TABLE `u_bookmark` (
+	`userId` BIGINT NOT NULL COMMENT '用户ID',
+	`questionId` BIGINT NOT NULL COMMENT '问题ID',
+	`createTime` DATETIME NOT NULL COMMENT '收藏时间',
+	CONSTRAINT unique_u_q UNIQUE (`userId`, `questionId`),
+	FOREIGN KEY (`questionId`)
+	REFERENCES u_question(`id`)
+	ON DELETE CASCADE
+) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户收藏问题联表';
+
+SHOW VARIABLES LIKE '%foreign%';
+SET FOREIGN_KEY_CHECKS = 1;

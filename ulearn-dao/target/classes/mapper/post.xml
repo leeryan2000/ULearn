@@ -69,4 +69,8 @@
         DELETE FROM u_vote_answer WHERE userId = #{userId} AND answerId = #{answerId}
     </delete>
 
+    <insert id="addBookmark" parameterType="com.ulearn.dao.domain.Bookmark">
+        INSERT INTO u_bookmark VALUES(#{userId}, #{questionId}, #{createTime})
+    </insert>
+
 </mapper>

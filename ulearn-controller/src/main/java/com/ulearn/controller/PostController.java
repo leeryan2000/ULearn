@@ -3,11 +3,10 @@ package com.ulearn.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.lang.hash.Hash;
 import com.ulearn.controller.response.JsonResponse;
-import com.ulearn.dao.form.AnswerForm;
-import com.ulearn.dao.form.QuestionForm;
-import com.ulearn.dao.form.VoteAnswerForm;
-import com.ulearn.dao.form.VoteQuestionForm;
+import com.ulearn.dao.domain.FollowQuestion;
+import com.ulearn.dao.form.*;
 import com.ulearn.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.awt.print.Book;
+import java.util.HashMap;
 
 /**
  * @Author: Ryan
@@ -65,6 +66,32 @@ public class PostController {
         return JsonResponse.ok();
     }
 
+    @PostMapping("/addBookmark")
+    @Operation(description = "添加书签")
+    @SaCheckLogin
+    public JsonResponse addBookmark(@Valid @RequestBody BookmarkForm form) {
+        Long userId = StpUtil.getLoginIdAsLong();
+        postService.addBookmark(userId, form);
+        return JsonResponse.ok();
+    }
+
+    @PostMapping("/followQuestion")
+    @Operation(description = "追踪问题")
+    @SaCheckLogin
+    public JsonResponse followQuestion(@Valid @RequestBody FollowQuestionForm form) {
+        Long userId = StpUtil.getLoginIdAsLong();
+        postService.followQuestion(userId, form);
+        return JsonResponse.ok();
+    }
+
+    @PostMapping("/followAnswer")
+    @Operation(description = "追踪问题")
+    @SaCheckLogin
+    public JsonResponse followAnswer(@Valid @RequestBody FollowAnswerForm form) {
+        Long userId = StpUtil.getLoginIdAsLong();
+        postService.followAnswer(userId, form);
+        return JsonResponse.ok();
+    }
 
     @Autowired
     public PostController(PostService postService) {
