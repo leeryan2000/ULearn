@@ -45,16 +45,22 @@
         SELECT * FROM u_follow_question WHERE `userId` = #{userId} AND `questionId` = #{questionId}
     </select>
 
+    <delete id="deleteFollowQuestionByUserIdAndQuestionId">
+        DELETE FROM u_follow_question WHERE `userId` = #{userId} AND `questionId` = #{questionId}
+    </delete>
 
     <!--Bookmark-->
     <insert id="addBookmark" parameterType="com.ulearn.dao.domain.Bookmark">
-        INSERT INTO u_bookmark VALUES(#{userId}, #{questionId}, #{createTime})
+        INSERT INTO u_bookmark VALUES(#{userId}, #{questionId}, #{groupId}, #{createTime})
     </insert>
 
     <select id="getBookmarkByUserIdAndQuestionId">
         SELECT * FROM u_bookmark WHERE `userId` = #{userId} AND `questionId` = #{questionId}
     </select>
 
+    <delete id="deleteBookmarkByUserIdAndQuestionIdAndGroupId">
+        DELETE FROM u_bookmark WHERE `groupId` = #{groupId} AND `userId` = #{userId} AND `questionId` = #{questionId}
+    </delete>
 
     <!--Answer-->
     <select id="getAnswerById" resultType="com.ulearn.dao.domain.Answer">
@@ -98,4 +104,9 @@
     <select id="getFollowAnswerByUserIdAndAnswerId">
         SELECT * FROM u_follow_answer WHERE `userId` = #{userId} AND `answerId` = #{answerId}
     </select>
+
+    <delete id="deleteFollowAnswerByUserIdAndAnswerId">
+        DELETE FROM u_follow_answer WHERE `userId` = #{userId} AND `answerId` = #{answerId}
+    </delete>
+
 </mapper>

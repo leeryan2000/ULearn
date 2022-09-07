@@ -38,7 +38,7 @@ public interface PostDao {
 
     Bookmark getBookmarkByUserIdAndQuestionId(@Param("userId") Long userId, @Param("questionId") Long questionId);
 
-    Bookmark deleteBookmarkByUserIdAndQuestionId(@Param("userId") Long userId, @Param("questionId") Long questionId);
+    Bookmark deleteBookmarkByUserIdAndQuestionIdAndGroupId(@Param("userId") Long userId, @Param("questionId") Long questionId, @Param("groupId") Long groupId);
 
     // Answer
     Answer getAnswerById(@Param("answerId") Long answerId);

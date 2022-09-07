@@ -128,6 +128,7 @@ CREATE TABLE `u_follow_question` (
 	ON DELETE CASCADE
 ) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户关注问题联表';
 
+
 -- ----------------------------
 -- Table structure for u_follow_answer
 -- ----------------------------
@@ -150,6 +151,7 @@ DROP TABLE IF EXISTS `u_bookmark`;
 CREATE TABLE `u_bookmark` (
 	`userId` BIGINT NOT NULL COMMENT '用户ID',
 	`questionId` BIGINT NOT NULL COMMENT '问题ID',
+	`groupId` BIGINT DEFAULT NULL COMMENT '用户收藏分组',
 	`createTime` DATETIME NOT NULL COMMENT '收藏时间',
 	CONSTRAINT unique_u_q UNIQUE (`userId`, `questionId`),
 	FOREIGN KEY (`questionId`)
@@ -157,5 +159,16 @@ CREATE TABLE `u_bookmark` (
 	ON DELETE CASCADE
 ) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户收藏问题联表';
 
-SHOW VARIABLES LIKE '%foreign%';
-SET FOREIGN_KEY_CHECKS = 1;
+
+-- ----------------------------
+-- Table structure for u_bookmark_group
+-- ----------------------------
+DROP TABLE `u_bookmark_group`;
+CREATE TABLE `u_bookmark_group` (
+	`id` BIGINT NOT NULL COMMENT '用户书签分组',
+	`userId` BIGINT DEFAULT NULL COMMENT '用户ID',
+	`name` VARCHAR(100) NOT NULL COMMENT '标签名称',
+	PRIMARY KEY (`id`)
+) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户收藏分组表';
+
+
