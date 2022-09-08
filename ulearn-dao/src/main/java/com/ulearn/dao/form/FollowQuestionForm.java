@@ -13,6 +13,9 @@ import javax.validation.constraints.NotNull;
 @Data
 public class FollowQuestionForm {
 
+    @NotNull(message = "用户ID不能为空")
+    private Long userId;
+
     @NotNull(message = "问题ID不能为空")
     private Long questionId;
 }

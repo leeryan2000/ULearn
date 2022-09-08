@@ -146,6 +146,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void followQuestion(Long userId, FollowQuestionForm form) {
+        if (userId.equals(form.getUserId())) {
+            throw new CommonRuntimeException(CommonOperationError.CREATOR_CANT_FOLLOW_OWN_POST);
+        }
+
         FollowQuestion followQuestion = new FollowQuestion();
 
         followQuestion.setUserId(userId);
@@ -160,6 +164,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void followAnswer(Long userId, FollowAnswerForm form) {
+        if (userId.equals(form.getUserId())) {
+            throw new CommonRuntimeException(CommonOperationError.CREATOR_CANT_FOLLOW_OWN_POST);
+        }
+
         FollowAnswer followAnswer = new FollowAnswer();
 
         followAnswer.setUserId(userId);
