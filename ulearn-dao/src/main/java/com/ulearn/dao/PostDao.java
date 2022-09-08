@@ -3,9 +3,11 @@ package com.ulearn.dao;
 import com.ulearn.dao.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.jmx.export.annotation.ManagedOperationParameter;
 
 import java.awt.print.Book;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Author: Ryan
@@ -36,9 +38,13 @@ public interface PostDao {
     // Bookmark
     Integer addBookmark(Bookmark bookmark);
 
-    Bookmark getBookmarkByUserIdAndQuestionId(@Param("userId") Long userId, @Param("questionId") Long questionId);
+    Integer addBookmarkGroup(BookmarkGroup bookmarkGroup);
 
-    Bookmark deleteBookmarkByUserIdAndQuestionIdAndGroupId(@Param("userId") Long userId, @Param("questionId") Long questionId, @Param("groupId") Long groupId);
+    List<Bookmark> getBookmarkByUserIdAndQuestionId(@Param("userId") Long userId, @Param("questionId") Long questionId);
+
+    List<BookmarkGroup> getBookmarkGroupByUserId(@Param("userId") Long userId);
+
+    void deleteBookmarkByUserIdAndQuestionIdAndGroupId(@Param("userId") Long userId, @Param("questionId") Long questionId, @Param("groupId") Long groupId);
 
     // Answer
     Answer getAnswerById(@Param("answerId") Long answerId);

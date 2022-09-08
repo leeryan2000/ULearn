@@ -151,9 +151,9 @@ DROP TABLE IF EXISTS `u_bookmark`;
 CREATE TABLE `u_bookmark` (
 	`userId` BIGINT NOT NULL COMMENT '用户ID',
 	`questionId` BIGINT NOT NULL COMMENT '问题ID',
-	`groupId` BIGINT DEFAULT NULL COMMENT '用户收藏分组',
+	`groupId` BIGINT DEFAULT NULL COMMENT '用户收藏分组, groupId = 1 为默认分组',
 	`createTime` DATETIME NOT NULL COMMENT '收藏时间',
-	CONSTRAINT unique_u_q UNIQUE (`userId`, `questionId`),
+	CONSTRAINT unique_u_q UNIQUE (`userId`, `questionId`, `groupId`),
 	FOREIGN KEY (`questionId`)
 	REFERENCES u_question(`id`)
 	ON DELETE CASCADE
@@ -165,10 +165,13 @@ CREATE TABLE `u_bookmark` (
 -- ----------------------------
 DROP TABLE `u_bookmark_group`;
 CREATE TABLE `u_bookmark_group` (
-	`id` BIGINT NOT NULL COMMENT '用户书签分组',
-	`userId` BIGINT DEFAULT NULL COMMENT '用户ID',
+	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户书签分组',
+	`userId` BIGINT NOT NULL COMMENT '用户ID',
 	`name` VARCHAR(100) NOT NULL COMMENT '标签名称',
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`),
+	CONSTRAINT unique_n UNIQUE(`name`)
 ) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户收藏分组表';
+
+INSERT INTO u_bookmark_group VALUES(1, 0, '默认书签分组');
 
 

@@ -1,5 +1,7 @@
 package com.ulearn.dao.domain;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
@@ -7,6 +9,8 @@ import java.util.Date;
  * @Description:
  * @Date: 2022/9/6 22:07
  */
+
+@Data
 public class Bookmark {
 
     private Long userId;

@@ -17,6 +17,7 @@ public enum CommonOperationError implements CommonError{
     QUESTION_DOESNT_EXIST("20002", "QUESTION_DOESNT_EXIST"),
     VOTE_FAILED("20003", "VOTE_FAILED"),
     VOTE_DELETE_FAILED("20004", "VOTE_DELETE_FAILED"),
+    BOOKMARK_FAILED("20005", "BOOKMARK_FAILED"),
     ;
 
     private final String errCode;

@@ -41,7 +41,7 @@
         INSERT INTO u_follow_question VALUES(#{userId}, #{questionId}, #{createTime})
     </insert>
 
-    <select id="getFollowQuestionByUserIdAndQuestionId">
+    <select id="getFollowQuestionByUserIdAndQuestionId" resultType="com.ulearn.dao.domain.FollowQuestion">
         SELECT * FROM u_follow_question WHERE `userId` = #{userId} AND `questionId` = #{questionId}
     </select>
 
@@ -54,8 +54,16 @@
         INSERT INTO u_bookmark VALUES(#{userId}, #{questionId}, #{groupId}, #{createTime})
     </insert>
 
-    <select id="getBookmarkByUserIdAndQuestionId">
+    <insert id="addBookmarkGroup" parameterType="com.ulearn.dao.domain.BookmarkGroup">
+        INSERT INTO u_bookmark_group(`userId`, `name`) VALUES(#{userId}, #{name})
+    </insert>
+
+    <select id="getBookmarkByUserIdAndQuestionId" resultType="com.ulearn.dao.domain.Bookmark">
         SELECT * FROM u_bookmark WHERE `userId` = #{userId} AND `questionId` = #{questionId}
+    </select>
+
+    <select id="getBookmarkGroupByUserId" resultType="com.ulearn.dao.domain.BookmarkGroup">
+        SELECT * FROM u_bookmark_group WHERE `userId` = #{userId}
     </select>
 
     <delete id="deleteBookmarkByUserIdAndQuestionIdAndGroupId">
@@ -101,7 +109,7 @@
         INSERT INTO u_follow_answer VALUES(#{userId}, #{answerId}, #{createTime})
     </insert>
 
-    <select id="getFollowAnswerByUserIdAndAnswerId">
+    <select id="getFollowAnswerByUserIdAndAnswerId" resultType="com.ulearn.dao.domain.FollowAnswer">
         SELECT * FROM u_follow_answer WHERE `userId` = #{userId} AND `answerId` = #{answerId}
     </select>
 

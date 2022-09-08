@@ -9,7 +9,12 @@ import com.ulearn.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Book;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @Author: Ryan
@@ -117,6 +122,24 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void addBookmark(Long userId, BookmarkForm form) {
+        List<Long> groupIds = form.getGroupIds();
+        Bookmark bookmark;
+
+        for (Long groupId : groupIds) {
+            bookmark = new Bookmark();
+            bookmark.setUserId(userId);
+            bookmark.setQuestionId(form.getQuestionId());
+            bookmark.setGroupId(groupId);
+            bookmark.setCreateTime(new Date());
+            Integer rows = postDao.addBookmark(bookmark);
+            if (rows != 1) {
+                throw new CommonRuntimeException(CommonOperationError.BOOKMARK_FAILED);
+            }
+        }
+    }
+
+    @Override
+    public void addBookmarkGroup(Long userId, BookmarkGroupForm form) {
 
     }
 

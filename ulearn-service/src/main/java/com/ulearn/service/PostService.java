@@ -20,6 +20,8 @@ public interface PostService {
 
     void addBookmark(Long userId, BookmarkForm form);
 
+    void addBookmarkGroup(Long userId, BookmarkGroupForm form);
+
     void followQuestion(Long userId, FollowQuestionForm form);
 
     void followAnswer(Long userId, FollowAnswerForm form);

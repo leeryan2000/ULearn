@@ -11,8 +11,6 @@ import lombok.Data;
 @Data
 public class BookmarkGroup {
 
-    private Long id;
-
     private Long userId;
 
     private String name;

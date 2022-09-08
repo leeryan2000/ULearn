@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: Ryan
@@ -18,5 +19,5 @@ public class BookmarkForm {
     @NotNull(message = "问题ID不能为空")
     private Long questionId;
 
-    private Long groupId;
+    private List<Long> groupIds;
 }
