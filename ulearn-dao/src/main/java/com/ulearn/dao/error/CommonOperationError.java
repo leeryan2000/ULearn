@@ -18,6 +18,8 @@ public enum CommonOperationError implements CommonError{
     VOTE_FAILED("20003", "VOTE_FAILED"),
     VOTE_DELETE_FAILED("20004", "VOTE_DELETE_FAILED"),
     BOOKMARK_FAILED("20005", "BOOKMARK_FAILED"),
+
+    FOLLOW_FAILED("20006", "FOLLOW_FAILED")
     ;
 
     private final String errCode;

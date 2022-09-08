@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ulearn.dao.PostDao">
+
+    <!--Question-->
     <select id="getQuestionById" resultType="com.ulearn.dao.domain.Question">
         SELECT * FROM u_question WHERE `id` = #{questionId}
-    </select>
-
-    <select id="getAnswerById" resultType="com.ulearn.dao.domain.Answer">
-        SELECT * FROM u_answer WHERE `id` = #{answerId}
     </select>
 
     <insert id="addQuestion" parameterType="com.ulearn.dao.domain.Question">
@@ -16,17 +14,6 @@
                                `create_time`)
         VALUES (#{userId},
                 #{title},
-                #{content},
-                #{createTime})
-    </insert>
-
-    <insert id="addAnswer" parameterType="com.ulearn.dao.domain.Answer">
-        INSERT INTO u_answer(`userId`,
-                             `questionId`,
-                             `content`,
-                             `createTime`)
-        VALUES (#{userId},
-                #{questionId},
                 #{content},
                 #{createTime})
     </insert>
@@ -42,6 +29,63 @@
                 #{createTime})
     </insert>
 
+    <select id="getVoteQuestionByUserIdAndQuestionId" resultType="com.ulearn.dao.domain.VoteQuestion">
+        SELECT * FROM u_vote_question WHERE userId = #{userId} AND questionId = #{questionId}
+    </select>
+
+    <delete id="deleteVoteQuestionByUserIdAndQuestionId">
+        DELETE FROM u_vote_question WHERE userId = #{userId} AND questionId = #{questionId}
+    </delete>
+
+    <insert id="followQuestion" parameterType="com.ulearn.dao.domain.FollowQuestion">
+        INSERT INTO u_follow_question VALUES(#{userId}, #{questionId}, #{createTime})
+    </insert>
+
+    <select id="getFollowQuestionByUserIdAndQuestionId" resultType="com.ulearn.dao.domain.FollowQuestion">
+        SELECT * FROM u_follow_question WHERE `userId` = #{userId} AND `questionId` = #{questionId}
+    </select>
+
+    <delete id="deleteFollowQuestionByUserIdAndQuestionId">
+        DELETE FROM u_follow_question WHERE `userId` = #{userId} AND `questionId` = #{questionId}
+    </delete>
+
+    <!--Bookmark-->
+    <insert id="addBookmark" parameterType="com.ulearn.dao.domain.Bookmark">
+        INSERT INTO u_bookmark VALUES(#{userId}, #{questionId}, #{groupId}, #{createTime})
+    </insert>
+
+    <insert id="addBookmarkGroup" parameterType="com.ulearn.dao.domain.BookmarkGroup">
+        INSERT INTO u_bookmark_group(`userId`, `name`) VALUES(#{userId}, #{name})
+    </insert>
+
+    <select id="getBookmarkByUserIdAndQuestionId" resultType="com.ulearn.dao.domain.Bookmark">
+        SELECT * FROM u_bookmark WHERE `userId` = #{userId} AND `questionId` = #{questionId}
+    </select>
+
+    <select id="getBookmarkGroupByUserId" resultType="com.ulearn.dao.domain.BookmarkGroup">
+        SELECT * FROM u_bookmark_group WHERE `userId` = #{userId}
+    </select>
+
+    <delete id="deleteBookmarkByUserIdAndQuestionIdAndGroupId">
+        DELETE FROM u_bookmark WHERE `groupId` = #{groupId} AND `userId` = #{userId} AND `questionId` = #{questionId}
+    </delete>
+
+    <!--Answer-->
+    <select id="getAnswerById" resultType="com.ulearn.dao.domain.Answer">
+        SELECT * FROM u_answer WHERE `id` = #{answerId}
+    </select>
+
+    <insert id="addAnswer" parameterType="com.ulearn.dao.domain.Answer">
+        INSERT INTO u_answer(`userId`,
+                             `questionId`,
+                             `content`,
+                             `createTime`)
+        VALUES (#{userId},
+                #{questionId},
+                #{content},
+                #{createTime})
+    </insert>
+
     <insert id="voteAnswer" parameterType="com.ulearn.dao.domain.VoteAnswer">
         INSERT INTO u_vote_answer(`userId`,
                                     `answerId`,
@@ -53,24 +97,24 @@
                 #{createTime})
     </insert>
 
-    <select id="getVoteQuestionByUserIdAndQuestionId" resultType="com.ulearn.dao.domain.VoteQuestion">
-        SELECT * FROM u_vote_question WHERE userId = #{userId} AND questionId = #{questionId}
-    </select>
-
     <select id="getVoteAnswerByUserIdAndAnswerId" resultType="com.ulearn.dao.domain.VoteAnswer">
         SELECT * FROM u_vote_answer WHERE userId = #{userId} AND answerId = #{answerId}
     </select>
-
-    <delete id="deleteVoteQuestionByUserIdAndQuestionId">
-        DELETE FROM u_vote_question WHERE userId = #{userId} AND questionId = #{questionId}
-    </delete>
 
     <delete id="deleteVoteAnswerByUserIdAndAnswerId">
         DELETE FROM u_vote_answer WHERE userId = #{userId} AND answerId = #{answerId}
     </delete>
 
-    <insert id="addBookmark" parameterType="com.ulearn.dao.domain.Bookmark">
-        INSERT INTO u_bookmark VALUES(#{userId}, #{questionId}, #{createTime})
+    <insert id="followAnswer" parameterType="com.ulearn.dao.domain.FollowAnswer">
+        INSERT INTO u_follow_answer VALUES(#{userId}, #{answerId}, #{createTime})
     </insert>
+
+    <select id="getFollowAnswerByUserIdAndAnswerId" resultType="com.ulearn.dao.domain.FollowAnswer">
+        SELECT * FROM u_follow_answer WHERE `userId` = #{userId} AND `answerId` = #{answerId}
+    </select>
+
+    <delete id="deleteFollowAnswerByUserIdAndAnswerId">
+        DELETE FROM u_follow_answer WHERE `userId` = #{userId} AND `answerId` = #{answerId}
+    </delete>
 
 </mapper>

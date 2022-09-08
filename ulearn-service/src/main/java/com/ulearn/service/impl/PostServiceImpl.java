@@ -141,16 +141,35 @@ public class PostServiceImpl implements PostService {
     @Override
     public void addBookmarkGroup(Long userId, BookmarkGroupForm form) {
 
+
     }
 
     @Override
     public void followQuestion(Long userId, FollowQuestionForm form) {
+        FollowQuestion followQuestion = new FollowQuestion();
 
+        followQuestion.setUserId(userId);
+        followQuestion.setQuestionId(form.getQuestionId());
+        followQuestion.setCreateTime(new Date());
+
+        Integer rows = postDao.followQuestion(followQuestion);
+        if (rows != 1) {
+            throw new CommonRuntimeException(CommonOperationError.FOLLOW_FAILED);
+        }
     }
 
     @Override
     public void followAnswer(Long userId, FollowAnswerForm form) {
+        FollowAnswer followAnswer = new FollowAnswer();
 
+        followAnswer.setUserId(userId);
+        followAnswer.setAnswerId(form.getAnswerId());
+        followAnswer.setCreateTime(new Date());
+
+        Integer rows = postDao.followAnswer(followAnswer);
+        if (rows != 1) {
+            throw new CommonRuntimeException(CommonOperationError.FOLLOW_FAILED);
+        }
     }
 
     @Autowired

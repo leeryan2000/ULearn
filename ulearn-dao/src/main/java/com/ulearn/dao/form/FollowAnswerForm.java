@@ -1,5 +1,7 @@
 package com.ulearn.dao.form;
 
+import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -7,6 +9,8 @@ import javax.validation.constraints.NotNull;
  * @Description:
  * @Date: 2022/9/6 21:20
  */
+
+@Data
 public class FollowAnswerForm {
 
     @NotNull(message = "回答ID不能为空")
