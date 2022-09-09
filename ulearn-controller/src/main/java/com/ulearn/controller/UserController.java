@@ -3,6 +3,8 @@ package com.ulearn.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
 import com.ulearn.controller.response.JsonResponse;
+import com.ulearn.dao.error.CommonOperationError;
+import com.ulearn.dao.error.CommonRuntimeException;
 import com.ulearn.dao.form.UserLoginForm;
 import com.ulearn.dao.form.UserSignUpForm;
 import com.ulearn.service.UserService;
@@ -41,6 +43,10 @@ public class UserController {
     @PostMapping("/login")
     @Operation(description = "用户登入")
     public JsonResponse addUser(@Valid @RequestBody UserLoginForm form) {
+        if (StpUtil.isLogin()) {
+            throw new CommonRuntimeException(CommonOperationError.USER_ALREADY_LOGIN);
+        }
+
         Long userId = userService.login(form);
         StpUtil.login(userId);
         return JsonResponse.ok();

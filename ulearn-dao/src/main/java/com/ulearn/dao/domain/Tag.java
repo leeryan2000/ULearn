@@ -13,7 +13,5 @@ import lombok.Data;
 @Schema(description = "标签")
 public class Tag {
 
-    private Long id;
-
     private String name;
 }

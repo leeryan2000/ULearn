@@ -7,7 +7,7 @@
         SELECT * FROM u_question WHERE `id` = #{questionId}
     </select>
 
-    <insert id="addQuestion" parameterType="com.ulearn.dao.domain.Question">
+    <insert id="addQuestion" parameterType="com.ulearn.dao.domain.Question" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO u_question(`userId`,
                                `title`,
                                `content`,
@@ -48,6 +48,15 @@
     <delete id="deleteFollowQuestionByUserIdAndQuestionId">
         DELETE FROM u_follow_question WHERE `userId` = #{userId} AND `questionId` = #{questionId}
     </delete>
+
+    <!--Tag-->
+    <insert id="addTag" parameterType="com.ulearn.dao.domain.Tag">
+        INSERT INTO u_tag(`name`) VALUES(#{name})
+    </insert>
+
+    <insert id="addQuestionTag" parameterType="com.ulearn.dao.domain.QuestionTag">
+        INSERT INTO u_question_tag VALUES(#{questionId}, #{tagId})
+    </insert>
 
     <!--Bookmark-->
     <insert id="addBookmark" parameterType="com.ulearn.dao.domain.Bookmark">

@@ -35,6 +35,11 @@ public interface PostDao {
 
     FollowQuestion deleteFollowQuestionByUserIdAndQuestionId(@Param("userId") Long userId, @Param("questionId") Long questionId);
 
+    // Tag
+    Integer addTag(Tag tag);
+
+    Integer addQuestionTag(QuestionTag questionTag);
+
     // Bookmark
     Integer addBookmark(Bookmark bookmark);
 

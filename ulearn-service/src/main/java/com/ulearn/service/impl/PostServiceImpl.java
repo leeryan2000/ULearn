@@ -8,13 +8,10 @@ import com.ulearn.dao.form.*;
 import com.ulearn.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Book;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @Author: Ryan
@@ -27,16 +24,33 @@ public class PostServiceImpl implements PostService {
 
     private final PostDao postDao;
 
+    @Transactional
     @Override
     public void addQuestion(Long userId, QuestionForm form) {
         Question question = new Question();
+
         question.setUserId(userId);
         question.setTitle(form.getTitle());
         question.setContent(form.getContent());
         question.setCreateTime(new Date());
+
         Integer rows = postDao.addQuestion(question);
         if (rows != 1) {
             throw new CommonRuntimeException(CommonOperationError.POST_FAILED);
+        }
+
+        List<Long> tags = form.getTags();
+        QuestionTag questionTag;
+        for (Long tagId : tags) {
+            questionTag = new QuestionTag();
+
+            questionTag.setQuestionId(question.getId());
+            questionTag.setTagId(tagId);
+
+            rows = postDao.addQuestionTag(questionTag);
+            if (rows != 1) {
+                throw new CommonRuntimeException(CommonOperationError.QUESTION_TAG_ADD_FAILED);
+            }
         }
     }
 
@@ -60,7 +74,6 @@ public class PostServiceImpl implements PostService {
         if (question == null) {
             throw new CommonRuntimeException(CommonOperationError.QUESTION_DOESNT_EXIST);
         }
-
 
         VoteQuestion vote = postDao.getVoteQuestionByUserIdAndQuestionId(userId, form.getQuestionId());
 
@@ -133,19 +146,27 @@ public class PostServiceImpl implements PostService {
             bookmark.setCreateTime(new Date());
             Integer rows = postDao.addBookmark(bookmark);
             if (rows != 1) {
-                throw new CommonRuntimeException(CommonOperationError.BOOKMARK_FAILED);
+                throw new CommonRuntimeException(CommonOperationError.CREATE_BOOKMARK_FAILED);
             }
         }
     }
 
     @Override
     public void addBookmarkGroup(Long userId, BookmarkGroupForm form) {
+        BookmarkGroup bookmarkGroup = new BookmarkGroup();
 
+        bookmarkGroup.setUserId(userId);
+        bookmarkGroup.setName(form.getName());
 
+        Integer rows = postDao.addBookmarkGroup(bookmarkGroup);
+        if (rows != 1) {
+            throw new CommonRuntimeException(CommonOperationError.CREATE_BOOKMARK_GROUP_FAILED);
+        }
     }
 
     @Override
     public void followQuestion(Long userId, FollowQuestionForm form) {
+        // Check if the creator followed itself
         if (userId.equals(form.getUserId())) {
             throw new CommonRuntimeException(CommonOperationError.CREATOR_CANT_FOLLOW_OWN_POST);
         }
@@ -164,6 +185,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void followAnswer(Long userId, FollowAnswerForm form) {
+        // Check if the creator followed itself
         if (userId.equals(form.getUserId())) {
             throw new CommonRuntimeException(CommonOperationError.CREATOR_CANT_FOLLOW_OWN_POST);
         }
