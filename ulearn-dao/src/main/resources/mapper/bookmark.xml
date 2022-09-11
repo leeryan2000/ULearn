@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ulearn.dao.BookmarkDao">
+
+    <insert id="addBookmark" parameterType="com.ulearn.dao.domain.Bookmark">
+        INSERT INTO u_bookmark VALUES(#{userId}, #{questionId}, #{groupId}, #{createTime})
+    </insert>
+
+    <insert id="addBookmarkGroup" parameterType="com.ulearn.dao.domain.BookmarkGroup">
+        INSERT INTO u_bookmark_group(`userId`, `name`) VALUES(#{userId}, #{name})
+    </insert>
+
+    <select id="getBookmarkByUserIdAndQuestionId" resultType="com.ulearn.dao.domain.Bookmark">
+        SELECT * FROM u_bookmark WHERE `userId` = #{userId} AND `questionId` = #{questionId}
+    </select>
+
+    <select id="getBookmarkGroupByUserId" resultType="com.ulearn.dao.domain.BookmarkGroup">
+        SELECT * FROM u_bookmark_group WHERE `userId` = #{userId}
+    </select>
+
+    <delete id="deleteBookmarkByUserIdAndQuestionIdAndGroupId">
+        DELETE FROM u_bookmark WHERE `groupId` = #{groupId} AND `userId` = #{userId} AND `questionId` = #{questionId}
+    </delete>
+</mapper>

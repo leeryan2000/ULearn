@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ulearn.dao.QuestionDao">
+
+    <select id="getQuestionById" resultType="com.ulearn.dao.domain.Question">
+        SELECT * FROM u_question WHERE `id` = #{questionId}
+    </select>
+
+    <insert id="addQuestion" parameterType="com.ulearn.dao.domain.Question" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO u_question(`userId`,
+                               `title`,
+                               `content`,
+                               `create_time`)
+        VALUES (#{userId},
+                #{title},
+                #{content},
+                #{createTime})
+    </insert>
+
+    <insert id="addTag" parameterType="com.ulearn.dao.domain.Tag">
+        INSERT INTO u_tag(`name`) VALUES(#{name})
+    </insert>
+
+    <insert id="addQuestionTag" parameterType="com.ulearn.dao.domain.QuestionTag">
+        INSERT INTO u_question_tag VALUES(#{questionId}, #{tagId})
+    </insert>
+</mapper>

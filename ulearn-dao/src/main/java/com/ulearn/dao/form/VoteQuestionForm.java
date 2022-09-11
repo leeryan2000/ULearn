@@ -3,8 +3,7 @@ package com.ulearn.dao.form;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.NotNull;
 
 /**
  * @Author: Ryan
@@ -16,9 +15,9 @@ import javax.validation.constraints.Pattern;
 @Schema(description = "投票问题模板")
 public class VoteQuestionForm {
 
-    @NotBlank
+    @NotNull(message = "问题ID不能为空")
     private Long questionId;
 
-    @NotBlank
+    @NotNull(message = "不能为空")
     private Boolean status;
 }

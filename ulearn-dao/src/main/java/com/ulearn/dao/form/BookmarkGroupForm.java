@@ -2,6 +2,7 @@ package com.ulearn.dao.form;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -13,6 +14,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class BookmarkGroupForm {
 
-    @NotNull(message = "书签组名不能为空")
+    @NotBlank(message = "书签组名不能为空")
     private String name;
 }

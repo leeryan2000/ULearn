@@ -1,21 +1,16 @@
 package com.ulearn.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.lang.hash.Hash;
 import com.ulearn.controller.response.JsonResponse;
-import com.ulearn.dao.domain.FollowQuestion;
 import com.ulearn.dao.form.*;
-import com.ulearn.service.PostService;
+import com.ulearn.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.awt.print.Book;
-import java.util.HashMap;
 
 /**
  * @Author: Ryan
@@ -28,14 +23,22 @@ import java.util.HashMap;
 @Tag(name = "PostController", description = "发表控制器")
 public class PostController {
 
-    private final PostService postService;
+    private final QuestionService questionService;
+
+    private final AnswerService answerService;
+
+    private final VoteService voteService;
+
+    private final FollowService followService;
+
+    private final BookmarkService bookmarkService;
 
     @PostMapping("/add-question")
     @Operation(description = "添加问题")
     @SaCheckLogin
     public JsonResponse addQuestion(@Valid @RequestBody QuestionForm form) {
         Long userId = StpUtil.getLoginIdAsLong();
-        postService.addQuestion(userId, form);
+        questionService.addQuestion(userId, form);
         return JsonResponse.ok();
     }
 
@@ -44,7 +47,7 @@ public class PostController {
     @SaCheckLogin
     public JsonResponse addAnswer(@Valid @RequestBody AnswerForm form) {
         Long userId = StpUtil.getLoginIdAsLong();
-        postService.addAnswer(userId, form);
+        answerService.addAnswer(userId, form);
         return JsonResponse.ok();
     }
 
@@ -53,7 +56,7 @@ public class PostController {
     @SaCheckLogin
     public JsonResponse voteQuestion(@Valid @RequestBody VoteQuestionForm form) {
         Long userId = StpUtil.getLoginIdAsLong();
-        postService.voteQuestion(userId, form);
+        voteService.voteQuestion(userId, form);
         return JsonResponse.ok();
     }
 
@@ -62,39 +65,43 @@ public class PostController {
     @SaCheckLogin
     public JsonResponse voteAnswer(@Valid @RequestBody VoteAnswerForm form) {
         Long userId = StpUtil.getLoginIdAsLong();
-        postService.voteAnswer(userId, form);
+        voteService.voteAnswer(userId, form);
         return JsonResponse.ok();
     }
 
-    @PostMapping("/addBookmark")
+    @PostMapping("/add-bookmark")
     @Operation(description = "添加书签")
     @SaCheckLogin
     public JsonResponse addBookmark(@Valid @RequestBody BookmarkForm form) {
         Long userId = StpUtil.getLoginIdAsLong();
-        postService.addBookmark(userId, form);
+        bookmarkService.addBookmark(userId, form);
         return JsonResponse.ok();
     }
 
-    @PostMapping("/followQuestion")
+    @PostMapping("/follow-question")
     @Operation(description = "追踪问题")
     @SaCheckLogin
     public JsonResponse followQuestion(@Valid @RequestBody FollowQuestionForm form) {
         Long userId = StpUtil.getLoginIdAsLong();
-        postService.followQuestion(userId, form);
+        followService.followQuestion(userId, form);
         return JsonResponse.ok();
     }
 
-    @PostMapping("/followAnswer")
+    @PostMapping("/follow-answer")
     @Operation(description = "追踪问题")
     @SaCheckLogin
     public JsonResponse followAnswer(@Valid @RequestBody FollowAnswerForm form) {
         Long userId = StpUtil.getLoginIdAsLong();
-        postService.followAnswer(userId, form);
+        followService.followAnswer(userId, form);
         return JsonResponse.ok();
     }
 
     @Autowired
-    public PostController(PostService postService) {
-        this.postService = postService;
+    public PostController(QuestionService questionService, AnswerService answerService, VoteService voteService, FollowService followService, BookmarkService bookmarkService) {
+        this.questionService = questionService;
+        this.answerService = answerService;
+        this.voteService = voteService;
+        this.followService = followService;
+        this.bookmarkService = bookmarkService;
     }
 }

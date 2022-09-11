@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ulearn.dao.AnswerDao">
+
+    <select id="getAnswerById" resultType="com.ulearn.dao.domain.Answer">
+        SELECT * FROM u_answer WHERE `id` = #{answerId}
+    </select>
+
+    <insert id="addAnswer" parameterType="com.ulearn.dao.domain.Answer">
+        INSERT INTO u_answer(`userId`,
+                             `questionId`,
+                             `content`,
+                             `createTime`)
+        VALUES (#{userId},
+                #{questionId},
+                #{content},
+                #{createTime})
+    </insert>
+</mapper>
