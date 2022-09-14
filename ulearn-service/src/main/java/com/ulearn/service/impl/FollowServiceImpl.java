@@ -24,11 +24,6 @@ public class FollowServiceImpl implements FollowService {
 
     private final FollowDao followDao;
 
-    @Autowired
-    public FollowServiceImpl(FollowDao followDao) {
-        this.followDao = followDao;
-    }
-
     @Override
     public void followQuestion(Long userId, FollowQuestionForm form) {
         // Check if the creator followed itself
@@ -65,5 +60,10 @@ public class FollowServiceImpl implements FollowService {
         if (rows != 1) {
             throw new CommonRuntimeException(CommonOperationError.FOLLOW_FAILED);
         }
+    }
+
+    @Autowired
+    public FollowServiceImpl(FollowDao followDao) {
+        this.followDao = followDao;
     }
 }

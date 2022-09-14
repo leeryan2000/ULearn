@@ -35,8 +35,6 @@ public class AnswerServiceImpl implements AnswerService {
         }
         // ***** 对关注问题的人进行推送
 
-
-
     }
 
     @Autowired

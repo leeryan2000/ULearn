@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 @Service
-public class PostServiceImpl implements QuestionService {
+public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionDao questionDao;
 
@@ -57,7 +57,7 @@ public class PostServiceImpl implements QuestionService {
 
 
     @Autowired
-    public PostServiceImpl(QuestionDao questionDao) {
+    public QuestionServiceImpl(QuestionDao questionDao) {
         this.questionDao = questionDao;
     }
 }
