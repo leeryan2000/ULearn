@@ -27,6 +27,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     public void addBookmark(Long userId, BookmarkForm form) {
+        // 默认分组 ID 为1
         List<Long> groupIds = form.getGroupIds();
         Bookmark bookmark;
 
