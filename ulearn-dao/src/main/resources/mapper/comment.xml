@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ulearn.dao.CommentDao">
+    <insert id="addQuestionComment" parameterType="com.ulearn.dao.domain.QuestionComment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO u_question_comment(`userId`,
+                             `questionId`,
+                             `content`,
+                             `replyId`,
+                             `createTime`)
+        VALUES (#{userId},
+                #{questionId},
+                #{content},
+                #{replyId},
+                #{createTime})
+    </insert>
+
+    <select id="getQuestionCommentById">
+        SELECT * FROM u_question_comment WHERE `id` = #{commentId}
+    </select>
+
+    <insert id="addAnswerComment" parameterType="com.ulearn.dao.domain.AnswerComment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO u_answer_comment(`userId`,
+                                       `answerId`,
+                                       `content`,
+                                       `replyId`,
+                                       `createTime`)
+        VALUES (#{userId},
+                #{answerId},
+                #{content},
+                #{replyId},
+                #{createTime})
+    </insert>
+
+    <select id="getAnswerCommentById">
+        SELECT * FROM u_answer_comment WHERE `id` = #{commentId}
+    </select>
+</mapper>
