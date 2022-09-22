@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ulearn.dao.FollowDao">
 
-    <insert id="questionFollow" parameterType="com.ulearn.dao.domain.QuestionFollow">
+    <insert id="followQuestion" parameterType="com.ulearn.dao.domain.QuestionFollow">
         INSERT INTO u_question_follow VALUES(#{userId}, #{questionId}, #{createTime})
     </insert>
 
@@ -14,7 +14,7 @@
         DELETE FROM u_question_follow WHERE `userId` = #{userId} AND `questionId` = #{questionId}
     </delete>
 
-    <insert id="answerFollow" parameterType="com.ulearn.dao.domain.AnswerFollow">
+    <insert id="followAnswer" parameterType="com.ulearn.dao.domain.AnswerFollow">
         INSERT INTO u_answer_follow VALUES(#{userId}, #{answerId}, #{createTime})
     </insert>
 

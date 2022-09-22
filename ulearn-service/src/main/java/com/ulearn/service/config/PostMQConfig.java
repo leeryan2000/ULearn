@@ -75,7 +75,6 @@ public class PostMQConfig {
 
                 // 通过问题ID获取问题关注列表
                 List<Long> questionFollowerIds = followDao.getQuestionFollowerByQuestionId(answer.getQuestionId());
-                System.out.println("Question follower: " + questionFollowerIds.size());
 
                 List<HashMap> messageList;
                 for (Long questionFollowerId : questionFollowerIds) {

@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ulearn.dao.VoteDao">
 
-    <insert id="voteQuestion" parameterType="com.ulearn.dao.domain.VoteQuestion">
-        INSERT INTO u_vote_question(`userId`,
+    <insert id="voteQuestion" parameterType="com.ulearn.dao.domain.QuestionVote">
+        INSERT INTO u_question_vote(`userId`,
                                     `questionId`,
                                     `status`,
                                     `createTime`)
@@ -13,16 +13,16 @@
                 #{createTime})
     </insert>
 
-    <select id="getVoteQuestionByUserIdAndQuestionId" resultType="com.ulearn.dao.domain.VoteQuestion">
-        SELECT * FROM u_vote_question WHERE userId = #{userId} AND questionId = #{questionId}
+    <select id="getQuestionVoteByUserIdAndQuestionId" resultType="com.ulearn.dao.domain.QuestionVote">
+        SELECT * FROM u_question_vote WHERE userId = #{userId} AND questionId = #{questionId}
     </select>
 
-    <delete id="deleteVoteQuestionByUserIdAndQuestionId">
-        DELETE FROM u_vote_question WHERE userId = #{userId} AND questionId = #{questionId}
+    <delete id="deleteQuestionVoteByUserIdAndQuestionId">
+        DELETE FROM u_question_vote WHERE userId = #{userId} AND questionId = #{questionId}
     </delete>
 
-    <insert id="voteAnswer" parameterType="com.ulearn.dao.domain.VoteAnswer">
-        INSERT INTO u_vote_answer(`userId`,
+    <insert id="voteAnswer" parameterType="com.ulearn.dao.domain.AnswerVote">
+        INSERT INTO u_answer_vote(`userId`,
                                   `answerId`,
                                   `status`,
                                   `createTime`)
@@ -32,11 +32,11 @@
                 #{createTime})
     </insert>
 
-    <select id="getVoteAnswerByUserIdAndAnswerId" resultType="com.ulearn.dao.domain.VoteAnswer">
-        SELECT * FROM u_vote_answer WHERE userId = #{userId} AND answerId = #{answerId}
+    <select id="getAnswerVoteByUserIdAndAnswerId" resultType="com.ulearn.dao.domain.AnswerVote">
+        SELECT * FROM u_answer_vote WHERE userId = #{userId} AND answerId = #{answerId}
     </select>
 
-    <delete id="deleteVoteAnswerByUserIdAndAnswerId">
-        DELETE FROM u_vote_answer WHERE userId = #{userId} AND answerId = #{answerId}
+    <delete id="deleteAnswerVoteByUserIdAndAnswerId">
+        DELETE FROM u_answer_vote WHERE userId = #{userId} AND answerId = #{answerId}
     </delete>
 </mapper>
