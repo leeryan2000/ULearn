@@ -7,17 +7,15 @@ import java.util.Date;
 /**
  * @Author: Ryan
  * @Description:
- * @Date: 2022/9/5 15:27
+ * @Date: 2022/9/6 21:44
  */
 
 @Data
-public class VoteQuestion {
+public class QuestionFollow {
 
     private Long userId;
 
     private Long questionId;
-
-    private Boolean status;
 
     private Date createTime;
 }

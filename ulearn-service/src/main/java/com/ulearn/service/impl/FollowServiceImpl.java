@@ -1,8 +1,8 @@
 package com.ulearn.service.impl;
 
 import com.ulearn.dao.FollowDao;
-import com.ulearn.dao.domain.FollowAnswer;
-import com.ulearn.dao.domain.FollowQuestion;
+import com.ulearn.dao.domain.AnswerFollow;
+import com.ulearn.dao.domain.QuestionFollow;
 import com.ulearn.dao.error.CommonOperationError;
 import com.ulearn.dao.error.CommonRuntimeException;
 import com.ulearn.dao.form.FollowAnswerForm;
@@ -31,13 +31,13 @@ public class FollowServiceImpl implements FollowService {
             throw new CommonRuntimeException(CommonOperationError.CREATOR_CANT_FOLLOW_OWN_POST);
         }
 
-        FollowQuestion followQuestion = new FollowQuestion();
+        QuestionFollow questionFollow = new QuestionFollow();
 
-        followQuestion.setUserId(userId);
-        followQuestion.setQuestionId(form.getQuestionId());
-        followQuestion.setCreateTime(new Date());
+        questionFollow.setUserId(userId);
+        questionFollow.setQuestionId(form.getQuestionId());
+        questionFollow.setCreateTime(new Date());
 
-        Integer rows = followDao.followQuestion(followQuestion);
+        Integer rows = followDao.followQuestion(questionFollow);
         if (rows != 1) {
             throw new CommonRuntimeException(CommonOperationError.FOLLOW_FAILED);
         }
@@ -50,13 +50,13 @@ public class FollowServiceImpl implements FollowService {
             throw new CommonRuntimeException(CommonOperationError.CREATOR_CANT_FOLLOW_OWN_POST);
         }
 
-        FollowAnswer followAnswer = new FollowAnswer();
+        AnswerFollow answerFollow = new AnswerFollow();
 
-        followAnswer.setUserId(userId);
-        followAnswer.setAnswerId(form.getAnswerId());
-        followAnswer.setCreateTime(new Date());
+        answerFollow.setUserId(userId);
+        answerFollow.setAnswerId(form.getAnswerId());
+        answerFollow.setCreateTime(new Date());
 
-        Integer rows = followDao.followAnswer(followAnswer);
+        Integer rows = followDao.followAnswer(answerFollow);
         if (rows != 1) {
             throw new CommonRuntimeException(CommonOperationError.FOLLOW_FAILED);
         }

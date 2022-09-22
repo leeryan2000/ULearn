@@ -85,8 +85,8 @@ CREATE TABLE `u_question_tag` (
 -- ----------------------------
 -- Table structure for u_vote_question
 -- ----------------------------
-DROP TABLE IF EXISTS `u_vote_question`;
-CREATE TABLE `u_vote_question` (
+DROP TABLE IF EXISTS `u_question_vote`;
+CREATE TABLE `u_question_vote` (
 	`userId` BIGINT NOT NULL COMMENT '用户ID',
 	`questionId` BIGINT NOT NULL COMMENT '问题ID',
 	`status` BOOL NOT NULL COMMENT '是否为有用, true代表有用, false反之',
@@ -101,12 +101,12 @@ CREATE TABLE `u_vote_question` (
 -- ----------------------------
 -- Table structure for u_vote_answer
 -- ----------------------------
-DROP TABLE IF EXISTS `u_vote_answer`;
-CREATE TABLE `u_vote_answer` (
+DROP TABLE IF EXISTS `u_answer_vote`;
+CREATE TABLE `u_answer_vote` (
 	`userId` BIGINT NOT NULL COMMENT '用户ID',
 	`answerId` BIGINT NOT NULL COMMENT '回答ID',
 	`status` BOOL NOT NULL COMMENT '是否为有用, true代表有用, false反之',
-	`creat`u_follow_question`eTime` DATETIME NOT NULL COMMENT '创建时间',
+	`createTime` DATETIME NOT NULL COMMENT '创建时间',
 	CONSTRAINT unique_u_a UNIQUE (`userId`, `answerId`),
 	FOREIGN KEY(`answerId`)
 	REFERENCES u_answer(`id`)

@@ -12,7 +12,7 @@ import java.util.Date;
  */
 
 @Data
-public class FollowAnswer {
+public class AnswerFollow {
 
     private Long userId;
 

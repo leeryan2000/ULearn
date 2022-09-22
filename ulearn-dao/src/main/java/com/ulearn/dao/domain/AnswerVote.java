@@ -11,7 +11,7 @@ import java.util.Date;
  */
 
 @Data
-public class VoteAnswer {
+public class AnswerVote {
 
     private Long userId;
 

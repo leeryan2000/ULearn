@@ -1,7 +1,7 @@
 package com.ulearn.dao;
 
-import com.ulearn.dao.domain.VoteAnswer;
-import com.ulearn.dao.domain.VoteQuestion;
+import com.ulearn.dao.domain.AnswerVote;
+import com.ulearn.dao.domain.QuestionVote;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,16 +14,16 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface VoteDao {
 
-    Integer voteAnswer(VoteAnswer vote);
+    Integer voteQuestion(QuestionVote vote);
 
-    VoteAnswer getVoteAnswerByUserIdAndAnswerId(@Param("userId") Long userId, @Param("answerId") Long answerId);
+    QuestionVote getQuestionVoteByUserIdAndQuestionId(@Param("userId") Long userId, @Param("questionId") Long questionId);
 
-    Integer deleteVoteAnswerByUserIdAndAnswerId(@Param("userId") Long userId, @Param("answerId") Long answerId);
+    Integer deleteQuestionVoteByUserIdAndQuestionId(@Param("userId") Long userId, @Param("questionId") Long questionId);
 
-    Integer voteQuestion(VoteQuestion vote);
+    Integer voteAnswer(AnswerVote vote);
 
-    VoteQuestion getVoteQuestionByUserIdAndQuestionId(@Param("userId") Long userId, @Param("questionId") Long questionId);
+    AnswerVote getAnswerVoteByUserIdAndAnswerId(@Param("userId") Long userId, @Param("answerId") Long answerId);
 
-    Integer deleteVoteQuestionByUserIdAndQuestionId(@Param("userId") Long userId, @Param("questionId") Long questionId);
+    Integer deleteAnswerVoteByUserIdAndAnswerId(@Param("userId") Long userId, @Param("answerId") Long answerId);
 
 }

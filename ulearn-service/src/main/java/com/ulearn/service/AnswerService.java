@@ -1,9 +1,6 @@
 package com.ulearn.service;
 
-import com.ulearn.dao.domain.Answer;
-import com.ulearn.dao.domain.FollowAnswer;
 import com.ulearn.dao.form.AnswerForm;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * @Author: Ryan

@@ -48,7 +48,7 @@ public class AnswerServiceImpl implements AnswerService {
         DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("answerMessageProducer");
         String answerJsonStr = JSONUtil.toJsonStr(answer);
         Message msg = new Message(PostMQConstant.POST_QUESTION_TOPIC, answerJsonStr.getBytes());
-        RocketMQUtil.syncSendMsg(producer, msg);
+        RocketMQUtil.asyncSendMsg(producer, msg);
     }
 
     @Autowired

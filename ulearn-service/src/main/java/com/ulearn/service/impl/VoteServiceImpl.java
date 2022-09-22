@@ -5,8 +5,8 @@ import com.ulearn.dao.QuestionDao;
 import com.ulearn.dao.VoteDao;
 import com.ulearn.dao.domain.Answer;
 import com.ulearn.dao.domain.Question;
-import com.ulearn.dao.domain.VoteAnswer;
-import com.ulearn.dao.domain.VoteQuestion;
+import com.ulearn.dao.domain.AnswerVote;
+import com.ulearn.dao.domain.QuestionVote;
 import com.ulearn.dao.error.CommonOperationError;
 import com.ulearn.dao.error.CommonRuntimeException;
 import com.ulearn.dao.form.VoteAnswerForm;
@@ -39,14 +39,14 @@ public class VoteServiceImpl implements VoteService {
             throw new CommonRuntimeException(CommonOperationError.QUESTION_DOESNT_EXIST);
         }
 
-        VoteQuestion vote = voteDao.getVoteQuestionByUserIdAndQuestionId(userId, form.getQuestionId());
+        QuestionVote vote = voteDao.getQuestionVoteByUserIdAndQuestionId(userId, form.getQuestionId());
 
         Integer rows;
         if (vote == null || vote.getStatus() != form.getStatus()) {
             // Just delete the item from mysql, 防止重复添加
-            voteDao.deleteVoteQuestionByUserIdAndQuestionId(userId, form.getQuestionId());
+            voteDao.deleteQuestionVoteByUserIdAndQuestionId(userId, form.getQuestionId());
 
-            vote = new VoteQuestion();
+            vote = new QuestionVote();
             vote.setUserId(userId);
             vote.setQuestionId(form.getQuestionId());
             vote.setStatus(form.getStatus());
@@ -57,7 +57,7 @@ public class VoteServiceImpl implements VoteService {
             }
         }
         else {
-            rows = voteDao.deleteVoteQuestionByUserIdAndQuestionId(userId, form.getQuestionId());
+            rows = voteDao.deleteQuestionVoteByUserIdAndQuestionId(userId, form.getQuestionId());
             if (rows != 1) {
                 throw new CommonRuntimeException(CommonOperationError.VOTE_DELETE_FAILED);
             }
@@ -71,15 +71,15 @@ public class VoteServiceImpl implements VoteService {
             throw new CommonRuntimeException(CommonOperationError.QUESTION_DOESNT_EXIST);
         }
 
-        VoteAnswer vote = voteDao.getVoteAnswerByUserIdAndAnswerId(userId, form.getAnswerId());
+        AnswerVote vote = voteDao.getAnswerVoteByUserIdAndAnswerId(userId, form.getAnswerId());
 
         Integer rows;
         // 如果投票跟之前一样就等于删除投票
         if (vote == null || vote.getStatus() != form.getStatus()) {
             // Just delete the item from mysql, 防止重复添加
-            voteDao.deleteVoteAnswerByUserIdAndAnswerId(userId, form.getAnswerId());
+            voteDao.deleteAnswerVoteByUserIdAndAnswerId(userId, form.getAnswerId());
 
-            vote = new VoteAnswer();
+            vote = new AnswerVote();
             vote.setUserId(userId);
             vote.setAnswerId(form.getAnswerId());
             vote.setStatus(form.getStatus());
@@ -90,7 +90,7 @@ public class VoteServiceImpl implements VoteService {
             }
         }
         else {
-            rows = voteDao.deleteVoteAnswerByUserIdAndAnswerId(userId, form.getAnswerId());
+            rows = voteDao.deleteAnswerVoteByUserIdAndAnswerId(userId, form.getAnswerId());
             if (rows != 1) {
                 throw new CommonRuntimeException(CommonOperationError.VOTE_DELETE_FAILED);
             }

@@ -2,27 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ulearn.dao.FollowDao">
 
-    <insert id="followQuestion" parameterType="com.ulearn.dao.domain.FollowQuestion">
+    <insert id="questionFollow" parameterType="com.ulearn.dao.domain.QuestionFollow">
         INSERT INTO u_question_follow VALUES(#{userId}, #{questionId}, #{createTime})
     </insert>
 
-    <select id="getFollowQuestionByUserIdAndQuestionId" resultType="com.ulearn.dao.domain.FollowQuestion">
+    <select id="getQuestionFollowByUserIdAndQuestionId" resultType="com.ulearn.dao.domain.QuestionFollow">
         SELECT * FROM u_question_follow WHERE `userId` = #{userId} AND `questionId` = #{questionId}
     </select>
 
-    <delete id="deleteFollowQuestionByUserIdAndQuestionId">
+    <delete id="deleteQuestionFollowByUserIdAndQuestionId">
         DELETE FROM u_question_follow WHERE `userId` = #{userId} AND `questionId` = #{questionId}
     </delete>
 
-    <insert id="followAnswer" parameterType="com.ulearn.dao.domain.FollowAnswer">
+    <insert id="answerFollow" parameterType="com.ulearn.dao.domain.AnswerFollow">
         INSERT INTO u_answer_follow VALUES(#{userId}, #{answerId}, #{createTime})
     </insert>
 
-    <select id="getFollowAnswerByUserIdAndAnswerId" resultType="com.ulearn.dao.domain.FollowAnswer">
+    <select id="getAnswerFollowByUserIdAndAnswerId" resultType="com.ulearn.dao.domain.AnswerFollow">
         SELECT * FROM u_answer_follow WHERE `userId` = #{userId} AND `answerId` = #{answerId}
     </select>
 
-    <delete id="deleteFollowAnswerByUserIdAndAnswerId">
+    <delete id="deleteAnswerFollowByUserIdAndAnswerId">
         DELETE FROM u_answer_follow WHERE `userId` = #{userId} AND `answerId` = #{answerId}
     </delete>
 

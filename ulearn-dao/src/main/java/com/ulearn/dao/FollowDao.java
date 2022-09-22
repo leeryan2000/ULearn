@@ -1,8 +1,7 @@
 package com.ulearn.dao;
 
-import com.ulearn.dao.domain.FollowAnswer;
-import com.ulearn.dao.domain.FollowQuestion;
-import com.ulearn.dao.domain.User;
+import com.ulearn.dao.domain.AnswerFollow;
+import com.ulearn.dao.domain.QuestionFollow;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -17,17 +16,17 @@ import java.util.List;
 @Mapper
 public interface FollowDao {
 
-    Integer followQuestion(FollowQuestion followQuestion);
+    Integer followQuestion(QuestionFollow questionFollow);
 
-    FollowQuestion getFollowQuestionByUserIdAndQuestionId(@Param("userId") Long userId, @Param("questionId") Long questionId);
+    QuestionFollow getQuestionFollowByUserIdAndQuestionId(@Param("userId") Long userId, @Param("questionId") Long questionId);
 
-    FollowQuestion deleteFollowQuestionByUserIdAndQuestionId(@Param("userId") Long userId, @Param("questionId") Long questionId);
+    QuestionFollow deleteQuestionFollowByUserIdAndQuestionId(@Param("userId") Long userId, @Param("questionId") Long questionId);
 
-    Integer followAnswer(FollowAnswer followAnswer);
+    Integer followAnswer(AnswerFollow answerFollow);
 
-    FollowAnswer getFollowAnswerByUserIdAndAnswerId(@Param("userId") Long userId, @Param("answerId") Long answerId);
+    AnswerFollow getAnswerFollowByUserIdAndAnswerId(@Param("userId") Long userId, @Param("answerId") Long answerId);
 
-    FollowAnswer deleteFollowAnswerByUserIdAndAnswerId(@Param("userId") Long userId, @Param("answerId") Long answerId);
+    AnswerFollow deleteAnswerFollowByUserIdAndAnswerId(@Param("userId") Long userId, @Param("answerId") Long answerId);
 
     List<Long> getQuestionFollowerByQuestionId(@Param("questionId") Long questionId);
 
