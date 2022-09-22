@@ -21,6 +21,8 @@ public class Answer {
 
     private Long questionId;
 
+    private String questionContent;
+
     private String content;
 
     private Date createTime;

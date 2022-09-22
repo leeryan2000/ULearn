@@ -12,5 +12,5 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface AnswerService {
 
-    void addAnswer(Long userId, AnswerForm form);
+    void addAnswer(Long userId, AnswerForm form) throws Exception;
 }

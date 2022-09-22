@@ -1,12 +1,18 @@
 package com.ulearn.service.impl;
 
+import cn.hutool.json.JSONUtil;
 import com.ulearn.dao.AnswerDao;
+import com.ulearn.dao.constant.PostMQConstant;
 import com.ulearn.dao.domain.Answer;
 import com.ulearn.dao.error.CommonOperationError;
 import com.ulearn.dao.error.CommonRuntimeException;
 import com.ulearn.dao.form.AnswerForm;
 import com.ulearn.service.AnswerService;
+import com.ulearn.service.util.RocketMQUtil;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -22,8 +28,10 @@ public class AnswerServiceImpl implements AnswerService {
 
     private final AnswerDao answerDao;
 
+    private final ApplicationContext applicationContext;
+
     @Override
-    public void addAnswer(Long userId, AnswerForm form) {
+    public void addAnswer(Long userId, AnswerForm form) throws Exception {
         Answer answer = new Answer();
         answer.setUserId(userId);
         answer.setQuestionId(form.getQuestionId());
@@ -33,12 +41,17 @@ public class AnswerServiceImpl implements AnswerService {
         if (rows != 1) {
             throw new CommonRuntimeException(CommonOperationError.POST_FAILED);
         }
-        // ***** 对关注问题的人进行推送
 
+        // 通过消息队列给追踪的用户发送提醒
+        DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("answerMessageProducer");
+        String answerJsonStr = JSONUtil.toJsonStr(answer);
+        Message msg = new Message(PostMQConstant.POST_QUESTION_TOPIC, answerJsonStr.getBytes());
+        RocketMQUtil.syncSendMsg(producer, msg);
     }
 
     @Autowired
-    public AnswerServiceImpl(AnswerDao answerDao) {
+    public AnswerServiceImpl(AnswerDao answerDao, ApplicationContext applicationContext) {
         this.answerDao = answerDao;
+        this.applicationContext = applicationContext;
     }
 }

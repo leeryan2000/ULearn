@@ -2,8 +2,12 @@ package com.ulearn.dao;
 
 import com.ulearn.dao.domain.FollowAnswer;
 import com.ulearn.dao.domain.FollowQuestion;
+import com.ulearn.dao.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Author: Ryan
@@ -24,4 +28,8 @@ public interface FollowDao {
     FollowAnswer getFollowAnswerByUserIdAndAnswerId(@Param("userId") Long userId, @Param("answerId") Long answerId);
 
     FollowAnswer deleteFollowAnswerByUserIdAndAnswerId(@Param("userId") Long userId, @Param("answerId") Long answerId);
+
+    List<Long> getQuestionFollowerByQuestionId(@Param("questionId") Long questionId);
+
+    HashMap getFollowedQuestionAnswerByAnswerId(@Param("answerId") Long answerId);
 }

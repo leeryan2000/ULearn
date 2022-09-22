@@ -10,5 +10,5 @@ import com.ulearn.dao.form.*;
 
 public interface QuestionService {
 
-    void addQuestion(Long userId, QuestionForm form) throws Exception;
+    void addQuestion(Long userId, QuestionForm form);
 }

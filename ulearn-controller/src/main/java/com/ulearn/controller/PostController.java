@@ -36,7 +36,7 @@ public class PostController {
     @PostMapping("/add-question")
     @Operation(description = "添加问题")
     @SaCheckLogin
-    public JsonResponse addQuestion(@Valid @RequestBody QuestionForm form) throws Exception {
+    public JsonResponse addQuestion(@Valid @RequestBody QuestionForm form) {
         Long userId = StpUtil.getLoginIdAsLong();
         questionService.addQuestion(userId, form);
         return JsonResponse.ok();
@@ -45,7 +45,7 @@ public class PostController {
     @PostMapping("/add-answer")
     @Operation(description = "添加回答")
     @SaCheckLogin
-    public JsonResponse addAnswer(@Valid @RequestBody AnswerForm form) {
+    public JsonResponse addAnswer(@Valid @RequestBody AnswerForm form) throws Exception {
         Long userId = StpUtil.getLoginIdAsLong();
         answerService.addAnswer(userId, form);
         return JsonResponse.ok();

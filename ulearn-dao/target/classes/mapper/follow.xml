@@ -25,4 +25,29 @@
     <delete id="deleteFollowAnswerByUserIdAndAnswerId">
         DELETE FROM u_follow_answer WHERE `userId` = #{userId} AND `answerId` = #{answerId}
     </delete>
+
+    <select id="getQuestionFollowerByQuestionId" resultType="java.lang.Long">
+        SELECT
+            userId
+        FROM
+            u_follow_question
+        WHERE
+            questionId = #{questionId}
+    </select>
+
+    <select id="getFollowedQuestionAnswerByAnswerId" resultType="java.util.HashMap">
+        SELECT
+               q.id AS questionId,
+               q.title AS questionTitle,
+               a.id AS answerId,
+               a.content AS answerContent,
+               a.createTime AS answerCreateTime
+        FROM
+            u_answer a
+                JOIN
+            u_question q
+            ON a.questionId = q.id
+        WHERE
+            a.id = #{answerId}
+    </select>
 </mapper>

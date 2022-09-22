@@ -8,7 +8,7 @@ USE ulearn;
 DROP TABLE IF EXISTS `u_user`;
 CREATE TABLE `u_user` (
 	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-	`username` VARCHAR(100) NOT NULL COMMENT '用户名, 邮箱前缀',
+	`username` VARCHAR(100) UNIQUE NOT NULL COMMENT '用户名, 邮箱前缀',
 	`password` VARCHAR(255) NOT NULL COMMENT '用户密码',
 	`email` VARCHAR(100) NOT NULL COMMENT '用户邮箱',
 	`createTime` DATETIME NOT NULL COMMENT '用户创建时间',

@@ -6,7 +6,7 @@
         SELECT * FROM u_answer WHERE `id` = #{answerId}
     </select>
 
-    <insert id="addAnswer" parameterType="com.ulearn.dao.domain.Answer">
+    <insert id="addAnswer" parameterType="com.ulearn.dao.domain.Answer" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO u_answer(`userId`,
                              `questionId`,
                              `content`,
