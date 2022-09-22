@@ -106,7 +106,7 @@ CREATE TABLE `u_vote_answer` (
 	`userId` BIGINT NOT NULL COMMENT '用户ID',
 	`answerId` BIGINT NOT NULL COMMENT '回答ID',
 	`status` BOOL NOT NULL COMMENT '是否为有用, true代表有用, false反之',
-	`createTime` DATETIME NOT NULL COMMENT '创建时间',
+	`creat`u_follow_question`eTime` DATETIME NOT NULL COMMENT '创建时间',
 	CONSTRAINT unique_u_a UNIQUE (`userId`, `answerId`),
 	FOREIGN KEY(`answerId`)
 	REFERENCES u_answer(`id`)
@@ -163,7 +163,7 @@ CREATE TABLE `u_bookmark` (
 -- ----------------------------
 -- Table structure for u_bookmark_group
 -- ----------------------------
-DROP TABLE `u_bookmark_group`;
+DROP TABLE IF EXISTS `u_bookmark_group`;
 CREATE TABLE `u_bookmark_group` (
 	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户书签分组',
 	`userId` BIGINT NOT NULL COMMENT '用户ID',
@@ -174,4 +174,36 @@ CREATE TABLE `u_bookmark_group` (
 
 INSERT INTO u_bookmark_group VALUES(1, 0, '默认书签分组');
 
+-- ----------------------------
+-- Table structure for u_question_comment
+-- ----------------------------
+DROP TABLE IF EXISTS `u_question_comment`;
+CREATE TABLE `u_question_comment` (
+	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户评论',
+	`userId` BIGINT NOT NULL COMMENT '用户ID',
+	`questionId` BIGINT NOT NULL COMMENT '问题ID',
+	`content` VARCHAR(100) NOT NULL COMMENT '内容',
+	`createTime` DATETIME NOT NULL COMMENT '创建时间',
+	PRIMARY KEY(`id`),
+	FOREIGN KEY (`questionId`)
+	REFERENCES u_question(`id`)
+	ON DELETE CASCADE
+) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户问题评论表';
+
+
+-- ----------------------------
+-- Table structure for u_answer_comment
+-- ----------------------------
+DROP TABLE IF EXISTS `u_answer_comment`;
+CREATE TABLE `u_answer_comment` (
+	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户评论',
+	`userId` BIGINT NOT NULL COMMENT '用户ID',
+	`answerId` BIGINT NOT NULL COMMENT '回答ID',
+	`content` VARCHAR(100) NOT NULL COMMENT '内容',
+	`createTime` DATETIME NOT NULL COMMENT '创建时间',
+	PRIMARY KEY(`id`),
+	FOREIGN KEY (`answerId`)
+	REFERENCES u_answer(`id`)
+	ON DELETE CASCADE
+) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户问题评论表';
 

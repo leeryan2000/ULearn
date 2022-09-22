@@ -40,8 +40,6 @@ public class PostMQConfig {
 
     private final FollowDao followDao;
 
-    private final QuestionDao questionDao;
-
     private final RedisTemplate<String, String> redisTemplate;
 
     @Bean("answerMessageProducer")
@@ -72,6 +70,7 @@ public class PostMQConfig {
                 MessageExt msg = list.get(0);
                 String answerJsonStr = new String(msg.getBody());
                 Answer answer = JSONUtil.toBean(answerJsonStr, Answer.class);
+                // 获取消息数据
                 HashMap message = followDao.getFollowedQuestionAnswerByAnswerId(answer.getId());
 
                 // 通过问题ID获取问题关注列表
@@ -107,9 +106,8 @@ public class PostMQConfig {
     }
 
     @Autowired
-    public PostMQConfig(FollowDao followDao, QuestionDao questionDao, RedisTemplate<String, String> redisTemplate) {
+    public PostMQConfig(FollowDao followDao, RedisTemplate<String, String> redisTemplate) {
         this.followDao = followDao;
-        this.questionDao = questionDao;
         this.redisTemplate = redisTemplate;
     }
 }

@@ -14,6 +14,7 @@ import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -31,6 +32,7 @@ public class AnswerServiceImpl implements AnswerService {
     private final ApplicationContext applicationContext;
 
     @Override
+    @Transactional
     public void addAnswer(Long userId, AnswerForm form) throws Exception {
         Answer answer = new Answer();
         answer.setUserId(userId);
