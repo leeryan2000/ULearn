@@ -3,7 +3,7 @@
 <mapper namespace="com.ulearn.dao.VoteDao">
 
     <insert id="voteQuestion" parameterType="com.ulearn.dao.domain.VoteQuestion">
-        INSERT INTO u_vote_question(`userId`,
+        INSERT INTO u_question_vote(`userId`,
                                     `questionId`,
                                     `status`,
                                     `createTime`)
@@ -14,15 +14,15 @@
     </insert>
 
     <select id="getVoteQuestionByUserIdAndQuestionId" resultType="com.ulearn.dao.domain.VoteQuestion">
-        SELECT * FROM u_vote_question WHERE userId = #{userId} AND questionId = #{questionId}
+        SELECT * FROM u_question_vote WHERE userId = #{userId} AND questionId = #{questionId}
     </select>
 
     <delete id="deleteVoteQuestionByUserIdAndQuestionId">
-        DELETE FROM u_vote_question WHERE userId = #{userId} AND questionId = #{questionId}
+        DELETE FROM u_question_vote WHERE userId = #{userId} AND questionId = #{questionId}
     </delete>
 
     <insert id="voteAnswer" parameterType="com.ulearn.dao.domain.VoteAnswer">
-        INSERT INTO u_vote_answer(`userId`,
+        INSERT INTO u_answer_vote(`userId`,
                                   `answerId`,
                                   `status`,
                                   `createTime`)
@@ -33,10 +33,10 @@
     </insert>
 
     <select id="getVoteAnswerByUserIdAndAnswerId" resultType="com.ulearn.dao.domain.VoteAnswer">
-        SELECT * FROM u_vote_answer WHERE userId = #{userId} AND answerId = #{answerId}
+        SELECT * FROM u_answer_vote WHERE userId = #{userId} AND answerId = #{answerId}
     </select>
 
     <delete id="deleteVoteAnswerByUserIdAndAnswerId">
-        DELETE FROM u_vote_answer WHERE userId = #{userId} AND answerId = #{answerId}
+        DELETE FROM u_answer_vote WHERE userId = #{userId} AND answerId = #{answerId}
     </delete>
 </mapper>

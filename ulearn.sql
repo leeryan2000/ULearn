@@ -117,8 +117,8 @@ CREATE TABLE `u_vote_answer` (
 -- ----------------------------
 -- Table structure for u_follow_question
 -- ----------------------------
-DROP TABLE IF EXISTS `u_follow_question`;
-CREATE TABLE `u_follow_question` (
+DROP TABLE IF EXISTS `u_question_follow`;
+CREATE TABLE `u_question_follow` (
 	`userId` BIGINT NOT NULL COMMENT '用户ID',
 	`questionId` BIGINT NOT NULL COMMENT '问题ID',
 	`createTime` DATETIME NOT NULL COMMENT '关注时间',
@@ -132,8 +132,8 @@ CREATE TABLE `u_follow_question` (
 -- ----------------------------
 -- Table structure for u_follow_answer
 -- ----------------------------
-DROP TABLE IF EXISTS `u_follow_answer`;
-CREATE TABLE `u_follow_answer` (
+DROP TABLE IF EXISTS `u_answer_follow`;
+CREATE TABLE `u_answer_follow` (
 	`userId` BIGINT NOT NULL COMMENT '用户ID',
 	`answerId` BIGINT NOT NULL COMMENT '回答ID',
 	`createTime` DATETIME NOT NULL COMMENT '关注时间',
@@ -183,6 +183,7 @@ CREATE TABLE `u_question_comment` (
 	`userId` BIGINT NOT NULL COMMENT '用户ID',
 	`questionId` BIGINT NOT NULL COMMENT '问题ID',
 	`content` VARCHAR(100) NOT NULL COMMENT '内容',
+	`replyId` BIGINT DEFAULT NULL COMMENT '回复的用户ID, 如为空代表是普通回复',
 	`createTime` DATETIME NOT NULL COMMENT '创建时间',
 	PRIMARY KEY(`id`),
 	FOREIGN KEY (`questionId`)
@@ -200,6 +201,7 @@ CREATE TABLE `u_answer_comment` (
 	`userId` BIGINT NOT NULL COMMENT '用户ID',
 	`answerId` BIGINT NOT NULL COMMENT '回答ID',
 	`content` VARCHAR(100) NOT NULL COMMENT '内容',
+	`replyId` BIGINT DEFAULT NULL COMMENT '回复的用户ID, 如为空代表是普通回复',
 	`createTime` DATETIME NOT NULL COMMENT '创建时间',
 	PRIMARY KEY(`id`),
 	FOREIGN KEY (`answerId`)
