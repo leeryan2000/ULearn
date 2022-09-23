@@ -68,17 +68,20 @@ public class PostMQConfig {
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
                 // 获取消息
                 MessageExt msg = list.get(0);
-                String answerJsonStr = new String(msg.getBody());
-                Answer answer = JSONUtil.toBean(answerJsonStr, Answer.class);
-                // 获取消息数据
-                HashMap message = followDao.getFollowedQuestionAnswerByAnswerId(answer.getId());
+                String messageJsonStr = new String(msg.getBody());
 
-                // 通过问题ID获取问题关注列表
-                List<Long> questionFollowerIds = followDao.getQuestionFollowerByQuestionId(answer.getQuestionId());
+                // 获取消息数据
+                HashMap message = JSONUtil.toBean(messageJsonStr, HashMap.class);
+                List<Long> followerIds = new ArrayList<>();
+
+                // 查看消息的类别, 查找对应关注用户
+                if (message.get("type").equals(MessageConstant.FOLLOWED_QUESTION_ANSWER)) {
+                    followerIds = followDao.getQuestionFollowerByQuestionId(Long.valueOf(message.get("questionId").toString()));
+                }
 
                 List<HashMap> messageList;
-                for (Long questionFollowerId : questionFollowerIds) {
-                    String key = "inbox_messages_" + questionFollowerId;
+                for (Long followerId : followerIds) {
+                    String key = "inbox_messages_" + followerId;
                     String questionFollowerListStr = redisTemplate.opsForValue().get(key);
 
                     if (questionFollowerListStr == null) {
