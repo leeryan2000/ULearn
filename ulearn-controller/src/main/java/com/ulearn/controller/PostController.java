@@ -27,6 +27,8 @@ public class PostController {
 
     private final AnswerService answerService;
 
+    private final CommentService commentService;
+
     private final VoteService voteService;
 
     private final FollowService followService;
@@ -96,10 +98,29 @@ public class PostController {
         return JsonResponse.ok();
     }
 
+    @PostMapping("/comment-question")
+    @Operation(description = "添加问题评论")
+    @SaCheckLogin
+    public JsonResponse commentQuestion(@Valid @RequestBody CommentQuestionForm form) {
+        Long userId = StpUtil.getLoginIdAsLong();
+        commentService.addQuestionComment(userId, form);
+        return JsonResponse.ok();
+    }
+
+    @PostMapping("/comment-answer")
+    @Operation(description = "添加回答评论")
+    @SaCheckLogin
+    public JsonResponse answerQuestion(@Valid @RequestBody CommentAnswerForm form) {
+        Long userId = StpUtil.getLoginIdAsLong();
+        commentService.addAnswerComment(userId, form);
+        return JsonResponse.ok();
+    }
+
     @Autowired
-    public PostController(QuestionService questionService, AnswerService answerService, VoteService voteService, FollowService followService, BookmarkService bookmarkService) {
+    public PostController(QuestionService questionService, AnswerService answerService, CommentService commentService, VoteService voteService, FollowService followService, BookmarkService bookmarkService) {
         this.questionService = questionService;
         this.answerService = answerService;
+        this.commentService = commentService;
         this.voteService = voteService;
         this.followService = followService;
         this.bookmarkService = bookmarkService;

@@ -1,5 +1,6 @@
 package com.ulearn.dao.form;
 
+import com.sun.org.glassfish.gmbal.Description;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -19,6 +20,9 @@ public class CommentQuestionForm {
     @NotNull(message = "问题ID不能为空")
     private Long questionId;
 
-    @NotBlank(message = "回答不能为空")
+    @NotBlank(message = "评论不能为空")
     private String content;
+
+    @Schema(description = "回复的用户ID, 默认为空")
+    private Long replyId;
 }
