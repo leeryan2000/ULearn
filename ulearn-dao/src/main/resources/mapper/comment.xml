@@ -34,4 +34,36 @@
     <select id="getAnswerCommentById">
         SELECT * FROM u_answer_comment WHERE `id` = #{commentId}
     </select>
+
+    <select id="getFollowedQuestionCommentByCommentId">
+        SELECT
+            q.id AS questionId,
+            q.title AS questionTitle,
+            c.id AS commentId,
+            c.content AS commentContent,
+            c.createTime AS commentCreateTime
+        FROM
+            u_question_comment c
+            JOIN
+            u_question q
+            ON c.questionId = q.id
+        WHERE
+            c.id = #{commentId}
+    </select>
+
+    <select id="getFollowedAnswerCommentByCommentId">
+        SELECT
+            a.id AS answerId,
+            a.content AS answerContent,
+            c.id AS commentId,
+            c.content AS commentContent,
+            c.createTime AS commentCreateTime
+        FROM
+            u_answer_comment c
+                JOIN
+            u_answer a
+            ON c.answerId = a.id
+        WHERE
+            c.id = #{commentId}
+    </select>
 </mapper>

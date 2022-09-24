@@ -7,7 +7,11 @@ package com.ulearn.dao.constant;
  */
 public class MessageConstant {
 
+    public static final String MESSAGE_PROPERTY_NAME = "type";
+
     public static final String FOLLOWED_QUESTION_ANSWER = "FOLLOWED_QUESTION_ANSWER";
 
+    public static final String FOLLOWED_QUESTION_COMMENT = "FOLLOWED_QUESTION_COMMENT";
 
+    public static final String FOLLOWED_ANSWER_COMMENT = "FOLLOWED_QUESTION_COMMENT";
 }

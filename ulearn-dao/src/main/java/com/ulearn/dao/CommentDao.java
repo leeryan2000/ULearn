@@ -6,6 +6,8 @@ import com.ulearn.dao.domain.QuestionComment;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
+
 /**
  * @Author: Ryan
  * @Description:
@@ -22,4 +24,8 @@ public interface CommentDao {
     Integer addAnswerComment(AnswerComment answerComment);
 
     Answer getAnswerCommentById(@Param("commentId") Long commentId);
+
+    HashMap getFollowedQuestionCommentByCommentId(@Param("commentId") Long commentId);
+
+    HashMap getFollowedAnswerCommentByCommentId(@Param("commentId") Long commentId);
 }

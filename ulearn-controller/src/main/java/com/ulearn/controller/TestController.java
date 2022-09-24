@@ -5,7 +5,6 @@ import com.ulearn.controller.response.JsonResponse;
 import com.ulearn.dao.FollowDao;
 import com.ulearn.dao.constant.PostMQConstant;
 import com.ulearn.service.util.RocketMQUtil;
-import io.swagger.v3.core.util.Json;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +50,7 @@ public class TestController {
         String tmp;
         for(int i = 0; i < 10; i++) {
             tmp = i + "";
-            Message msg = new Message(PostMQConstant.POST_QUESTION_TOPIC, tmp.getBytes());
+            Message msg = new Message(PostMQConstant.FOLLOW_MESSAGE_TOPIC, tmp.getBytes());
             RocketMQUtil.syncSendMsg(producer, msg);
         }
 

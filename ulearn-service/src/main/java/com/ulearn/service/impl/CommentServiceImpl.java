@@ -1,19 +1,20 @@
 package com.ulearn.service.impl;
 
 import com.ulearn.dao.CommentDao;
-import com.ulearn.dao.domain.Answer;
 import com.ulearn.dao.domain.AnswerComment;
 import com.ulearn.dao.domain.QuestionComment;
-import com.ulearn.dao.error.CommonError;
 import com.ulearn.dao.error.CommonOperationError;
 import com.ulearn.dao.error.CommonRuntimeException;
 import com.ulearn.dao.form.CommentAnswerForm;
 import com.ulearn.dao.form.CommentQuestionForm;
 import com.ulearn.service.CommentService;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * @Author: Ryan
@@ -23,6 +24,8 @@ import java.util.Date;
 
 @Service
 public class CommentServiceImpl implements CommentService {
+
+    private final ApplicationContext applicationContext;
 
     private final CommentDao commentDao;
 
@@ -40,7 +43,10 @@ public class CommentServiceImpl implements CommentService {
             throw new CommonRuntimeException(CommonOperationError.COMMENT_FAILED);
         }
 
+        HashMap message = commentDao.getFollowedQuestionCommentByCommentId(questionComment.getId());
 
+
+        DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("followMessageProducer");
     }
 
     @Override
@@ -59,7 +65,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Autowired
-    public CommentServiceImpl(CommentDao commentDao) {
+    public CommentServiceImpl(ApplicationContext applicationContext, CommentDao commentDao) {
+        this.applicationContext = applicationContext;
         this.commentDao = commentDao;
     }
 }

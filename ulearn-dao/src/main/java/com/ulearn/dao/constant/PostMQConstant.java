@@ -7,7 +7,7 @@ package com.ulearn.dao.constant;
  */
 public class PostMQConstant {
 
-    public static final String POST_QUESTION_GROUP = "POST_QUESTION_GROUP";
+    public static final String MESSAGE_GROUP = "MESSAGE_GROUP";
 
-    public static final String POST_QUESTION_TOPIC = "POST_QUESTION_TOPIC";
+    public static final String FOLLOW_MESSAGE_TOPIC = "FOLLOW_MESSAGE_TOPIC";
 }

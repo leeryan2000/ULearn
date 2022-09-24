@@ -52,13 +52,13 @@ public class AnswerServiceImpl implements AnswerService {
         // 获取数据
         HashMap message = followDao.getFollowedQuestionAnswerByAnswerId(answer.getId());
         // 设置消息类型
-        message.put("type", MessageConstant.FOLLOWED_QUESTION_ANSWER);
+        message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.FOLLOWED_QUESTION_ANSWER);
 
         // 通过消息队列给追踪的用户发送提醒
-        DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("answerMessageProducer");
+        DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("followMessageProducer");
         String messageJsonStr = JSONUtil.toJsonStr(message);
-        Message msg = new Message(PostMQConstant.POST_QUESTION_TOPIC, messageJsonStr.getBytes());
-        RocketMQUtil.asyncSendMsg(producer, msg);
+        Message msg = new Message(PostMQConstant.FOLLOW_MESSAGE_TOPIC, messageJsonStr.getBytes());
+        RocketMQUtil.syncSendMsg(producer, msg);
     }
 
     @Autowired
