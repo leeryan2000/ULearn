@@ -11,7 +11,7 @@ import com.ulearn.dao.form.CommentQuestionForm;
 
 public interface CommentService {
 
-    void addQuestionComment(Long userId, CommentQuestionForm form);
+    void addQuestionComment(Long userId, CommentQuestionForm form) throws Exception;
 
     void addAnswerComment(Long userId, CommentAnswerForm form);
 }

@@ -13,5 +13,5 @@ public class MessageConstant {
 
     public static final String FOLLOWED_QUESTION_COMMENT = "FOLLOWED_QUESTION_COMMENT";
 
-    public static final String FOLLOWED_ANSWER_COMMENT = "FOLLOWED_QUESTION_COMMENT";
+    public static final String FOLLOWED_ANSWER_COMMENT = "FOLLOWED_ANSWER_COMMENT";
 }

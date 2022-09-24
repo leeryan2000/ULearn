@@ -30,5 +30,7 @@ public interface FollowDao {
 
     List<Long> getQuestionFollowerByQuestionId(@Param("questionId") Long questionId);
 
+    List<Long> getAnswerFollowerByAnswerId(@Param("answerId") Long answerId);
+
     HashMap getFollowedQuestionAnswerByAnswerId(@Param("answerId") Long answerId);
 }

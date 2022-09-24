@@ -72,8 +72,12 @@ public class PostMQConfig {
 
                 // 查看消息的类别, 查找对应关注用户
                 List<Long> followerIds = new ArrayList<>();
-                if (message.get(MessageConstant.MESSAGE_PROPERTY_NAME).equals(MessageConstant.FOLLOWED_QUESTION_ANSWER)) {
+                String type = message.get(MessageConstant.MESSAGE_PROPERTY_NAME).toString();
+                if (MessageConstant.FOLLOWED_QUESTION_ANSWER.equals(type) || MessageConstant.FOLLOWED_QUESTION_COMMENT.equals(type)) {
                     followerIds = followDao.getQuestionFollowerByQuestionId(Long.valueOf(message.get("questionId").toString()));
+                }
+                else if (MessageConstant.FOLLOWED_ANSWER_COMMENT.equals(type)) {
+                    followerIds = followDao.getAnswerFollowerByAnswerId(Long.valueOf(message.get("answerId").toString()));
                 }
 
                 // 获取redis中的消息, 并添加新数据

@@ -1,6 +1,9 @@
 package com.ulearn.service.impl;
 
+import cn.hutool.json.JSONUtil;
 import com.ulearn.dao.CommentDao;
+import com.ulearn.dao.constant.MessageConstant;
+import com.ulearn.dao.constant.PostMQConstant;
 import com.ulearn.dao.domain.AnswerComment;
 import com.ulearn.dao.domain.QuestionComment;
 import com.ulearn.dao.error.CommonOperationError;
@@ -8,7 +11,9 @@ import com.ulearn.dao.error.CommonRuntimeException;
 import com.ulearn.dao.form.CommentAnswerForm;
 import com.ulearn.dao.form.CommentQuestionForm;
 import com.ulearn.service.CommentService;
+import com.ulearn.service.util.RocketMQUtil;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -30,7 +35,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentDao commentDao;
 
     @Override
-    public void addQuestionComment(Long userId, CommentQuestionForm form) {
+    public void addQuestionComment(Long userId, CommentQuestionForm form) throws Exception {
         QuestionComment questionComment = new QuestionComment();
         questionComment.setQuestionId(form.getQuestionId());
         questionComment.setUserId(userId);
@@ -43,10 +48,16 @@ public class CommentServiceImpl implements CommentService {
             throw new CommonRuntimeException(CommonOperationError.COMMENT_FAILED);
         }
 
+        // 获取数据
         HashMap message = commentDao.getFollowedQuestionCommentByCommentId(questionComment.getId());
+        // 设置消息类型
+        message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.FOLLOWED_QUESTION_COMMENT);
 
-
+        // 通过消息队列给追踪的用户发送提醒
         DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("followMessageProducer");
+        String messageJsonStr = JSONUtil.toJsonStr(message);
+        Message msg = new Message(PostMQConstant.FOLLOW_MESSAGE_TOPIC, messageJsonStr.getBytes());
+        RocketMQUtil.syncSendMsg(producer, msg);
     }
 
     @Override
@@ -62,6 +73,13 @@ public class CommentServiceImpl implements CommentService {
         if (rows != 1) {
             throw new CommonRuntimeException(CommonOperationError.COMMENT_FAILED);
         }
+
+        // 获取数据
+
+        // 设置消息类型
+
+        // 通过消息队列给追踪的用户发送提醒
+
     }
 
     @Autowired
