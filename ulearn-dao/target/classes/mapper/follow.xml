@@ -35,6 +35,15 @@
             questionId = #{questionId}
     </select>
 
+    <select id="getAnswerFollowerByAnswerId" resultType="java.lang.Long">
+        SELECT
+            userId
+        FROM
+            u_answer_follow
+        WHERE
+            answerId = #{answerId}
+    </select>
+
     <select id="getFollowedQuestionAnswerByAnswerId" resultType="java.util.HashMap">
         SELECT
                q.id AS questionId,

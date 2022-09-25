@@ -110,7 +110,7 @@ public class PostController {
     @PostMapping("/comment-answer")
     @Operation(description = "添加回答评论")
     @SaCheckLogin
-    public JsonResponse answerQuestion(@Valid @RequestBody CommentAnswerForm form) {
+    public JsonResponse answerQuestion(@Valid @RequestBody CommentAnswerForm form) throws Exception {
         Long userId = StpUtil.getLoginIdAsLong();
         commentService.addAnswerComment(userId, form);
         return JsonResponse.ok();

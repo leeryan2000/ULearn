@@ -17,6 +17,7 @@ import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -35,6 +36,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentDao commentDao;
 
     @Override
+    @Transactional
     public void addQuestionComment(Long userId, CommentQuestionForm form) throws Exception {
         QuestionComment questionComment = new QuestionComment();
         questionComment.setQuestionId(form.getQuestionId());
@@ -61,7 +63,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void addAnswerComment(Long userId, CommentAnswerForm form) {
+    @Transactional
+    public void addAnswerComment(Long userId, CommentAnswerForm form) throws Exception {
         AnswerComment answerComment = new AnswerComment();
         answerComment.setAnswerId(form.getAnswerId());
         answerComment.setUserId(userId);
@@ -75,11 +78,15 @@ public class CommentServiceImpl implements CommentService {
         }
 
         // 获取数据
-
+        HashMap message = commentDao.getFollowedAnswerCommentByCommentId(answerComment.getId());
         // 设置消息类型
+        message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.FOLLOWED_ANSWER_COMMENT);
 
         // 通过消息队列给追踪的用户发送提醒
-
+        DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("followMessageProducer");
+        String messageJsonStr = JSONUtil.toJsonStr(message);
+        Message msg = new Message(PostMQConstant.FOLLOW_MESSAGE_TOPIC, messageJsonStr.getBytes());
+        RocketMQUtil.syncSendMsg(producer, msg);
     }
 
     @Autowired

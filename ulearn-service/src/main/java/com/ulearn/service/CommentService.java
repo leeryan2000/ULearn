@@ -13,5 +13,5 @@ public interface CommentService {
 
     void addQuestionComment(Long userId, CommentQuestionForm form) throws Exception;
 
-    void addAnswerComment(Long userId, CommentAnswerForm form);
+    void addAnswerComment(Long userId, CommentAnswerForm form) throws Exception;
 }

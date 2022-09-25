@@ -100,7 +100,7 @@ public class PostMQConfig {
                     redisTemplate.opsForValue().set(key, messageListStr);
                 }
 
-                log.info("消息成功推送, TYPE: {}, ID: {}", message.get(MessageConstant.MESSAGE_PROPERTY_NAME), message.get("answerId"));
+                log.info("消息成功推送, TYPE: {}", message.get(MessageConstant.MESSAGE_PROPERTY_NAME));
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
         });

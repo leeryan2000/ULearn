@@ -35,7 +35,7 @@
             questionId = #{questionId}
     </select>
 
-    <select id="getAnswerFollowerByQuestionId" resultType="java.lang.Long">
+    <select id="getAnswerFollowerByAnswerId" resultType="java.lang.Long">
         SELECT
             userId
         FROM
