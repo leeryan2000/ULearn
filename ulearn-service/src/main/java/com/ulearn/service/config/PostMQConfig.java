@@ -2,10 +2,12 @@ package com.ulearn.service.config;
 
 import cn.hutool.json.JSONUtil;
 import com.ulearn.dao.AnswerDao;
+import com.ulearn.dao.CommentDao;
 import com.ulearn.dao.FollowDao;
 import com.ulearn.dao.constant.MessageConstant;
 import com.ulearn.dao.constant.PostMQConstant;
 import com.ulearn.dao.domain.Answer;
+import com.ulearn.dao.domain.QuestionComment;
 import com.ulearn.service.util.MessageRedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
@@ -40,6 +42,8 @@ public class PostMQConfig {
     private final FollowDao followDao;
 
     private final AnswerDao answerDao;
+
+    private final CommentDao commentDao;
 
     private final MessageRedisUtil messageRedisUtil;
 
@@ -87,6 +91,46 @@ public class PostMQConfig {
                     messageRedisUtil.addMessageByUserId(followerId, message);
                 }
 
+                log.info("Answer消息成功推送, ID: {}", answer.getId());
+                return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+            }
+        });
+
+        consumer.start();
+
+        return consumer;
+    }
+
+    @Bean("questionCommentMessageConsumer")
+    public DefaultMQPushConsumer questionCommentMessageConsumer() throws MQClientException {
+        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(PostMQConstant.MESSAGE_GROUP);
+
+        consumer.setNamesrvAddr(namesrvAddr);
+
+        consumer.subscribe(PostMQConstant.QUESTION_COMMENT_MESSAGE_TOPIC, "*");
+
+        consumer.registerMessageListener(new MessageListenerConcurrently() {
+            @Override
+            public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
+                // 获取消息
+                MessageExt msg = list.get(0);
+                String messageJsonStr = new String(msg.getBody());
+
+                // 获取消息数据
+                QuestionComment questionComment = JSONUtil.toBean(messageJsonStr, QuestionComment.class);
+
+                // 给发布问题的用户发送新回答消息
+                HashMap message = commentDao.getQuestionCommentMessageById(questionComment.getId());
+                message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.QUESTION_COMMENT);
+                messageRedisUtil.addMessageByUserId(Long.valueOf(message.get("questionUserId").toString()), message);
+
+                // 获取redis中的消息, 并添加新数据
+                message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.FOLLOWED_QUESTION_COMMENT);
+                List<Long> followerIds = followDao.getQuestionFollowerByQuestionId(questionComment.getQuestionId());
+                for (Long followerId : followerIds) {
+                    messageRedisUtil.addMessageByUserId(followerId, message);
+                }
+
                 log.info("消息成功推送, TYPE: {}", message.get(MessageConstant.MESSAGE_PROPERTY_NAME));
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
@@ -98,9 +142,10 @@ public class PostMQConfig {
     }
 
     @Autowired
-    public PostMQConfig(FollowDao followDao, AnswerDao answerDao, MessageRedisUtil messageRedisUtil, RedisTemplate<String, String> redisTemplate) {
+    public PostMQConfig(FollowDao followDao, AnswerDao answerDao, CommentDao commentDao, MessageRedisUtil messageRedisUtil, RedisTemplate<String, String> redisTemplate) {
         this.followDao = followDao;
         this.answerDao = answerDao;
+        this.commentDao = commentDao;
         this.messageRedisUtil = messageRedisUtil;
         this.redisTemplate = redisTemplate;
     }

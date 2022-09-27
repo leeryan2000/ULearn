@@ -32,8 +32,6 @@ public class AnswerServiceImpl implements AnswerService {
 
     private final AnswerDao answerDao;
 
-    private final FollowDao followDao;
-
     private final ApplicationContext applicationContext;
 
     @Override
@@ -57,9 +55,8 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Autowired
-    public AnswerServiceImpl(AnswerDao answerDao, FollowDao followDao, ApplicationContext applicationContext) {
+    public AnswerServiceImpl(AnswerDao answerDao, ApplicationContext applicationContext) {
         this.answerDao = answerDao;
-        this.followDao = followDao;
         this.applicationContext = applicationContext;
     }
 }

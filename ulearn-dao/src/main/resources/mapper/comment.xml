@@ -35,10 +35,11 @@
         SELECT * FROM u_answer_comment WHERE `id` = #{commentId}
     </select>
 
-    <select id="getQuestionCommentByCommentId" resultType="java.util.HashMap">
+    <select id="getQuestionCommentMessageById" resultType="java.util.HashMap">
         SELECT
             q.id AS questionId,
             q.title AS questionTitle,
+            q.userId AS questionUserId,
             c.id AS commentId,
             c.content AS commentContent,
             c.createTime AS commentCreateTime
@@ -51,10 +52,11 @@
             c.id = #{commentId}
     </select>
 
-    <select id="getAnswerCommentByCommentId" resultType="java.util.HashMap">
+    <select id="getAnswerCommentMessageById" resultType="java.util.HashMap">
         SELECT
             a.id AS answerId,
             a.content AS answerContent,
+            a.userId AS answerUserId,
             c.id AS commentId,
             c.content AS commentContent,
             c.createTime AS commentCreateTime

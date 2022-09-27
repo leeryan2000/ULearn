@@ -43,14 +43,14 @@ public class TestController {
     @GetMapping("/produce")
     public JsonResponse produce() throws Exception {
 
-        DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("questionMessageProducer");
-
-        String tmp;
-        for(int i = 0; i < 10; i++) {
-            tmp = i + "";
-            Message msg = new Message(PostMQConstant.FOLLOW_POST_MESSAGE_TOPIC, tmp.getBytes());
-            RocketMQUtil.syncSendMsg(producer, msg);
-        }
+        // DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("questionMessageProducer");
+        //
+        // String tmp;
+        // for(int i = 0; i < 10; i++) {
+        //     tmp = i + "";
+        //     Message msg = new Message(PostMQConstant.FOLLOW_POST_MESSAGE_TOPIC, tmp.getBytes());
+        //     RocketMQUtil.syncSendMsg(producer, msg);
+        // }
 
         return JsonResponse.ok();
     }
