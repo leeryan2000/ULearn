@@ -35,7 +35,7 @@
         SELECT * FROM u_answer_comment WHERE `id` = #{commentId}
     </select>
 
-    <select id="getFollowedQuestionCommentByCommentId" resultType="java.util.HashMap">
+    <select id="getQuestionCommentByCommentId" resultType="java.util.HashMap">
         SELECT
             q.id AS questionId,
             q.title AS questionTitle,
@@ -51,7 +51,7 @@
             c.id = #{commentId}
     </select>
 
-    <select id="getFollowedAnswerCommentByCommentId" resultType="java.util.HashMap">
+    <select id="getAnswerCommentByCommentId" resultType="java.util.HashMap">
         SELECT
             a.id AS answerId,
             a.content AS answerContent,

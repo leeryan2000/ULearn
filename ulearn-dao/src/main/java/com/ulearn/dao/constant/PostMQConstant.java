@@ -9,5 +9,10 @@ public class PostMQConstant {
 
     public static final String MESSAGE_GROUP = "MESSAGE_GROUP";
 
-    public static final String FOLLOW_MESSAGE_TOPIC = "FOLLOW_MESSAGE_TOPIC";
+    public static final String ANSWER_MESSAGE_TOPIC = "ANSWER_MESSAGE_TOPIC";
+
+    public static final String FOLLOW_POST_MESSAGE_TOPIC = "FOLLOW_MESSAGE_TOPIC";
+
+
+    public static final String POST_MESSAGE_TOPIC = "POST_MESSAGE_TOPIC";
 }

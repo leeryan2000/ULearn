@@ -51,14 +51,14 @@ public class CommentServiceImpl implements CommentService {
         }
 
         // 获取数据
-        HashMap message = commentDao.getFollowedQuestionCommentByCommentId(questionComment.getId());
+        HashMap message = commentDao.getQuestionCommentByCommentId(questionComment.getId());
         // 设置消息类型
         message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.FOLLOWED_QUESTION_COMMENT);
 
         // 通过消息队列给追踪的用户发送提醒
-        DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("followMessageProducer");
+        DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("messageProducer");
         String messageJsonStr = JSONUtil.toJsonStr(message);
-        Message msg = new Message(PostMQConstant.FOLLOW_MESSAGE_TOPIC, messageJsonStr.getBytes());
+        Message msg = new Message(PostMQConstant.FOLLOW_POST_MESSAGE_TOPIC, messageJsonStr.getBytes());
         RocketMQUtil.syncSendMsg(producer, msg);
     }
 
@@ -78,14 +78,14 @@ public class CommentServiceImpl implements CommentService {
         }
 
         // 获取数据
-        HashMap message = commentDao.getFollowedAnswerCommentByCommentId(answerComment.getId());
+        HashMap message = commentDao.getAnswerCommentByCommentId(answerComment.getId());
         // 设置消息类型
         message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.FOLLOWED_ANSWER_COMMENT);
 
         // 通过消息队列给追踪的用户发送提醒
-        DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("followMessageProducer");
+        DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("messageProducer");
         String messageJsonStr = JSONUtil.toJsonStr(message);
-        Message msg = new Message(PostMQConstant.FOLLOW_MESSAGE_TOPIC, messageJsonStr.getBytes());
+        Message msg = new Message(PostMQConstant.FOLLOW_POST_MESSAGE_TOPIC, messageJsonStr.getBytes());
         RocketMQUtil.syncSendMsg(producer, msg);
     }
 

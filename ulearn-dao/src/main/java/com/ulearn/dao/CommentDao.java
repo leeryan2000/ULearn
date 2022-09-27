@@ -25,7 +25,7 @@ public interface CommentDao {
 
     Answer getAnswerCommentById(@Param("commentId") Long commentId);
 
-    HashMap getFollowedQuestionCommentByCommentId(@Param("commentId") Long commentId);
+    HashMap getQuestionCommentByCommentId(@Param("commentId") Long commentId);
 
-    HashMap getFollowedAnswerCommentByCommentId(@Param("commentId") Long commentId);
+    HashMap getAnswerCommentByCommentId(@Param("commentId") Long commentId);
 }

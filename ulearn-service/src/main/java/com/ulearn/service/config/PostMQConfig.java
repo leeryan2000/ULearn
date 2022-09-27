@@ -1,9 +1,12 @@
 package com.ulearn.service.config;
 
 import cn.hutool.json.JSONUtil;
+import com.ulearn.dao.AnswerDao;
 import com.ulearn.dao.FollowDao;
 import com.ulearn.dao.constant.MessageConstant;
 import com.ulearn.dao.constant.PostMQConstant;
+import com.ulearn.dao.domain.Answer;
+import com.ulearn.service.util.MessageRedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
@@ -18,7 +21,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,10 +39,14 @@ public class PostMQConfig {
 
     private final FollowDao followDao;
 
+    private final AnswerDao answerDao;
+
+    private final MessageRedisUtil messageRedisUtil;
+
     private final RedisTemplate<String, String> redisTemplate;
 
-    @Bean("followMessageProducer")
-    public DefaultMQProducer followMessageProducer() throws MQClientException {
+    @Bean("messageProducer")
+    public DefaultMQProducer messageProducer() throws MQClientException {
         // 初始化一个producer并设置Producer group name
         DefaultMQProducer producer = new DefaultMQProducer(PostMQConstant.MESSAGE_GROUP);
         // 设值NameServer地址
@@ -51,14 +57,13 @@ public class PostMQConfig {
         return producer;
     }
 
-    @Bean("followMessageConsumer")
-    public DefaultMQPushConsumer followMessageConsumer() throws MQClientException {
-        // 初始化一个consumer并设置
+    @Bean("answerMessageConsumer")
+    public DefaultMQPushConsumer answerMessageConsumer() throws MQClientException {
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(PostMQConstant.MESSAGE_GROUP);
 
         consumer.setNamesrvAddr(namesrvAddr);
 
-        consumer.subscribe(PostMQConstant.FOLLOW_MESSAGE_TOPIC, "*");
+        consumer.subscribe(PostMQConstant.ANSWER_MESSAGE_TOPIC, "*");
 
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
@@ -68,36 +73,18 @@ public class PostMQConfig {
                 String messageJsonStr = new String(msg.getBody());
 
                 // 获取消息数据
-                HashMap message = JSONUtil.toBean(messageJsonStr, HashMap.class);
+                Answer answer = JSONUtil.toBean(messageJsonStr, Answer.class);
 
-                // 查看消息的类别, 查找对应关注用户
-                List<Long> followerIds = new ArrayList<>();
-                String type = message.get(MessageConstant.MESSAGE_PROPERTY_NAME).toString();
-                if (MessageConstant.FOLLOWED_QUESTION_ANSWER.equals(type) || MessageConstant.FOLLOWED_QUESTION_COMMENT.equals(type)) {
-                    followerIds = followDao.getQuestionFollowerByQuestionId(Long.valueOf(message.get("questionId").toString()));
-                }
-                else if (MessageConstant.FOLLOWED_ANSWER_COMMENT.equals(type)) {
-                    followerIds = followDao.getAnswerFollowerByAnswerId(Long.valueOf(message.get("answerId").toString()));
-                }
+                // 给发布问题的用户发送新回答消息
+                HashMap message = answerDao.getQuestionAnswerByAnswerId(answer.getId());
+                message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.QUESTION_ANSWER);
+                messageRedisUtil.addMessageByUserId(Long.valueOf(message.get("questionUserId").toString()), message);
 
                 // 获取redis中的消息, 并添加新数据
-                List<HashMap> messageList;
+                message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.FOLLOWED_QUESTION_ANSWER);
+                List<Long> followerIds = followDao.getQuestionFollowerByQuestionId(answer.getQuestionId());
                 for (Long followerId : followerIds) {
-                    String key = "inbox_messages_" + followerId;
-                    String questionFollowerListStr = redisTemplate.opsForValue().get(key);
-
-                    if (questionFollowerListStr == null) {
-                        messageList = new ArrayList<>();
-                    }
-                    else {
-                        messageList = JSONUtil.parseArray(questionFollowerListStr).toList(HashMap.class);
-                    }
-
-                    messageList.add(message);
-
-                    String messageListStr = JSONUtil.toJsonStr(messageList);
-                    // 更新redis中的数据
-                    redisTemplate.opsForValue().set(key, messageListStr);
+                    messageRedisUtil.addMessageByUserId(followerId, message);
                 }
 
                 log.info("消息成功推送, TYPE: {}", message.get(MessageConstant.MESSAGE_PROPERTY_NAME));
@@ -111,8 +98,10 @@ public class PostMQConfig {
     }
 
     @Autowired
-    public PostMQConfig(FollowDao followDao, RedisTemplate<String, String> redisTemplate) {
+    public PostMQConfig(FollowDao followDao, AnswerDao answerDao, MessageRedisUtil messageRedisUtil, RedisTemplate<String, String> redisTemplate) {
         this.followDao = followDao;
+        this.answerDao = answerDao;
+        this.messageRedisUtil = messageRedisUtil;
         this.redisTemplate = redisTemplate;
     }
 }

@@ -37,8 +37,6 @@ public class TestController {
 
     @GetMapping("/sql")
     public JsonResponse testSql() {
-        HashMap followedQuestionAnswerByAnswerId = followDao.getFollowedQuestionAnswerByAnswerId(1L);
-        System.out.println(JSONUtil.toJsonStr(followedQuestionAnswerByAnswerId));
         return JsonResponse.ok();
     }
 
@@ -50,7 +48,7 @@ public class TestController {
         String tmp;
         for(int i = 0; i < 10; i++) {
             tmp = i + "";
-            Message msg = new Message(PostMQConstant.FOLLOW_MESSAGE_TOPIC, tmp.getBytes());
+            Message msg = new Message(PostMQConstant.FOLLOW_POST_MESSAGE_TOPIC, tmp.getBytes());
             RocketMQUtil.syncSendMsg(producer, msg);
         }
 
