@@ -2,7 +2,6 @@ package com.ulearn.service.impl;
 
 import cn.hutool.json.JSONUtil;
 import com.ulearn.dao.CommentDao;
-import com.ulearn.dao.constant.MessageConstant;
 import com.ulearn.dao.constant.PostMQConstant;
 import com.ulearn.dao.domain.AnswerComment;
 import com.ulearn.dao.domain.QuestionComment;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.HashMap;
 
 /**
  * @Author: Ryan
@@ -51,7 +49,7 @@ public class CommentServiceImpl implements CommentService {
         }
 
         // 通过消息队列给追踪的用户发送提醒
-        DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("messageProducer");
+        DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("questionCommentMessageProducer");
         String messageJsonStr = JSONUtil.toJsonStr(questionComment);
         Message msg = new Message(PostMQConstant.QUESTION_COMMENT_MESSAGE_TOPIC, messageJsonStr.getBytes());
         RocketMQUtil.syncSendMsg(producer, msg);
@@ -73,7 +71,7 @@ public class CommentServiceImpl implements CommentService {
         }
 
         // 通过消息队列给追踪的用户发送提醒
-        DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("messageProducer");
+        DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("answerCommentMessageProducer");
         String messageJsonStr = JSONUtil.toJsonStr(answerComment);
         Message msg = new Message(PostMQConstant.ANSWER_COMMENT_MESSAGE_TOPIC, messageJsonStr.getBytes());
         RocketMQUtil.syncSendMsg(producer, msg);
