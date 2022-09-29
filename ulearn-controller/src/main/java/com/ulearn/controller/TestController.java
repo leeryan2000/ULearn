@@ -82,6 +82,35 @@ public class TestController {
         return JsonResponse.ok();
     }
 
+    @GetMapping("/redisList")
+    public JsonResponse redisTestList() {
+        List<HashMap> list = new ArrayList<>();
+
+        HashMap map = new HashMap();
+        map.put("one", "test");
+        map.put("two", "test");
+        map.put("three", "test");
+
+        HashMap map1 = new HashMap();
+        map1.put("one", "test");
+        map1.put("two", "test");
+        map1.put("three", "test");
+
+        list.add(map);
+        list.add(map1);
+
+        redisTemplate.opsForValue().set("list", JSONUtil.toJsonStr(list));
+
+        HashMap map2 = new HashMap();
+        map2.put("one", "test");
+        map2.put("two", "test");
+        map2.put("three", "test");
+
+        redisTemplate.opsForList().leftPush("list", JSONUtil.toJsonStr(map2));
+
+        return JsonResponse.ok();
+    }
+
     @Autowired
     public TestController(ApplicationContext applicationContext, RedisTemplate<String, String> redisTemplate, FollowDao followDao) {
         this.applicationContext = applicationContext;

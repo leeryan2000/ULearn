@@ -20,7 +20,7 @@ public class MessageRedisUtil {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    public void addMessageByUserId(Long userId, HashMap message) {
+    public synchronized void addMessageByUserId(Long userId, HashMap message) {
         String key = "inbox_message_" + userId;
         String messageListStr = redisTemplate.opsForValue().get(key);
         List<HashMap> messageList;

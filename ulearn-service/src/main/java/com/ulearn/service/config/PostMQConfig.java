@@ -68,7 +68,7 @@ public class PostMQConfig {
 
         consumer.setNamesrvAddr(namesrvAddr);
 
-        consumer.subscribe(PostMQConstant.ANSWER_MESSAGE_TOPIC, "*");
+        consumer.subscribe(PostMQConstant.MESSAGE_TOPIC, PostMQConstant.ANSWER_MESSAGE_TAG);
 
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
@@ -120,7 +120,7 @@ public class PostMQConfig {
 
         consumer.setNamesrvAddr(namesrvAddr);
 
-        consumer.subscribe(PostMQConstant.QUESTION_COMMENT_MESSAGE_TOPIC, "*");
+        consumer.subscribe(PostMQConstant.MESSAGE_TOPIC, PostMQConstant.QUESTION_COMMENT_MESSAGE_TAG);
 
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
@@ -172,7 +172,7 @@ public class PostMQConfig {
 
         consumer.setNamesrvAddr(namesrvAddr);
 
-        consumer.subscribe(PostMQConstant.ANSWER_COMMENT_MESSAGE_TOPIC, "*");
+        consumer.subscribe(PostMQConstant.MESSAGE_TOPIC, PostMQConstant.ANSWER_COMMENT_MESSAGE_TAG);
 
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override

@@ -51,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
         // 通过消息队列给追踪的用户发送提醒
         DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("questionCommentMessageProducer");
         String messageJsonStr = JSONUtil.toJsonStr(questionComment);
-        Message msg = new Message(PostMQConstant.QUESTION_COMMENT_MESSAGE_TOPIC, messageJsonStr.getBytes());
+        Message msg = new Message(PostMQConstant.MESSAGE_TOPIC, PostMQConstant.QUESTION_COMMENT_MESSAGE_TAG, messageJsonStr.getBytes());
         RocketMQUtil.syncSendMsg(producer, msg);
     }
 
@@ -73,7 +73,7 @@ public class CommentServiceImpl implements CommentService {
         // 通过消息队列给追踪的用户发送提醒
         DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("answerCommentMessageProducer");
         String messageJsonStr = JSONUtil.toJsonStr(answerComment);
-        Message msg = new Message(PostMQConstant.ANSWER_COMMENT_MESSAGE_TOPIC, messageJsonStr.getBytes());
+        Message msg = new Message(PostMQConstant.MESSAGE_TOPIC, PostMQConstant.ANSWER_COMMENT_MESSAGE_TAG, messageJsonStr.getBytes());
         RocketMQUtil.syncSendMsg(producer, msg);
     }
 
