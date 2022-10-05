@@ -9,7 +9,7 @@ import com.ulearn.dao.constant.PostMQConstant;
 import com.ulearn.dao.domain.Answer;
 import com.ulearn.dao.domain.AnswerComment;
 import com.ulearn.dao.domain.QuestionComment;
-import com.ulearn.service.util.MessageRedisUtil;
+import com.ulearn.service.util.PostRedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
@@ -46,7 +46,7 @@ public class PostMQConfig {
 
     private final CommentDao commentDao;
 
-    private final MessageRedisUtil messageRedisUtil;
+    private final PostRedisUtil postRedisUtil;
 
     private final RedisTemplate<String, String> redisTemplate;
 
@@ -83,13 +83,13 @@ public class PostMQConfig {
                 // 给发布问题的用户发送新回答消息
                 HashMap message = answerDao.getQuestionAnswerByAnswerId(answer.getId());
                 message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.QUESTION_ANSWER);
-                messageRedisUtil.addMessageByUserId(Long.valueOf(message.get("questionUserId").toString()), message);
+                postRedisUtil.addMessageByUserId(Long.valueOf(message.get("questionUserId").toString()), message);
 
                 // 获取redis中的消息, 并添加新数据
                 message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.FOLLOWED_QUESTION_ANSWER);
                 List<Long> followerIds = followDao.getQuestionFollowerByQuestionId(answer.getQuestionId());
                 for (Long followerId : followerIds) {
-                    messageRedisUtil.addMessageByUserId(followerId, message);
+                    postRedisUtil.addMessageByUserId(followerId, message);
                 }
 
                 log.info("Answer 消息成功推送, ID: {}", answer.getId());
@@ -135,13 +135,13 @@ public class PostMQConfig {
                 // 给发布问题的用户发送新回答消息
                 HashMap message = commentDao.getQuestionCommentMessageById(questionComment.getId());
                 message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.QUESTION_COMMENT);
-                messageRedisUtil.addMessageByUserId(Long.valueOf(message.get("questionUserId").toString()), message);
+                postRedisUtil.addMessageByUserId(Long.valueOf(message.get("questionUserId").toString()), message);
 
                 // 获取redis中的消息, 并添加新数据
                 message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.FOLLOWED_QUESTION_COMMENT);
                 List<Long> followerIds = followDao.getQuestionFollowerByQuestionId(questionComment.getQuestionId());
                 for (Long followerId : followerIds) {
-                    messageRedisUtil.addMessageByUserId(followerId, message);
+                    postRedisUtil.addMessageByUserId(followerId, message);
                 }
 
                 log.info("Question comment 消息成功推送, ID: {}", questionComment.getId());
@@ -187,13 +187,13 @@ public class PostMQConfig {
                 // 给发布问题的用户发送新回答消息
                 HashMap message = commentDao.getAnswerCommentMessageById(answerComment.getId());
                 message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.ANSWER_COMMENT);
-                messageRedisUtil.addMessageByUserId(Long.valueOf(message.get("answerUserId").toString()), message);
+                postRedisUtil.addMessageByUserId(Long.valueOf(message.get("answerUserId").toString()), message);
 
                 // 获取redis中的消息, 并添加新数据
                 message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.FOLLOWED_ANSWER_COMMENT);
                 List<Long> followerIds = followDao.getAnswerFollowerByAnswerId(answerComment.getAnswerId());
                 for (Long followerId : followerIds) {
-                    messageRedisUtil.addMessageByUserId(followerId, message);
+                    postRedisUtil.addMessageByUserId(followerId, message);
                 }
 
                 log.info("Answer comment 消息成功推送, ID: {}", answerComment.getId());
@@ -207,11 +207,11 @@ public class PostMQConfig {
     }
 
     @Autowired
-    public PostMQConfig(FollowDao followDao, AnswerDao answerDao, CommentDao commentDao, MessageRedisUtil messageRedisUtil, RedisTemplate<String, String> redisTemplate) {
+    public PostMQConfig(FollowDao followDao, AnswerDao answerDao, CommentDao commentDao, PostRedisUtil postRedisUtil, RedisTemplate<String, String> redisTemplate) {
         this.followDao = followDao;
         this.answerDao = answerDao;
         this.commentDao = commentDao;
-        this.messageRedisUtil = messageRedisUtil;
+        this.postRedisUtil = postRedisUtil;
         this.redisTemplate = redisTemplate;
     }
 }

@@ -99,14 +99,20 @@ public class TestController {
         list.add(map);
         list.add(map1);
 
-        redisTemplate.opsForValue().set("list", JSONUtil.toJsonStr(list));
+        // redisTemplate.opsForValue().set("list", JSONUtil.toJsonStr(list));
 
         HashMap map2 = new HashMap();
         map2.put("one", "test");
         map2.put("two", "test");
         map2.put("three", "test");
 
-        redisTemplate.opsForList().leftPush("list", JSONUtil.toJsonStr(map2));
+        // redisTemplate.opsForList().leftPush("list", JSONUtil.toJsonStr(map2));
+
+        redisTemplate.opsForHash().put("hashMap", "map2", JSONUtil.toJsonStr(map2));
+
+        redisTemplate.opsForHash().put("hashMap", "map1", JSONUtil.toJsonStr(map1));
+
+
 
         return JsonResponse.ok();
     }

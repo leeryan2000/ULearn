@@ -1,5 +1,6 @@
 package com.ulearn.service.impl;
 
+import cn.hutool.json.JSONUtil;
 import com.ulearn.dao.AnswerDao;
 import com.ulearn.dao.QuestionDao;
 import com.ulearn.dao.VoteDao;
@@ -12,7 +13,9 @@ import com.ulearn.dao.error.CommonRuntimeException;
 import com.ulearn.dao.form.VoteAnswerForm;
 import com.ulearn.dao.form.VoteQuestionForm;
 import com.ulearn.service.VoteService;
+import com.ulearn.service.util.PostRedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -32,6 +35,8 @@ public class VoteServiceImpl implements VoteService {
 
     private final AnswerDao answerDao;
 
+    private final RedisTemplate<String, String> redisTemplate;
+
     @Override
     public void voteQuestion(Long userId, VoteQuestionForm form) {
         Question question = questionDao.getQuestionById(form.getQuestionId());
@@ -39,28 +44,35 @@ public class VoteServiceImpl implements VoteService {
             throw new CommonRuntimeException(CommonOperationError.QUESTION_DOESNT_EXIST);
         }
 
-        QuestionVote vote = voteDao.getQuestionVoteByUserIdAndQuestionId(userId, form.getQuestionId());
+        String key = "question_vote";
+        String fieldKey =  userId + "-" + form.getQuestionId();
+        String voteJsonStr = (String) redisTemplate.opsForHash().get(key, fieldKey);
+        QuestionVote vote = JSONUtil.parse(voteJsonStr).toBean(QuestionVote.class);
 
-        Integer rows;
+        boolean flag = false;
+        if (vote == null) {
+            vote = voteDao.getQuestionVoteByUserIdAndQuestionId(userId, form.getQuestionId());
+            flag = true;
+        }
+
         if (vote == null || vote.getStatus() != form.getStatus()) {
-            // Just delete the item from mysql, 防止重复添加
-            voteDao.deleteQuestionVoteByUserIdAndQuestionId(userId, form.getQuestionId());
+            // delete the item from MySQL if it exists to prevent from re insertion
+            if (flag) voteDao.deleteQuestionVoteByUserIdAndQuestionId(userId, form.getQuestionId());
+            redisTemplate.opsForHash().delete(key, fieldKey);
 
             vote = new QuestionVote();
             vote.setUserId(userId);
             vote.setQuestionId(form.getQuestionId());
             vote.setStatus(form.getStatus());
             vote.setCreateTime(new Date());
-            rows = voteDao.voteQuestion(vote);
-            if (rows != 1 ) {
-                throw new CommonRuntimeException(CommonOperationError.VOTE_FAILED);
-            }
+
+            // add to redis first, and use quartz schedule to store it into MySQL
+            redisTemplate.opsForHash().put(key, fieldKey, JSONUtil.toJsonStr(vote));
         }
         else {
-            rows = voteDao.deleteQuestionVoteByUserIdAndQuestionId(userId, form.getQuestionId());
-            if (rows != 1) {
-                throw new CommonRuntimeException(CommonOperationError.VOTE_DELETE_FAILED);
-            }
+            // 重新做相同决定的投票 (delete vote)
+            if (flag) voteDao.deleteQuestionVoteByUserIdAndQuestionId(userId, form.getQuestionId());
+            redisTemplate.opsForHash().delete(key, fieldKey);
         }
     }
 
@@ -71,36 +83,43 @@ public class VoteServiceImpl implements VoteService {
             throw new CommonRuntimeException(CommonOperationError.QUESTION_DOESNT_EXIST);
         }
 
-        AnswerVote vote = voteDao.getAnswerVoteByUserIdAndAnswerId(userId, form.getAnswerId());
+        String key = "question_vote";
+        String fieldKey =  userId + "-" + form.getAnswerId();
+        String voteJsonStr = (String) redisTemplate.opsForHash().get(key, fieldKey);
+        AnswerVote vote = JSONUtil.parse(voteJsonStr).toBean(AnswerVote.class);
 
-        Integer rows;
-        // 如果投票跟之前一样就等于删除投票
+        boolean flag = false;
+        if (vote == null) {
+            vote = voteDao.getAnswerVoteByUserIdAndAnswerId(userId, form.getAnswerId());
+            flag = true;
+        }
+
         if (vote == null || vote.getStatus() != form.getStatus()) {
-            // Just delete the item from mysql, 防止重复添加
-            voteDao.deleteAnswerVoteByUserIdAndAnswerId(userId, form.getAnswerId());
+            // delete the item from MySQL if it exists to prevent from re insertion
+            if (flag) voteDao.deleteAnswerVoteByUserIdAndAnswerId(userId, form.getAnswerId());
+            redisTemplate.opsForHash().delete(key, fieldKey);
 
             vote = new AnswerVote();
             vote.setUserId(userId);
             vote.setAnswerId(form.getAnswerId());
             vote.setStatus(form.getStatus());
             vote.setCreateTime(new Date());
-            rows = voteDao.voteAnswer(vote);
-            if (rows != 1 ) {
-                throw new CommonRuntimeException(CommonOperationError.VOTE_FAILED);
-            }
+
+            // add to redis first, and use quartz schedule to store it into MySQL
+            redisTemplate.opsForHash().put(key, fieldKey, JSONUtil.toJsonStr(vote));
         }
         else {
-            rows = voteDao.deleteAnswerVoteByUserIdAndAnswerId(userId, form.getAnswerId());
-            if (rows != 1) {
-                throw new CommonRuntimeException(CommonOperationError.VOTE_DELETE_FAILED);
-            }
+            // 重新做相同决定的投票 (delete vote)
+            if (flag) voteDao.deleteQuestionVoteByUserIdAndQuestionId(userId, form.getAnswerId());
+            redisTemplate.opsForHash().delete(key, fieldKey);
         }
     }
 
     @Autowired
-    public VoteServiceImpl(QuestionDao questionDao, VoteDao voteDao, AnswerDao answerDao) {
+    public VoteServiceImpl(QuestionDao questionDao, VoteDao voteDao, AnswerDao answerDao, RedisTemplate<String, String> redisTemplate) {
         this.questionDao = questionDao;
         this.voteDao = voteDao;
         this.answerDao = answerDao;
+        this.redisTemplate = redisTemplate;
     }
 }
