@@ -13,7 +13,6 @@ import com.ulearn.dao.error.CommonRuntimeException;
 import com.ulearn.dao.form.VoteAnswerForm;
 import com.ulearn.dao.form.VoteQuestionForm;
 import com.ulearn.service.VoteService;
-import com.ulearn.service.util.PostRedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -44,6 +43,7 @@ public class VoteServiceImpl implements VoteService {
             throw new CommonRuntimeException(CommonOperationError.QUESTION_DOESNT_EXIST);
         }
 
+        // Get the vote data from redis first
         String key = "question_vote";
         String fieldKey =  userId + "-" + form.getQuestionId();
         String voteJsonStr = (String) redisTemplate.opsForHash().get(key, fieldKey);
@@ -52,6 +52,7 @@ public class VoteServiceImpl implements VoteService {
         boolean flag = false;
         if (vote == null) {
             vote = voteDao.getQuestionVoteByUserIdAndQuestionId(userId, form.getQuestionId());
+            // Set flag to true, if there are no vote data in the database
             flag = true;
         }
 
@@ -83,7 +84,8 @@ public class VoteServiceImpl implements VoteService {
             throw new CommonRuntimeException(CommonOperationError.QUESTION_DOESNT_EXIST);
         }
 
-        String key = "question_vote";
+        // Get the vote data from redis first
+        String key = "answer_vote";
         String fieldKey =  userId + "-" + form.getAnswerId();
         String voteJsonStr = (String) redisTemplate.opsForHash().get(key, fieldKey);
         AnswerVote vote = JSONUtil.parse(voteJsonStr).toBean(AnswerVote.class);
@@ -91,6 +93,7 @@ public class VoteServiceImpl implements VoteService {
         boolean flag = false;
         if (vote == null) {
             vote = voteDao.getAnswerVoteByUserIdAndAnswerId(userId, form.getAnswerId());
+            // Set flag to true, if there are no vote data in the database
             flag = true;
         }
 
@@ -110,7 +113,7 @@ public class VoteServiceImpl implements VoteService {
         }
         else {
             // 重新做相同决定的投票 (delete vote)
-            if (flag) voteDao.deleteQuestionVoteByUserIdAndQuestionId(userId, form.getAnswerId());
+            if (flag) voteDao.deleteAnswerVoteByUserIdAndAnswerId(userId, form.getAnswerId());
             redisTemplate.opsForHash().delete(key, fieldKey);
         }
     }

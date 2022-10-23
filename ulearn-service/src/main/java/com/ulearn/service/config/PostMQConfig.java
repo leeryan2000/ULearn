@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +47,7 @@ public class PostMQConfig {
 
     private final PostRedisUtil postRedisUtil;
 
-    private final RedisTemplate<String, String> redisTemplate;
+    // *****将producer重构为只有一个 MessageProducer
 
     @Bean("answerMessageProducer")
     public DefaultMQProducer answerMessageProducer() throws MQClientException {
@@ -207,11 +206,10 @@ public class PostMQConfig {
     }
 
     @Autowired
-    public PostMQConfig(FollowDao followDao, AnswerDao answerDao, CommentDao commentDao, PostRedisUtil postRedisUtil, RedisTemplate<String, String> redisTemplate) {
+    public PostMQConfig(FollowDao followDao, AnswerDao answerDao, CommentDao commentDao, PostRedisUtil postRedisUtil) {
         this.followDao = followDao;
         this.answerDao = answerDao;
         this.commentDao = commentDao;
         this.postRedisUtil = postRedisUtil;
-        this.redisTemplate = redisTemplate;
     }
 }

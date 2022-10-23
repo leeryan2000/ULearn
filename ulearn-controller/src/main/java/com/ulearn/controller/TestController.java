@@ -117,6 +117,26 @@ public class TestController {
         return JsonResponse.ok();
     }
 
+    @GetMapping("/sendMessage1")
+    public JsonResponse sendMessage1() throws Exception {
+
+        DefaultMQProducer test_producer_1 = (DefaultMQProducer) applicationContext.getBean("TEST_PRODUCER");
+        Message message = new Message("TEST_TOPIC_1", JSONUtil.toJsonStr("HI").getBytes());
+        RocketMQUtil.syncSendMsg(test_producer_1, message);
+
+        return JsonResponse.ok();
+    }
+
+    @GetMapping("/sendMessage2")
+    public JsonResponse sendMessage2() throws Exception {
+
+        DefaultMQProducer test_producer_2 = (DefaultMQProducer) applicationContext.getBean("TEST_PRODUCER");
+        Message message = new Message("TEST_TOPIC_2", JSONUtil.toJsonStr("HI").getBytes());
+        RocketMQUtil.syncSendMsg(test_producer_2, message);
+
+        return JsonResponse.ok();
+    }
+
     @Autowired
     public TestController(ApplicationContext applicationContext, RedisTemplate<String, String> redisTemplate, FollowDao followDao) {
         this.applicationContext = applicationContext;
@@ -124,3 +144,5 @@ public class TestController {
         this.followDao = followDao;
     }
 }
+
+

@@ -1,14 +1,10 @@
 package com.ulearn.service.util;
 
 import cn.hutool.json.JSONUtil;
-import com.ulearn.dao.domain.QuestionVote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @Author: Ryan

@@ -44,3 +44,4 @@
 * Elastic Search 做全局查询
 * Nginx 反向代理, 服务器负载均衡
 
+* Docker 容器
