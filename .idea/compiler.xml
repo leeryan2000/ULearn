@@ -7,9 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ulearn-controller" />
-        <module name="ulearn-service" />
-        <module name="ulearn-dao" />
+        <module name="ulearn" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

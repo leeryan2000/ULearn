@@ -3,9 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/ulearn.iml" filepath="$PROJECT_DIR$/.idea/ulearn.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ulearn-controller/ulearn-controller.iml" filepath="$PROJECT_DIR$/ulearn-controller/ulearn-controller.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ulearn-dao/ulearn-dao.iml" filepath="$PROJECT_DIR$/ulearn-dao/ulearn-dao.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ulearn-service/ulearn-service.iml" filepath="$PROJECT_DIR$/ulearn-service/ulearn-service.iml" />
     </modules>
   </component>
 </project>
