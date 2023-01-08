@@ -27,7 +27,7 @@ public class HelloJob extends QuartzJobBean {
 
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-        // get parameters
+        // Show the detail of the job
         context.getJobDetail().getJobDataMap().forEach(
                 (k, v) -> log.info("param, key:{}, value:{}", k, v)
         );

@@ -47,12 +47,11 @@ public class PostMQConfig {
 
     private final PostRedisUtil postRedisUtil;
 
-    // *****将producer重构为只有一个 MessageProducer
 
-    @Bean("answerMessageProducer")
-    public DefaultMQProducer answerMessageProducer() throws MQClientException {
+    @Bean("messageProducer")
+    public DefaultMQProducer messageProducer() throws MQClientException {
         // 初始化一个producer并设置Producer group name
-        DefaultMQProducer producer = new DefaultMQProducer(PostMQConstant.ANSWER_MESSAGE_GROUP);
+        DefaultMQProducer producer = new DefaultMQProducer(PostMQConstant.MESSAGE_GROUP);
         // 设值NameServer地址
         producer.setNamesrvAddr(namesrvAddr);
         // 启动producer
@@ -101,17 +100,6 @@ public class PostMQConfig {
         return consumer;
     }
 
-    @Bean("questionCommentMessageProducer")
-    public DefaultMQProducer questionCommentMessageProducer() throws MQClientException {
-        // 初始化一个producer并设置Producer group name
-        DefaultMQProducer producer = new DefaultMQProducer(PostMQConstant.QUESTION_COMMENT_MESSAGE_GROUP);
-        // 设值NameServer地址
-        producer.setNamesrvAddr(namesrvAddr);
-        // 启动producer
-        producer.start();
-
-        return producer;
-    }
 
     @Bean("questionCommentMessageConsumer")
     public DefaultMQPushConsumer questionCommentMessageConsumer() throws MQClientException {
@@ -151,18 +139,6 @@ public class PostMQConfig {
         consumer.start();
 
         return consumer;
-    }
-
-    @Bean("answerCommentMessageProducer")
-    public DefaultMQProducer answerCommentMessageProducer() throws MQClientException {
-        // 初始化一个producer并设置Producer group name
-        DefaultMQProducer producer = new DefaultMQProducer(PostMQConstant.ANSWER_COMMENT_MESSAGE_GROUP);
-        // 设值NameServer地址
-        producer.setNamesrvAddr(namesrvAddr);
-        // 启动producer
-        producer.start();
-
-        return producer;
     }
 
     @Bean("answerCommentMessageConsumer")

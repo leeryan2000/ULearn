@@ -62,6 +62,14 @@ public class PostController {
         return JsonResponse.ok();
     }
 
+    @PostMapping("vote-test")
+    @Operation(description = "test")
+    @SaCheckLogin
+    public JsonResponse voteTest() {
+        voteService.voteQuestionToDatabase();
+        return JsonResponse.ok();
+    }
+
     @PostMapping("/vote-answer")
     @Operation(description = "回答投票")
     @SaCheckLogin

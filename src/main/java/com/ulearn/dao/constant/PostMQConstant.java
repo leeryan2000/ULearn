@@ -11,6 +11,8 @@ public class PostMQConstant {
 
     public static final String MESSAGE_TOPIC = "MESSAGE_TOPIC";
 
+    public static final String MESSAGE_GROUP = "MESSAGE_GROUP";
+
     public static final String QUESTION_COMMENT_MESSAGE_GROUP = "QUESTION_COMMENT_MESSAGE_GROUP";
 
     public static final String ANSWER_COMMENT_MESSAGE_GROUP = "ANSWER_COMMENT_MESSAGE_GROUP";

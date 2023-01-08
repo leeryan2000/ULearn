@@ -13,4 +13,8 @@ public interface VoteService {
     void voteQuestion(Long userId, VoteQuestionForm form);
 
     void voteAnswer(Long userId, VoteAnswerForm form);
+
+    void voteQuestionToDatabase();
+
+    void voteAnswerToDatabase();
 }

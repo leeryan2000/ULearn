@@ -18,6 +18,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @Author: Ryan
@@ -46,35 +48,19 @@ public class VoteServiceImpl implements VoteService {
         // Get the vote data from redis first
         String key = "question_vote";
         String fieldKey =  userId + "-" + form.getQuestionId();
-        String voteJsonStr = (String) redisTemplate.opsForHash().get(key, fieldKey);
-        QuestionVote vote = JSONUtil.parse(voteJsonStr).toBean(QuestionVote.class);
 
-        boolean flag = false;
-        if (vote == null) {
-            vote = voteDao.getQuestionVoteByUserIdAndQuestionId(userId, form.getQuestionId());
-            // Set flag to true, if there are no vote data in the database
-            flag = true;
-        }
+        // delete the item from MySQL if it exists to prevent from reinsertion
+        voteDao.deleteQuestionVoteByUserIdAndQuestionId(userId, form.getQuestionId());
+        redisTemplate.opsForHash().delete(key, fieldKey);
 
-        if (vote == null || vote.getStatus() != form.getStatus()) {
-            // delete the item from MySQL if it exists to prevent from re insertion
-            if (flag) voteDao.deleteQuestionVoteByUserIdAndQuestionId(userId, form.getQuestionId());
-            redisTemplate.opsForHash().delete(key, fieldKey);
+        QuestionVote vote = new QuestionVote();
+        vote.setUserId(userId);
+        vote.setQuestionId(form.getQuestionId());
+        vote.setStatus(form.getStatus());
+        vote.setCreateTime(new Date());
 
-            vote = new QuestionVote();
-            vote.setUserId(userId);
-            vote.setQuestionId(form.getQuestionId());
-            vote.setStatus(form.getStatus());
-            vote.setCreateTime(new Date());
-
-            // add to redis first, and use quartz schedule to store it into MySQL
-            redisTemplate.opsForHash().put(key, fieldKey, JSONUtil.toJsonStr(vote));
-        }
-        else {
-            // 重新做相同决定的投票 (delete vote)
-            if (flag) voteDao.deleteQuestionVoteByUserIdAndQuestionId(userId, form.getQuestionId());
-            redisTemplate.opsForHash().delete(key, fieldKey);
-        }
+        // add to redis first, and use quartz schedule to store it into MySQL
+        redisTemplate.opsForHash().put(key, fieldKey, JSONUtil.toJsonStr(vote));
     }
 
     @Override
@@ -87,35 +73,45 @@ public class VoteServiceImpl implements VoteService {
         // Get the vote data from redis first
         String key = "answer_vote";
         String fieldKey =  userId + "-" + form.getAnswerId();
-        String voteJsonStr = (String) redisTemplate.opsForHash().get(key, fieldKey);
-        AnswerVote vote = JSONUtil.parse(voteJsonStr).toBean(AnswerVote.class);
 
-        boolean flag = false;
-        if (vote == null) {
-            vote = voteDao.getAnswerVoteByUserIdAndAnswerId(userId, form.getAnswerId());
-            // Set flag to true, if there are no vote data in the database
-            flag = true;
+        // delete the item from MySQL if it exists to prevent from reinsertion
+        voteDao.deleteAnswerVoteByUserIdAndAnswerId(userId, form.getAnswerId());
+        redisTemplate.opsForHash().delete(key, fieldKey);
+
+        AnswerVote vote = new AnswerVote();
+        vote.setUserId(userId);
+        vote.setAnswerId(form.getAnswerId());
+        vote.setStatus(form.getStatus());
+        vote.setCreateTime(new Date());
+
+        // add to redis first, and use quartz schedule to store it into MySQL
+        redisTemplate.opsForHash().put(key, fieldKey, JSONUtil.toJsonStr(vote));
+
+    }
+
+    @Override
+    public void voteQuestionToDatabase() {
+        Set<Object> keys = redisTemplate.opsForHash().keys("question_vote");
+        List<Object> question_vote = redisTemplate.opsForHash().multiGet("question_vote", keys);
+
+        for(Object obj : question_vote) {
+            QuestionVote vote = JSONUtil.parse(obj).toBean(QuestionVote.class);
+            // Get the vote from database, delete it if exists to prevent reinsertion
+            QuestionVote voteInDb = voteDao.getQuestionVoteByUserIdAndQuestionId(vote.getUserId(), vote.getQuestionId());
+            if (voteInDb != null) {
+                // delete the data in the database if it exists
+                voteDao.deleteQuestionVoteByUserIdAndQuestionId(vote.getUserId(), vote.getQuestionId());
+            }
+            voteDao.voteQuestion(vote);
         }
 
-        if (vote == null || vote.getStatus() != form.getStatus()) {
-            // delete the item from MySQL if it exists to prevent from re insertion
-            if (flag) voteDao.deleteAnswerVoteByUserIdAndAnswerId(userId, form.getAnswerId());
-            redisTemplate.opsForHash().delete(key, fieldKey);
+        // Delete all the keys in the hash set
+        redisTemplate.delete("question_vote");
+    }
 
-            vote = new AnswerVote();
-            vote.setUserId(userId);
-            vote.setAnswerId(form.getAnswerId());
-            vote.setStatus(form.getStatus());
-            vote.setCreateTime(new Date());
+    @Override
+    public void voteAnswerToDatabase() {
 
-            // add to redis first, and use quartz schedule to store it into MySQL
-            redisTemplate.opsForHash().put(key, fieldKey, JSONUtil.toJsonStr(vote));
-        }
-        else {
-            // 重新做相同决定的投票 (delete vote)
-            if (flag) voteDao.deleteAnswerVoteByUserIdAndAnswerId(userId, form.getAnswerId());
-            redisTemplate.opsForHash().delete(key, fieldKey);
-        }
     }
 
     @Autowired

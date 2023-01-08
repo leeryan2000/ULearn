@@ -45,7 +45,7 @@ public class AnswerServiceImpl implements AnswerService {
         }
 
         // 通过消息队列给追踪的用户发送提醒
-        DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("answerMessageProducer");
+        DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("messageProducer");
         String messageJsonStr = JSONUtil.toJsonStr(answer);
         Message msg = new Message(PostMQConstant.MESSAGE_TOPIC, PostMQConstant.ANSWER_MESSAGE_TAG, messageJsonStr.getBytes());
         RocketMQUtil.syncSendMsg(producer, msg);
