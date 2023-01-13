@@ -25,6 +25,8 @@ public class HelloJob extends QuartzJobBean {
         this.redisTemplate = redisTemplate;
     }
 
+
+
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         // Show the detail of the job
