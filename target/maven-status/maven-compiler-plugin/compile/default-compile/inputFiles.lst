@@ -35,7 +35,6 @@ F:\Project\ulearn\src\main\java\com\ulearn\service\AnswerService.java
 F:\Project\ulearn\src\main\java\com\ulearn\service\impl\VoteServiceImpl.java
 F:\Project\ulearn\src\main\java\com\ulearn\dao\domain\BookmarkGroup.java
 F:\Project\ulearn\src\main\java\com\ulearn\dao\AnswerDao.java
-F:\Project\ulearn\src\main\java\com\ulearn\service\impl\HelloJob.java
 F:\Project\ulearn\src\main\java\com\ulearn\dao\UserDao.java
 F:\Project\ulearn\src\main\java\com\ulearn\dao\form\FollowAnswerForm.java
 F:\Project\ulearn\src\main\java\com\ulearn\dao\domain\User.java
@@ -61,6 +60,7 @@ F:\Project\ulearn\src\main\java\com\ulearn\dao\domain\Question.java
 F:\Project\ulearn\src\main\java\com\ulearn\service\BookmarkService.java
 F:\Project\ulearn\src\main\java\com\ulearn\dao\constant\PostMQConstant.java
 F:\Project\ulearn\src\main\java\com\ulearn\service\config\QuartzConfig.java
+F:\Project\ulearn\src\main\java\com\ulearn\service\impl\VoteJob.java
 F:\Project\ulearn\src\main\java\com\ulearn\dao\form\UserLoginForm.java
 F:\Project\ulearn\src\main\java\com\ulearn\dao\domain\QuestionFollow.java
 F:\Project\ulearn\src\main\java\com\ulearn\dao\form\VoteQuestionForm.java
