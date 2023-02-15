@@ -94,6 +94,7 @@ public class VoteServiceImpl implements VoteService {
         Set<Object> keys = redisTemplate.opsForHash().keys("question_vote");
         List<Object> question_vote = redisTemplate.opsForHash().multiGet("question_vote", keys);
 
+
         for(Object obj : question_vote) {
             QuestionVote vote = JSONUtil.parse(obj).toBean(QuestionVote.class);
             // Get the vote from database, delete it if exists to prevent reinsertion
@@ -102,7 +103,7 @@ public class VoteServiceImpl implements VoteService {
                 // delete the data in the database if it exists
                 voteDao.deleteQuestionVoteByUserIdAndQuestionId(vote.getUserId(), vote.getQuestionId());
             }
-            voteDao.voteQuestion(vote);
+            voteDao.insertVoteQuestion(vote);
         }
 
         // Delete all the keys in the hash set

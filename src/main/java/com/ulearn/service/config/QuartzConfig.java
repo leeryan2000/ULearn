@@ -52,8 +52,8 @@ public class QuartzConfig {
 
     @Bean
     public Trigger voteJobTrigger() {
-        // 设置定时时间 ()
-        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule("0 0/1 * * * ?");
+        // 设置定时时间 (execute every 2 hours)
+        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule("0 0 0/2 * * ?");
         return TriggerBuilder.newTrigger()
                 .forJob(voteJobDetail())
                 .withIdentity("voteJobTrigger")

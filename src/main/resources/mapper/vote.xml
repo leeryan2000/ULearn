@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ulearn.dao.VoteDao">
 
-    <insert id="voteQuestion" parameterType="com.ulearn.dao.domain.QuestionVote">
+    <insert id="insertVoteQuestion" parameterType="com.ulearn.dao.domain.QuestionVote">
         INSERT INTO u_question_vote(`userId`,
                                     `questionId`,
                                     `status`,
@@ -21,7 +21,7 @@
         DELETE FROM u_question_vote WHERE userId = #{userId} AND questionId = #{questionId}
     </delete>
 
-    <insert id="voteAnswer" parameterType="com.ulearn.dao.domain.AnswerVote">
+    <insert id="insertVoteAnswer" parameterType="com.ulearn.dao.domain.AnswerVote">
         INSERT INTO u_answer_vote(`userId`,
                                   `answerId`,
                                   `status`,

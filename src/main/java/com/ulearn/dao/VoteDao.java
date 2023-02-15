@@ -14,13 +14,13 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface VoteDao {
 
-    Integer voteQuestion(QuestionVote vote);
+    Integer insertVoteQuestion(QuestionVote vote);
 
     QuestionVote getQuestionVoteByUserIdAndQuestionId(@Param("userId") Long userId, @Param("questionId") Long questionId);
 
     Integer deleteQuestionVoteByUserIdAndQuestionId(@Param("userId") Long userId, @Param("questionId") Long questionId);
 
-    Integer voteAnswer(AnswerVote vote);
+    Integer insertVoteAnswer(AnswerVote vote);
 
     AnswerVote getAnswerVoteByUserIdAndAnswerId(@Param("userId") Long userId, @Param("answerId") Long answerId);
 
