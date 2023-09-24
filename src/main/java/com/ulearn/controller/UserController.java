@@ -51,7 +51,7 @@ public class UserController {
 
         Long userId = userService.login(form);
         StpUtil.login(userId);
-        log.info("User logged in");
+        log.info("User logged in ID: " + userId);
         return JsonResponse.ok();
     }
 
