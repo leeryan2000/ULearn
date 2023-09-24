@@ -10,6 +10,7 @@ import com.ulearn.dao.form.UserSignUpForm;
 import com.ulearn.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ import javax.validation.Valid;
  * @Date: 2022/8/30 22:24
  */
 
+@Slf4j
 @RestController
 @RequestMapping("/user")
 @Tag(name = "UserController", description = "用户Web接口")
@@ -49,6 +51,7 @@ public class UserController {
 
         Long userId = userService.login(form);
         StpUtil.login(userId);
+        log.info("User logged in");
         return JsonResponse.ok();
     }
 

@@ -119,12 +119,12 @@ public class PostMQConfig {
                 // 获取消息数据
                 QuestionComment questionComment = JSONUtil.toBean(messageJsonStr, QuestionComment.class);
 
-                // 给发布问题的用户发送新回答消息
+                // 给发布问题的用户发送新评论消息
                 HashMap message = commentDao.getQuestionCommentMessageById(questionComment.getId());
                 message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.QUESTION_COMMENT);
                 postRedisUtil.addMessageByUserId(Long.valueOf(message.get("questionUserId").toString()), message);
 
-                // 获取redis中的消息, 并添加新数据
+                // 获取redis中的消息, 并添加新数据, 给关注问题的用户发送新评论消息
                 message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.FOLLOWED_QUESTION_COMMENT);
                 List<Long> followerIds = followDao.getQuestionFollowerByQuestionId(questionComment.getQuestionId());
                 for (Long followerId : followerIds) {

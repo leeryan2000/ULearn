@@ -13,6 +13,9 @@ import com.ulearn.dao.error.CommonRuntimeException;
 import com.ulearn.dao.form.VoteAnswerForm;
 import com.ulearn.dao.form.VoteQuestionForm;
 import com.ulearn.service.VoteService;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -38,6 +41,8 @@ public class VoteServiceImpl implements VoteService {
 
     private final RedisTemplate<String, String> redisTemplate;
 
+    private final SqlSessionFactory sqlSessionFactory;
+
     @Override
     public void voteQuestion(Long userId, VoteQuestionForm form) {
         Question question = questionDao.getQuestionById(form.getQuestionId());
@@ -50,7 +55,7 @@ public class VoteServiceImpl implements VoteService {
         String fieldKey =  userId + "-" + form.getQuestionId();
 
         // delete the item from MySQL if it exists to prevent from reinsertion
-        voteDao.deleteQuestionVoteByUserIdAndQuestionId(userId, form.getQuestionId());
+        // voteDao.deleteQuestionVoteByUserIdAndQuestionId(userId, form.getQuestionId());
         redisTemplate.opsForHash().delete(key, fieldKey);
 
         QuestionVote vote = new QuestionVote();
@@ -94,16 +99,15 @@ public class VoteServiceImpl implements VoteService {
         Set<Object> keys = redisTemplate.opsForHash().keys("question_vote");
         List<Object> question_vote = redisTemplate.opsForHash().multiGet("question_vote", keys);
 
-
-        for(Object obj : question_vote) {
-            QuestionVote vote = JSONUtil.parse(obj).toBean(QuestionVote.class);
-            // Get the vote from database, delete it if exists to prevent reinsertion
-            QuestionVote voteInDb = voteDao.getQuestionVoteByUserIdAndQuestionId(vote.getUserId(), vote.getQuestionId());
-            if (voteInDb != null) {
-                // delete the data in the database if it exists
+        // Use batch insert to insert sql queries at a time, instead of querying
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH)) {
+            VoteDao voteDao = sqlSession.getMapper(VoteDao.class);
+            for (Object obj : question_vote) {
+                QuestionVote vote = JSONUtil.parse(obj).toBean(QuestionVote.class);
                 voteDao.deleteQuestionVoteByUserIdAndQuestionId(vote.getUserId(), vote.getQuestionId());
+                voteDao.insertVoteQuestion(vote);
             }
-            voteDao.insertVoteQuestion(vote);
+            sqlSession.commit();
         }
 
         // Delete all the keys in the hash set
@@ -116,10 +120,11 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Autowired
-    public VoteServiceImpl(QuestionDao questionDao, VoteDao voteDao, AnswerDao answerDao, RedisTemplate<String, String> redisTemplate) {
+    public VoteServiceImpl(QuestionDao questionDao, VoteDao voteDao, AnswerDao answerDao, RedisTemplate<String, String> redisTemplate, SqlSessionFactory sqlSessionFactory) {
         this.questionDao = questionDao;
         this.voteDao = voteDao;
         this.answerDao = answerDao;
         this.redisTemplate = redisTemplate;
+        this.sqlSessionFactory = sqlSessionFactory;
     }
 }

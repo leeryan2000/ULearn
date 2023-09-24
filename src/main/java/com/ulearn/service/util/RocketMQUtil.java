@@ -1,8 +1,10 @@
 package com.ulearn.service.util;
 
+import com.ulearn.dao.error.CommonRuntimeException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.common.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,9 @@ public class RocketMQUtil {
 
     public static void syncSendMsg(DefaultMQProducer producer, Message msg) throws Exception{
         SendResult result = producer.send(msg);
+        if (!(result.getSendStatus() == SendStatus.SEND_OK)) {
+            throw new CommonRuntimeException();
+        }
         System.out.println(result);
     }
 

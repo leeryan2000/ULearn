@@ -11,7 +11,6 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="ulearn" target="1.8" />
       <module name="ulearn-controller" target="8" />
       <module name="ulearn-dao" target="8" />
       <module name="ulearn-service" target="8" />

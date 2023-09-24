@@ -42,7 +42,7 @@ CREATE TABLE `u_answer` (
 	`questionId` BIGINT NOT NULL COMMENT '问题ID',
 	`content` VARCHAR(100) NOT NULL COMMENT '内容',
 	`createTime` DATETIME NOT NULL COMMENT '创建时间',
-	`accepted` BOOL NOT NULL DEFAULT FALSE COMMENT '答案是否被问答这采纳',
+	`accepted` BOOL NOT NULL DEFAULT FALSE COMMENT '答案是否被问答者采纳',
 	`acceptedTime` DATETIME DEFAULT NULL COMMENT '答案被采纳的时间',
 	PRIMARY KEY (`id`),
 	FOREIGN KEY (`questionId`)
@@ -163,7 +163,7 @@ CREATE TABLE `u_bookmark` (
 -- ----------------------------
 -- Table structure for u_bookmark_group
 -- ----------------------------
-DROP TABLE if exists `u_bookmark_group`;
+DROP TABLE IF EXISTS `u_bookmark_group`;
 CREATE TABLE `u_bookmark_group` (
 	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户书签分组',
 	`userId` BIGINT NOT NULL COMMENT '用户ID',
@@ -177,25 +177,25 @@ INSERT INTO u_bookmark_group VALUES(1, 0, '默认书签分组');
 -- ----------------------------
 -- Table structure for u_question_comment
 -- ----------------------------
-drop table if exists `u_question_comment`;
-create table `u_question_comment` (
-	`id` bigint not null auto_increment comment '用户评论',
-	`userId` bigint not null comment '用户ID',
-	`questionId` bigint not null comment '问题ID',
-	`content` varchar(100) not null comment '内容',
-	`replyId` bigint default null comment '回复的用户ID, 如为空代表是普通回复',
-	`createTime` dateTime not null comment '创建时间',
-	primary key(`id`),
-	foreign key (`questionId`)
-	references u_question(`id`)
-	on delete cascade
+DROP TABLE IF EXISTS `u_question_comment`;
+CREATE TABLE `u_question_comment` (
+	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户评论',
+	`userId` BIGINT NOT NULL COMMENT '用户ID',
+	`questionId` BIGINT NOT NULL COMMENT '问题ID',
+	`content` VARCHAR(100) NOT NULL COMMENT '内容',
+	`replyId` BIGINT DEFAULT NULL COMMENT '回复的用户ID, 如为空代表是普通回复',
+	`createTime` DATETIME NOT NULL COMMENT '创建时间',
+	PRIMARY KEY(`id`),
+	FOREIGN KEY (`questionId`)
+	REFERENCES u_question(`id`)
+	ON DELETE CASCADE
 ) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户问题评论表';
 
 
 -- ----------------------------
 -- Table structure for u_answer_comment
 -- ----------------------------
-DROP TABLE if exists `u_answer_comment`;
+DROP TABLE IF EXISTS `u_answer_comment`;
 CREATE TABLE `u_answer_comment` (
 	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户评论',
 	`userId` BIGINT NOT NULL COMMENT '用户ID',

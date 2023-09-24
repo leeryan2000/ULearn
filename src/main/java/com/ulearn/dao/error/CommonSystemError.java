@@ -6,6 +6,8 @@ package com.ulearn.dao.error;
  * @Date: 2022/9/1 17:20
  */
 public enum CommonSystemError implements CommonError{
+
+
     ;
 
     private final String errCode;
