@@ -69,7 +69,6 @@ public class QuestionServiceImpl implements QuestionService {
             throw new CommonRuntimeException(CommonOperationError.QUESTION_QUERY_BY_PAGE_FAILED);
         }
 
-
         return listQuestion;
     }
 
