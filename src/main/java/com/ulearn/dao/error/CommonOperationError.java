@@ -24,6 +24,9 @@ public enum CommonOperationError implements CommonError{
     CREATE_BOOKMARK_GROUP_FAILED("20008", "CREATE_BOOKMARK_GROUP_FAILED"),
     QUESTION_TAG_ADD_FAILED("20009", "QUESTION_TAG_ADD_FAILED"),
     COMMENT_FAILED("20010", "COMMENT_FAILED"),
+
+    // User get operation error
+    QUESTION_QUERY_BY_PAGE_FAILED("30001", "QUESTION_QUERY_BY_PAGE_FAILED");
     ;
 
     private final String errCode;

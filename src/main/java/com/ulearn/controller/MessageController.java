@@ -7,7 +7,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Author: Ryan
@@ -27,7 +29,9 @@ public class MessageController {
     @SaCheckLogin
     public JsonResponse addAnswer(@RequestParam Long userId) {
         HashMap map = messageService.getInboxMessageByUserId(userId);
-        return JsonResponse.ok(map);
+        List<HashMap> list = new ArrayList<>();
+        list.add(map);
+        return JsonResponse.ok(list);
     }
 
     public MessageController(MessageService messageService) {

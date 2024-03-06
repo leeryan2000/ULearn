@@ -4,6 +4,9 @@ import com.ulearn.dao.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * @Author: Ryan
  * @Description:
@@ -20,4 +23,6 @@ public interface QuestionDao {
     Integer addTag(Tag tag);
 
     Integer addQuestionTag(QuestionTag questionTag);
+
+    List<HashMap> getQuestionByPage(@Param("offset") Long offset, @Param("pageSize") Long pageSize);
 }

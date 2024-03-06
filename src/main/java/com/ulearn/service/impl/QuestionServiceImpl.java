@@ -1,9 +1,6 @@
 package com.ulearn.service.impl;
 
-import cn.hutool.crypto.digest.mac.MacEngine;
-import cn.hutool.json.JSONUtil;
 import com.ulearn.dao.QuestionDao;
-import com.ulearn.dao.constant.PostMQConstant;
 import com.ulearn.dao.domain.*;
 import com.ulearn.dao.error.CommonOperationError;
 import com.ulearn.dao.error.CommonRuntimeException;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -59,6 +57,21 @@ public class QuestionServiceImpl implements QuestionService {
         }
     }
 
+    @Override
+    public List<HashMap> getQuestionByPage(PageForm pageForm) {
+        Long pageNum = pageForm.getPageNum();
+        Long pageSize = pageForm.getPageSize();
+
+        Long offset = (pageNum - 1) * pageSize;
+
+        List<HashMap> listQuestion = questionDao.getQuestionByPage(offset, pageSize);
+        if (listQuestion == null) {
+            throw new CommonRuntimeException(CommonOperationError.QUESTION_QUERY_BY_PAGE_FAILED);
+        }
+
+
+        return listQuestion;
+    }
 
 
     @Autowired

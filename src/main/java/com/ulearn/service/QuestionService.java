@@ -1,6 +1,10 @@
 package com.ulearn.service;
 
+import com.ulearn.dao.domain.Question;
 import com.ulearn.dao.form.*;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Author: Ryan
@@ -11,4 +15,6 @@ import com.ulearn.dao.form.*;
 public interface QuestionService {
 
     void addQuestion(Long userId, QuestionForm form);
+
+    List<HashMap> getQuestionByPage(PageForm pageForm);
 }

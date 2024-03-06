@@ -1,9 +1,12 @@
 package com.ulearn.controller.response;
 
+import cn.hutool.core.lang.hash.Hash;
 import com.ulearn.dao.error.CommonError;
 import lombok.Data;
+import org.springframework.data.redis.hash.HashMapper;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Author: Ryan
@@ -18,9 +21,11 @@ public class JsonResponse {
 
     private String msg;
 
-    private HashMap data;
+    private List<HashMap> data;
 
-    public JsonResponse(String code, String msg, HashMap data) {
+    private HashMap error;
+
+    public JsonResponse(String code, String msg, List<HashMap> data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
@@ -31,10 +36,16 @@ public class JsonResponse {
         this.msg = msg;
     }
 
-    public JsonResponse(HashMap data) {
+    public JsonResponse(List<HashMap> data) {
         this.code = "0";
         this.msg = "success";
         this.data = data;
+    }
+
+    public JsonResponse(String code, String msg, HashMap error) {
+        this.code = code;
+        this.msg = msg;
+        this.error = error;
     }
 
     public JsonResponse() {
@@ -46,7 +57,7 @@ public class JsonResponse {
         return new JsonResponse();
     }
 
-    public static JsonResponse ok(HashMap data) {
+    public static JsonResponse ok(List<HashMap> data) {
         return new JsonResponse(data);
     }
 
@@ -58,7 +69,7 @@ public class JsonResponse {
         return new JsonResponse(error.getErrCode(), error.getErrMsg());
     }
 
-    public static JsonResponse error(HashMap data) {
-        return new JsonResponse("501", "Invalid field", data);
+    public static JsonResponse error(HashMap error) {
+        return new JsonResponse("501", "Invalid field", error);
     }
 }

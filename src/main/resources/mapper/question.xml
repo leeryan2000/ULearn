@@ -24,4 +24,8 @@
     <insert id="addQuestionTag" parameterType="com.ulearn.dao.domain.QuestionTag">
         INSERT INTO u_question_tag VALUES(#{questionId}, #{tagId})
     </insert>
+
+    <select id="getQuestionByPage" resultType="java.util.HashMap">
+        SELECT * FROM u_question LIMIT #{offset}, #{pageSize}
+    </select>
 </mapper>
