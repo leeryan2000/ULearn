@@ -25,7 +25,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionDao questionDao;
 
-    // 保证事务
+    // 保證事務
     @Transactional
     @Override
     public void addQuestion(Long userId, QuestionForm form) {
@@ -41,7 +41,7 @@ public class QuestionServiceImpl implements QuestionService {
             throw new CommonRuntimeException(CommonOperationError.POST_FAILED);
         }
 
-        // 添加问题标签
+        // 添加問題標籤
         List<Long> tags = form.getTags();
         QuestionTag questionTag;
         for (Long tagId : tags) {

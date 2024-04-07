@@ -89,9 +89,8 @@ public class VoteServiceImpl implements VoteService {
         vote.setStatus(form.getStatus());
         vote.setCreateTime(new Date());
 
-        // add to redis first, and use quartz schedule to store it into MySQL
+        // add to redis first, and schedule it through quartz to store it into MySQL
         redisTemplate.opsForHash().put(key, fieldKey, JSONUtil.toJsonStr(vote));
-
     }
 
     @Override

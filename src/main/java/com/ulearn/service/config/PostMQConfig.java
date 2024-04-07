@@ -50,11 +50,11 @@ public class PostMQConfig {
 
     @Bean("messageProducer")
     public DefaultMQProducer messageProducer() throws MQClientException {
-        // 初始化一个producer并设置Producer group name
+        // Initialize producer and set Producer group name
         DefaultMQProducer producer = new DefaultMQProducer(PostMQConstant.MESSAGE_GROUP);
-        // 设值NameServer地址
+        // set NameServer address
         producer.setNamesrvAddr(namesrvAddr);
-        // 启动producer
+        // start producer
         producer.start();
 
         return producer;

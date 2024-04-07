@@ -1,6 +1,38 @@
+DROP DATABASE ulearn;
 CREATE DATABASE IF NOT EXISTS ulearn;
 
 USE ulearn;
+
+-- ---------------------------'-- Table structure for u_question
+-- ----------------------------
+DROP TABLE IF EXISTS `u_question`;
+CREATE TABLE `u_question` (
+	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '问题ID',
+	`userId` BIGINT NOT NULL COMMENT '创建者ID',
+	`title` VARCHAR(100) NOT NULL COMMENT '标题',
+	`content` VARCHAR(100) NOT NULL COMMENT '内容',
+	`create_time` DATETIME NOT NULL COMMENT '创建时间',
+	`view` INT DEFAULT 0 COMMENT '浏览次数',
+	PRIMARY KEY (`id`)
+) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='问题表';
+
+-- ----------------------------
+-- Table structure for u_answer
+-- ----------------------------
+DROP TABLE IF EXISTS `u_answer`;
+CREATE TABLE `u_answer` (
+	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '回答ID',
+	`userId` BIGINT NOT NULL COMMENT '用户ID',
+	`questionId` BIGINT NOT NULL COMMENT '问题ID',
+	`content` VARCHAR(100) NOT NULL COMMENT '内容',
+	`createTime` DATETIME NOT NULL COMMENT '创建时间',
+	`accepted` BOOL NOT NULL DEFAULT FALSE COMMENT '答案是否被问答者采纳',
+	`acceptedTime` DATETIME DEFAULT NULL COMMENT '答案被采纳的时间',
+	PRIMARY KEY (`id`),
+	FOREIGN KEY (`questionId`)
+	REFERENCES u_question(`id`)
+	ON DELETE CASCADE
+) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='问题表';
 
 -- ----------------------------
 -- Table structure for u_user
@@ -16,39 +48,8 @@ CREATE TABLE `u_user` (
 	PRIMARY KEY (`id`)
 ) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户表';
 
+INSERT INTO u_user (`username`, `password`, `email`,`createTime`, `key`) VALUES ('one', 'siI091/LDvuFueYp1EhO2g==', 'one@nottingham.edu.cn', '2023-08-14 10:19:37', 'vecrw24rpz7u7mci');
 
--- ----------------------------
--- Table structure for u_question
--- ----------------------------
-DROP TABLE IF EXISTS `u_question`;
-CREATE TABLE `u_question` (
-	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '问题ID',
-	`userId` BIGINT NOT NULL COMMENT '创建者ID',
-	`title` VARCHAR(100) NOT NULL COMMENT '标题',
-	`content` VARCHAR(100) NOT NULL COMMENT '内容',
-	`create_time` DATETIME NOT NULL COMMENT '创建时间',
-	`view` INT DEFAULT 0 COMMENT '浏览次数',
-	PRIMARY KEY (`id`)
-) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='问题表';
-
-
--- ----------------------------
--- Table structure for u_answer
--- ----------------------------
-DROP TABLE IF EXISTS `u_answer`; 
-CREATE TABLE `u_answer` (
-	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '回答ID',
-	`userId` BIGINT NOT NULL COMMENT '用户ID',
-	`questionId` BIGINT NOT NULL COMMENT '问题ID',
-	`content` VARCHAR(100) NOT NULL COMMENT '内容',
-	`createTime` DATETIME NOT NULL COMMENT '创建时间',
-	`accepted` BOOL NOT NULL DEFAULT FALSE COMMENT '答案是否被问答者采纳',
-	`acceptedTime` DATETIME DEFAULT NULL COMMENT '答案被采纳的时间',
-	PRIMARY KEY (`id`),
-	FOREIGN KEY (`questionId`)
-	REFERENCES u_question(`id`)
-	ON DELETE CASCADE
-) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='问题表';
 
 
 -- ----------------------------
@@ -89,7 +90,7 @@ DROP TABLE IF EXISTS `u_question_vote`;
 CREATE TABLE `u_question_vote` (
 	`userId` BIGINT NOT NULL COMMENT '用户ID',
 	`questionId` BIGINT NOT NULL COMMENT '问题ID',
-	`status` BOOL NOT NULL COMMENT '是否为有用, true代表有用, false反之',
+	`status` BOOL NOT NULL COMMENT '是否為有用, true代表有用, false反之',
 	`createTime` DATETIME NOT NULL COMMENT '创建时间',
 	CONSTRAINT unique_u_q UNIQUE (`userId`, `questionId`),
 	FOREIGN KEY(`questionId`)
@@ -208,6 +209,9 @@ CREATE TABLE `u_answer_comment` (
 	REFERENCES u_answer(`id`)
 	ON DELETE CASCADE
 ) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户问题评论表';
+
+
+
 
 
 

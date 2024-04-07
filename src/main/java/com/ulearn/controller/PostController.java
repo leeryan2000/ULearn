@@ -98,7 +98,7 @@ public class PostController {
     }
 
     @PostMapping("/follow-answer")
-    @Operation(description = "追踪问题")
+    @Operation(description = "追踪回答")
     @SaCheckLogin
     public JsonResponse followAnswer(@Valid @RequestBody FollowAnswerForm form) {
         Long userId = StpUtil.getLoginIdAsLong();
