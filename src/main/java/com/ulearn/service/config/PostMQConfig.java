@@ -71,26 +71,25 @@ public class PostMQConfig {
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
-                // 获取消息
                 MessageExt msg = list.get(0);
                 String messageJsonStr = new String(msg.getBody());
 
-                // 获取消息数据
+                // Turn json message to class Answer
                 Answer answer = JSONUtil.toBean(messageJsonStr, Answer.class);
 
-                // 给发布问题的用户发送新回答消息
+                // Send the new answer to users that follows the question
                 HashMap message = answerDao.getQuestionAnswerByAnswerId(answer.getId());
                 message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.QUESTION_ANSWER);
                 postRedisUtil.addMessageByUserId(Long.valueOf(message.get("questionUserId").toString()), message);
 
-                // 获取redis中的消息, 并添加新数据
+                // Add message to redis by the followers' user ID
                 message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.FOLLOWED_QUESTION_ANSWER);
                 List<Long> followerIds = followDao.getQuestionFollowerByQuestionId(answer.getQuestionId());
                 for (Long followerId : followerIds) {
                     postRedisUtil.addMessageByUserId(followerId, message);
                 }
 
-                log.info("Answer 消息成功推送, ID: {}", answer.getId());
+                log.info("Answer message delivered successfully, ID: {}", answer.getId());
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
         });
@@ -112,26 +111,25 @@ public class PostMQConfig {
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
-                // 获取消息
                 MessageExt msg = list.get(0);
                 String messageJsonStr = new String(msg.getBody());
 
-                // 获取消息数据
+                // Turn json message to class QuestionComment
                 QuestionComment questionComment = JSONUtil.toBean(messageJsonStr, QuestionComment.class);
 
-                // 给发布问题的用户发送新评论消息
+                // Send the comment message to the user who posted the question
                 HashMap message = commentDao.getQuestionCommentMessageById(questionComment.getId());
                 message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.QUESTION_COMMENT);
                 postRedisUtil.addMessageByUserId(Long.valueOf(message.get("questionUserId").toString()), message);
 
-                // 获取redis中的消息, 并添加新数据, 给关注问题的用户发送新评论消息
+                // Add message to redis by the followers' ID
                 message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.FOLLOWED_QUESTION_COMMENT);
                 List<Long> followerIds = followDao.getQuestionFollowerByQuestionId(questionComment.getQuestionId());
                 for (Long followerId : followerIds) {
                     postRedisUtil.addMessageByUserId(followerId, message);
                 }
 
-                log.info("Question comment 消息成功推送, ID: {}", questionComment.getId());
+                log.info("Question comment message delivered successfully, ID: {}", questionComment.getId());
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
         });
@@ -152,26 +150,25 @@ public class PostMQConfig {
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
-                // 获取消息
                 MessageExt msg = list.get(0);
                 String messageJsonStr = new String(msg.getBody());
 
-                // 获取消息数据
+                // Turn json message to class AnswerComment
                 AnswerComment answerComment = JSONUtil.toBean(messageJsonStr, AnswerComment.class);
 
-                // 给发布问题的用户发送新回答消息
+                // Send the answer's comment message to the user who posted the answer
                 HashMap message = commentDao.getAnswerCommentMessageById(answerComment.getId());
                 message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.ANSWER_COMMENT);
                 postRedisUtil.addMessageByUserId(Long.valueOf(message.get("answerUserId").toString()), message);
 
-                // 获取redis中的消息, 并添加新数据
+                // Add message to redis byt the followers' ID
                 message.put(MessageConstant.MESSAGE_PROPERTY_NAME, MessageConstant.FOLLOWED_ANSWER_COMMENT);
                 List<Long> followerIds = followDao.getAnswerFollowerByAnswerId(answerComment.getAnswerId());
                 for (Long followerId : followerIds) {
                     postRedisUtil.addMessageByUserId(followerId, message);
                 }
 
-                log.info("Answer comment 消息成功推送, ID: {}", answerComment.getId());
+                log.info("Answer comment message delivered successfully, ID: {}", answerComment.getId());
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
         });

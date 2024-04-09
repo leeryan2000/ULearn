@@ -44,7 +44,7 @@ public class AnswerServiceImpl implements AnswerService {
             throw new CommonRuntimeException(CommonOperationError.POST_FAILED);
         }
 
-        // 通过消息队列给追踪的用户发送提醒
+        // Send message to the followers using message queue
         DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("messageProducer");
         String messageJsonStr = JSONUtil.toJsonStr(answer);
         Message msg = new Message(PostMQConstant.MESSAGE_TOPIC, PostMQConstant.ANSWER_MESSAGE_TAG, messageJsonStr.getBytes());

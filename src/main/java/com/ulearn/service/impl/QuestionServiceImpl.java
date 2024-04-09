@@ -41,7 +41,7 @@ public class QuestionServiceImpl implements QuestionService {
             throw new CommonRuntimeException(CommonOperationError.POST_FAILED);
         }
 
-        // 添加問題標籤
+        // Add question tags
         List<Long> tags = form.getTags();
         QuestionTag questionTag;
         for (Long tagId : tags) {

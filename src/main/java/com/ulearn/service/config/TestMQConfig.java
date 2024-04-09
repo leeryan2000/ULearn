@@ -29,11 +29,8 @@ public class TestMQConfig {
 
     @Bean("TEST_PRODUCER")
     public DefaultMQProducer producerTest() throws MQClientException {
-        // 初始化一个producer并设置Producer group name
         DefaultMQProducer producer = new DefaultMQProducer("TEST_PRODUCER_GROUP");
-        // 设值NameServer地址
         producer.setNamesrvAddr(namesrvAddr);
-        // 启动producer
         producer.start();
 
         return producer;
@@ -50,7 +47,6 @@ public class TestMQConfig {
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
-                // 获取消息
                 MessageExt msg = list.get(0);
                 String messageJsonStr = new String(msg.getBody());
 
@@ -76,11 +72,10 @@ public class TestMQConfig {
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
-                // 获取消息
                 MessageExt msg = list.get(0);
                 String messageJsonStr = new String(msg.getBody());
 
-                log.info("TEST_TOPIC_2 接受到消息 {}", messageJsonStr);
+                log.info("TEST_TOPIC_2 接收到消息 {}", messageJsonStr);
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
         });

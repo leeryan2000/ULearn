@@ -20,7 +20,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/post")
-@Tag(name = "PostController", description = "发表控制器")
+@Tag(name = "PostController", description = "Controller for posting questions, answers and comments")
 public class PostController {
 
     private final QuestionService questionService;
@@ -36,7 +36,7 @@ public class PostController {
     private final BookmarkService bookmarkService;
 
     @PostMapping("/add-question")
-    @Operation(description = "添加问题")
+    @Operation(description = "Add question")
     @SaCheckLogin
     public JsonResponse addQuestion(@Valid @RequestBody QuestionForm form) {
         Long userId = StpUtil.getLoginIdAsLong();
@@ -45,7 +45,7 @@ public class PostController {
     }
 
     @PostMapping("/add-answer")
-    @Operation(description = "添加回答")
+    @Operation(description = "Add answer")
     @SaCheckLogin
     public JsonResponse addAnswer(@Valid @RequestBody AnswerForm form) throws Exception {
         Long userId = StpUtil.getLoginIdAsLong();
@@ -54,7 +54,7 @@ public class PostController {
     }
 
     @PostMapping("/vote-question")
-    @Operation(description = "问题投票")
+    @Operation(description = "Question vote")
     @SaCheckLogin
     public JsonResponse voteQuestion(@Valid @RequestBody VoteQuestionForm form) {
         Long userId = StpUtil.getLoginIdAsLong();
@@ -62,16 +62,8 @@ public class PostController {
         return JsonResponse.ok();
     }
 
-    @PostMapping("vote-test")
-    @Operation(description = "test")
-    @SaCheckLogin
-    public JsonResponse voteTest() {
-        voteService.voteQuestionToDatabase();
-        return JsonResponse.ok();
-    }
-
     @PostMapping("/vote-answer")
-    @Operation(description = "回答投票")
+    @Operation(description = "Answer vote")
     @SaCheckLogin
     public JsonResponse voteAnswer(@Valid @RequestBody VoteAnswerForm form) {
         Long userId = StpUtil.getLoginIdAsLong();
@@ -80,7 +72,7 @@ public class PostController {
     }
 
     @PostMapping("/add-bookmark")
-    @Operation(description = "添加书签")
+    @Operation(description = "Add bookmark")
     @SaCheckLogin
     public JsonResponse addBookmark(@Valid @RequestBody BookmarkForm form) {
         Long userId = StpUtil.getLoginIdAsLong();
@@ -89,7 +81,7 @@ public class PostController {
     }
 
     @PostMapping("/follow-question")
-    @Operation(description = "追踪问题")
+    @Operation(description = "Follow question")
     @SaCheckLogin
     public JsonResponse followQuestion(@Valid @RequestBody FollowQuestionForm form) {
         Long userId = StpUtil.getLoginIdAsLong();
@@ -98,7 +90,7 @@ public class PostController {
     }
 
     @PostMapping("/follow-answer")
-    @Operation(description = "追踪回答")
+    @Operation(description = "Follow answer")
     @SaCheckLogin
     public JsonResponse followAnswer(@Valid @RequestBody FollowAnswerForm form) {
         Long userId = StpUtil.getLoginIdAsLong();
@@ -107,7 +99,7 @@ public class PostController {
     }
 
     @PostMapping("/comment-question")
-    @Operation(description = "添加问题评论")
+    @Operation(description = "Add comment for question")
     @SaCheckLogin
     public JsonResponse commentQuestion(@Valid @RequestBody CommentQuestionForm form) throws Exception {
         Long userId = StpUtil.getLoginIdAsLong();
@@ -116,7 +108,7 @@ public class PostController {
     }
 
     @PostMapping("/comment-answer")
-    @Operation(description = "添加回答评论")
+    @Operation(description = "Add comment for answer")
     @SaCheckLogin
     public JsonResponse answerQuestion(@Valid @RequestBody CommentAnswerForm form) throws Exception {
         Long userId = StpUtil.getLoginIdAsLong();

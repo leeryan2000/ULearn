@@ -18,7 +18,7 @@ import java.util.Date;
 
 /**
  * @Author: Ryan
- * @Description: 用户service层
+ * @Description: Service layer
  * @Date: 2022/8/31 14:16
  */
 
@@ -40,11 +40,11 @@ public class UserServiceImpl implements UserService {
         user.setEmail(form.getUsername() + UserConstant.EMAIL_SUFFIX);
         user.setCreateTime(new Date());
 
-        // 获取用户key(16 digits)
+        // get user key(16 digits)
         String key = RandomUtil.randomString(16);
         user.setKey(key);
 
-        // 加密密码
+        // Encrypt password
         String password = CryptUtil.encrypt(key, form.getPassword());
         user.setPassword(password);
 
@@ -55,9 +55,9 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 用户登入, 成功登入返回用户ID
-     * @param form 用户登入模板
-     * @return 用户ID
+     * 用戶登入, 成功登入返回用户ID Return user ID if login successful
+     * @param form user login format
+     * @return User ID
      */
     @Override
     public Long login(UserLoginForm form) {

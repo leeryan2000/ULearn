@@ -22,6 +22,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public HashMap getInboxMessageByUserId(Long userId) {
 
+        // Return the message in redis with hashmap inorder to pass it to the frontend
         List<String> list = redisTemplate.opsForList().range("inbox_message_" + userId, 0, -1);
         HashMap map = new HashMap();
         map.put("inbox_message", list);

@@ -48,7 +48,7 @@ public class CommentServiceImpl implements CommentService {
             throw new CommonRuntimeException(CommonOperationError.COMMENT_FAILED);
         }
 
-        // 通过消息队列给追踪的用户发送提醒
+        // Send message to the followers using message queue
         DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("messageProducer");
         String messageJsonStr = JSONUtil.toJsonStr(questionComment);
         Message msg = new Message(PostMQConstant.MESSAGE_TOPIC, PostMQConstant.QUESTION_COMMENT_MESSAGE_TAG, messageJsonStr.getBytes());
