@@ -9,7 +9,6 @@
 
 * 學生
 * 管理員
-* 老師(待考慮)
 ### Functional Requirements
 
 * **學生**
@@ -21,7 +20,7 @@
   * 上傳歷屆考卷即解答, 評論, 看同意次數確定可信程度 (暫定使用爬蟲完成)
   * 線上聊天室
 * **管理員**
-  * 刪除違規文章
+  * 刪除違規貼文
   * 封禁賬號
 ### Non Functional Requirements
 
@@ -37,7 +36,7 @@
 * SpringDoc 文檔撰寫工具
 * RocketMQ 做消息推送, 削峰
 * lombok 精簡代碼
-* Redis 緩存
+* Redis 快取
 * MySQL 持久層
 * Quartz 定時任務
 * FastDFS 存儲用戶影片, 圖片, 以及獲取

@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/get")
-@Tag(name = "GetController", description = "帖子控制器")
+@Tag(name = "GetController", description = "Controller that helps getting questions, answers and comments posted by the user")
 public class GetController {
 
     private final QuestionService questionService;
