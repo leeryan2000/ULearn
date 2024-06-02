@@ -7,6 +7,8 @@ package com.ulearn.dao.error;
  */
 public enum CommonSystemError implements CommonError{
 
+
+    MQ_FAILED_CONSUME("90002", "MQ_FAILED_CONSUME"),
     MQ_FAILED_SENDMESSAGE("90001", "MQ_FAILED_SENDMESSAGE");
     ;
 

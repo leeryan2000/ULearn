@@ -49,6 +49,7 @@ CREATE TABLE `u_user` (
 ) ENGINE=INNODB CHARACTER SET=utf8 COMMENT='用户表';
 
 INSERT INTO u_user (`username`, `password`, `email`,`createTime`, `key`) VALUES ('one', 'siI091/LDvuFueYp1EhO2g==', 'one@nottingham.edu.cn', '2023-08-14 10:19:37', 'vecrw24rpz7u7mci');
+INSERT INTO u_user (`username`, `password`, `email`,`createTime`, `key`) VALUES ('two', 'NiH5WKw8etp6f1LNkS88Xg==', 'two@nottingham.edu.cn', '2023-08-14 10:19:37', 'krn3odsnt8hkrfhp');
 
 
 
